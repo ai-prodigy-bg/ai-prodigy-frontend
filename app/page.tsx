@@ -351,7 +351,6 @@ function Navigation() {
       transition={{ duration: 0.8, ease: "easeOut" }}
       className="fixed top-0 left-0 right-0 z-50 p-4 md:p-6"
     >
-      <div className="bg-background/80 backdrop-blur-md border border-border/20 rounded-2xl shadow-lg">
         <div className="flex justify-between items-center max-w-7xl mx-auto px-6 py-4">
           <motion.div
             whileHover={{ scale: 1.05 }}
@@ -412,7 +411,7 @@ function Navigation() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="md:hidden border-t border-border/20 bg-background/90 backdrop-blur-md"
+              className="md:hidden border-t border-border/20 bg-background/95 backdrop-blur-md rounded-b-2xl"
             >
               <div className="px-6 py-4 space-y-4">
                 {["Projects", "Services", "About", "Contact"].map((item, index) => (
@@ -432,7 +431,6 @@ function Navigation() {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
     </motion.nav>
   )
 }
