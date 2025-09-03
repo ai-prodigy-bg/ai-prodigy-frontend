@@ -484,12 +484,14 @@ function ProjectCard({
   category,
   image,
   index,
+  url,
 }: {
   title: string
   description: string
   category: string
   image: string
   index: number
+  url?: string
 }) {
   const [isHovering, setIsHovering] = useState(false)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
@@ -526,7 +528,8 @@ function ProjectCard({
         }
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         style={{ transformStyle: "preserve-3d" }}
-        className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-6 md:p-8 relative overflow-hidden h-[400px] md:h-[450px] flex flex-col"
+        className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-6 sm:p-8 md:p-10 relative overflow-hidden h-[450px] sm:h-[480px] md:h-[520px] flex flex-col cursor-pointer"
+        onClick={() => url && window.open(url, '_blank')}
       >
         {/* Floating animation when idle */}
         <motion.div
@@ -562,7 +565,7 @@ function ProjectCard({
         <div className="relative z-10 flex flex-col h-full">
           {/* Category badge */}
           <motion.span
-            className="inline-block w-fit px-3 py-1 bg-primary/20 text-primary text-sm font-medium rounded-full mb-4"
+            className="inline-block w-fit px-3 sm:px-4 py-1.5 bg-primary/20 text-primary text-sm sm:text-base font-medium rounded-full mb-3 sm:mb-4 md:mb-5"
             animate={isHovering ? { scale: 1.05 } : { scale: 1 }}
           >
             {category}
@@ -570,7 +573,7 @@ function ProjectCard({
 
           {/* Project image */}
           <motion.div
-            className="relative mb-6 rounded-xl overflow-hidden bg-muted/50 flex-shrink-0"
+            className="relative mb-4 sm:mb-5 md:mb-6 rounded-xl overflow-hidden bg-muted/50 flex-shrink-0"
             animate={
               isHovering
                 ? {
@@ -582,14 +585,14 @@ function ProjectCard({
             transition={{ duration: 0.3 }}
             style={{ transform: `translateZ(20px)` }}
           >
-            <img src={image || "/placeholder.svg"} alt={title} className="w-full h-48 object-cover" />
+            <img src={image || "/placeholder.svg"} alt={title} className="w-full h-40 sm:h-48 md:h-56 object-cover" />
             <motion.div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </motion.div>
 
           {/* Content - flex-grow to fill remaining space */}
           <div className="flex-grow flex flex-col">
             <motion.h3
-              className="font-heading font-bold text-xl md:text-2xl mb-3 text-foreground"
+              className="font-heading font-bold text-xl sm:text-2xl md:text-3xl mb-3 sm:mb-4 text-foreground"
               animate={isHovering ? { color: "oklch(0.65 0.25 285)" } : {}}
               style={{ transform: `translateZ(30px)` }}
             >
@@ -597,34 +600,33 @@ function ProjectCard({
             </motion.h3>
 
             <motion.p
-              className="text-muted-foreground text-sm md:text-base leading-relaxed flex-grow"
+              className="text-muted-foreground text-sm sm:text-base md:text-lg leading-relaxed flex-grow mb-4 sm:mb-5"
               style={{ transform: `translateZ(20px)` }}
             >
               {description}
             </motion.p>
 
-            {/* CTA at bottom */}
+            {/* Hover indicator */}
             <motion.div
-              className="mt-6 pt-4 border-t border-border/50"
-              animate={isHovering ? { y: -5 } : { y: 0 }}
+              className="mt-auto pt-2 flex items-center justify-between"
+              animate={isHovering ? { y: -3 } : { y: 0 }}
               style={{ transform: `translateZ(40px)` }}
             >
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="text-primary font-medium text-sm hover:text-primary/80 transition-colors flex items-center gap-2"
+              <motion.span
+                className="text-sm sm:text-base text-muted-foreground"
+                animate={isHovering ? { opacity: 1 } : { opacity: 0.7 }}
               >
-                View Project
-                <motion.svg
-                  className="w-4 h-4"
-                  animate={isHovering ? { x: 5 } : { x: 0 }}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </motion.svg>
-              </motion.button>
+                Click to visit
+              </motion.span>
+              <motion.svg
+                className="w-4 h-4 text-primary"
+                animate={isHovering ? { x: 3, scale: 1.1 } : { x: 0, scale: 1 }}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </motion.svg>
             </motion.div>
           </div>
         </div>
@@ -637,47 +639,23 @@ function ProjectsSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" })
 
-  const projects = [
+  const digitalAssets = [
     {
-      title: "NeuroFlow AI",
-      description:
-        "Revolutionary AI-powered mental health platform with real-time mood tracking and personalized therapy recommendations.",
-      category: "AI Platform",
-      image: "/futuristic-ai-mental-health-app-interface-with-neu.png",
+      title: "Mr imot",
+      description: "Premium real estate platform connecting buyers directly with verified developers. Features interactive map search and comprehensive listings of off-plan and new construction projects.",
+      category: "Real Estate Platform",
+      image: "https://ik.imagekit.io/ts59gf2ul/prodigy%20corp/288shots_so.png?updatedAt=1756916353221",
+      url: "https://www.mrimot.com/",
     },
+  ]
+
+  const clientSuccessStories = [
     {
-      title: "CryptoVault Pro",
-      description:
-        "Secure cryptocurrency trading platform with advanced portfolio management and institutional-grade security features.",
-      category: "FinTech App",
-      image: "/modern-cryptocurrency-trading-dashboard-with-dark-.png",
-    },
-    {
-      title: "EcoSmart Cities",
-      description:
-        "Smart city management system integrating IoT sensors, traffic optimization, and environmental monitoring for sustainable urban living.",
-      category: "IoT Platform",
-      image: "/smart-city-dashboard-with-environmental-data-and-i.png",
-    },
-    {
-      title: "Quantum Commerce",
-      description:
-        "Next-generation e-commerce platform with AR product visualization and AI-powered personalization engine.",
-      category: "E-Commerce",
-      image: "/futuristic-e-commerce-interface-with-ar-product-pr.png",
-    },
-    {
-      title: "MedSync Network",
-      description:
-        "Comprehensive healthcare management system connecting patients, doctors, and medical facilities with blockchain-secured records.",
-      category: "HealthTech",
-      image: "/medical-dashboard-interface-with-patient-data-visu.png",
-    },
-    {
-      title: "Stellar Studios",
-      description: "Creative agency portfolio showcasing immersive 3D experiences and interactive brand storytelling.",
-      category: "Creative Web",
-      image: "/creative-agency-website-with-3d-elements-and-artis.png",
+      title: "teramedbio",
+      description: "High-converting wellness website that scaled to 20,000+ monthly organic visitors. Advanced booking integration and lightning-fast 2-day delivery.",
+      category: "Healthcare Website",
+      image: "https://ik.imagekit.io/ts59gf2ul/prodigy%20corp/88shots_so.png?updatedAt=1756917461839",
+      url: "https://teramedbio.com/",
     },
   ]
 
@@ -712,7 +690,7 @@ function ProjectsSection() {
               color: "transparent",
             }}
           >
-            Featured Projects
+            Our Portfolio
           </motion.h2>
 
           <motion.p
@@ -721,22 +699,58 @@ function ProjectsSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto text-pretty px-4"
           >
-            Discover our portfolio of cutting-edge digital solutions that push the boundaries of technology and design.
+            Explore our digital assets and client success stories that showcase innovation and excellence.
           </motion.p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
-          {projects.map((project, index) => (
-            <ProjectCard
-              key={project.title}
-              title={project.title}
-              description={project.description}
-              category={project.category}
-              image={project.image}
-              index={index}
-            />
-          ))}
-        </div>
+        {/* Our Digital Assets Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="mb-20"
+        >
+          <h3 className="font-heading font-bold text-2xl md:text-3xl mb-8 text-center">
+            Our Digital Assets
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
+            {digitalAssets.map((project, index) => (
+              <ProjectCard
+                key={project.title}
+                title={project.title}
+                description={project.description}
+                category={project.category}
+                image={project.image}
+                index={index}
+                url={project.url}
+              />
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Client Success Stories Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.6 }}
+        >
+          <h3 className="font-heading font-bold text-2xl md:text-3xl mb-8 text-center">
+            Client Success Stories
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
+            {clientSuccessStories.map((project, index) => (
+              <ProjectCard
+                key={project.title}
+                title={project.title}
+                description={project.description}
+                category={project.category}
+                image={project.image}
+                index={index + digitalAssets.length}
+                url={project.url}
+              />
+            ))}
+          </div>
+        </motion.div>
 
         {/* Call to action */}
         <motion.div
