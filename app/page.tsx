@@ -776,32 +776,6 @@ function ProjectsSection() {
           </div>
         </motion.div>
 
-        {/* Call to action */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="text-center mt-16"
-        >
-          <motion.button
-            whileHover={{
-              scale: 1.05,
-              boxShadow: "0 0 40px oklch(0.65 0.25 285 / 0.4)",
-              y: -5,
-            }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-8 py-4 rounded-xl font-semibold text-lg hover:from-primary/90 hover:to-primary/70 transition-all duration-300 relative overflow-hidden"
-            data-magnetic
-          >
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-              initial={{ x: "-100%" }}
-              whileHover={{ x: "100%" }}
-              transition={{ duration: 0.6 }}
-            />
-            <span className="relative z-10">View All Projects</span>
-          </motion.button>
-        </motion.div>
       </div>
 
       {/* Floating elements */}
@@ -1608,43 +1582,73 @@ function StatCounter({
   index: number
 }) {
   const [count, setCount] = useState(0)
-  const [hasAnimated, setHasAnimated] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
 
+  // Use Intersection Observer to detect when stat comes into view
   useEffect(() => {
-    if (isInView && !hasAnimated) {
-      setHasAnimated(true)
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !isVisible) {
+          setIsVisible(true)
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      }
+    )
+
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
+
+    return () => observer.disconnect()
+  }, [isVisible])
+
+  // Animation effect
+  useEffect(() => {
+    if (isVisible) {
+      const startDelay = index * 300 // Stagger by 300ms
+
       const timer = setTimeout(() => {
-        let start = 0
-        const increment = value / 50
+        const duration = 2000 // 2 seconds total
+        const steps = 60 // 60 steps
+        const increment = value / steps
+        let current = 0
+        let step = 0
+
         const counter = setInterval(() => {
-          start += increment
-          if (start >= value) {
+          step++
+          current += increment
+
+          if (step >= steps) {
             setCount(value)
             clearInterval(counter)
           } else {
-            setCount(Math.floor(start))
+            setCount(Math.floor(current))
           }
-        }, 30)
-      }, index * 200)
+        }, duration / steps)
+
+        return () => clearInterval(counter)
+      }, startDelay)
 
       return () => clearTimeout(timer)
     }
-  }, [isInView, value, hasAnimated, index])
+  }, [isVisible, value, index])
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
+      initial={{ opacity: 0, y: 30 }}
+      animate={isVisible ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
       className="text-center"
     >
       <motion.div
         className="font-heading font-bold text-4xl md:text-5xl mb-2 text-primary"
         animate={
-          isInView
+          isVisible
             ? {
                 textShadow: [
                   "0 0 20px oklch(0.65 0.25 285 / 0.3)",
@@ -1678,10 +1682,10 @@ function AboutSection() {
   ]
 
   const stats = [
-    { value: 150, label: "Projects Completed", suffix: "+" },
-    { value: 50, label: "Happy Clients", suffix: "+" },
-    { value: 5, label: "Years Experience", suffix: "" },
-    { value: 99, label: "Success Rate", suffix: "%" },
+    { value: 2, label: "Projects Completed", suffix: "+" },
+    { value: 1, label: "Happy Clients", suffix: "+" },
+    { value: 1, label: "Years Experience", suffix: "+" },
+    { value: 100, label: "Success Rate", suffix: "%" },
   ]
 
   return (
@@ -1724,8 +1728,7 @@ function AboutSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-xl text-muted-foreground max-w-4xl mx-auto text-pretty"
           >
-            We are a team of passionate innovators, designers, and developers who believe in the power of technology to
-            transform businesses and create meaningful digital experiences.
+            Speed and value drive everything we do. We leverage AI to build exceptional digital products faster and more affordably, turning ambitious ideas into reality without the traditional agency overhead.
           </motion.p>
         </motion.div>
 
@@ -1756,9 +1759,11 @@ function AboutSection() {
               animate={isInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
-              Founded in 2019, Prodigy Labs emerged from a simple belief: that exceptional digital experiences should be
-              accessible to businesses of all sizes. What started as a small team of three has grown into a dynamic
-              collective of creative minds and technical experts.
+              Founded in 2025, Prodigy Labs started with a focused mission: build and acquire profitable digital assets. We were product builders first, creating our own platforms and scaling them in competitive markets.
+              <br /><br />
+              But something unexpected happened. As we developed our portfolio, other entrepreneurs and businesses took notice. They wanted to know how we built products so efficiently and scaled them so quickly. Word spread, and soon we found ourselves fielding requests to build custom solutions for others.
+              <br /><br />
+              That's when we realized we had something special—a lean, technology-first approach that delivers results without the bloat of traditional agencies. We use the same AI-powered workflows and rapid development methods for client projects that we use for our own successful ventures.
             </motion.p>
             <motion.p
               className="text-muted-foreground text-lg text-pretty"
@@ -1766,9 +1771,7 @@ function AboutSection() {
               animate={isInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.8 }}
             >
-              Today, we partner with startups, scale-ups, and enterprises to build digital solutions that not only meet
-              current needs but anticipate future challenges. Our approach combines cutting-edge technology with
-              human-centered design to create products that users love and businesses depend on.
+              Today, we operate as both product builders and strategic partners. Our portfolio gives us real market insights, while our client work keeps us sharp and innovative. This dual perspective means we understand what actually works—not just what looks good in a presentation.
             </motion.p>
           </div>
 
@@ -1904,7 +1907,8 @@ function AboutSection() {
           ))}
         </motion.div>
 
-        {/* Team section */}
+        {/* Team section - Commented out for now as I'm working alone */}
+        {/* 
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -1943,8 +1947,10 @@ function AboutSection() {
             <AnimatedAvatar key={member.name} name={member.name} role={member.role} index={index} />
           ))}
         </div>
+        */}
 
-        {/* Call to action */}
+        {/* Call to action - Commented out for now */}
+        {/*
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -1970,7 +1976,7 @@ function AboutSection() {
             <span className="relative z-10">Join Our Team</span>
           </motion.button>
         </motion.div>
-      </div>
+        */}
 
       {/* Animated background elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -1996,6 +2002,7 @@ function AboutSection() {
             }}
           />
         ))}
+      </div>
       </div>
     </section>
   )
