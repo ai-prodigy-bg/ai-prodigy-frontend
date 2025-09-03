@@ -1,0 +1,193 @@
+{
+  "brand": {
+    "name": "Prodigy Labs"
+  },
+  "navigation": {
+    "projects": "Projects",
+    "services": "Services",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": {
+      "line1": "Premium",
+      "line2": "Digital Products", 
+      "line3": "Powered by AI"
+    },
+    "subtitle": "Leveraging AI to build faster, smarter, and more cost-effectively for both our clients and our portfolio.",
+    "ctaStart": "Get Started",
+    "ctaPortfolio": "What We've Built"
+  },
+  "projects": {
+    "title": "Our Portfolio",
+    "subtitle": "Explore our digital assets and client success stories that showcase innovation and excellence.",
+    "digitalAssets": "Our Digital Assets",
+    "clientSuccessStories": "Client Success Stories",
+    "visitLink": "Click to visit",
+    "portfolio": {
+      "mrimot": {
+        "category": "Real Estate Platform",
+        "description": "Advanced real estate platform connecting buyers with verified developers. Interactive map search for off-plan and new construction projects."
+      },
+      "teramedbio": {
+        "category": "Healthcare Website",
+        "description": "High-converting wellness website that scaled to 20,000+ monthly organic visitors. Advanced booking integration and lightning-fast 2-day delivery."
+      }
+    }
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "From concept to deployment, we offer comprehensive digital solutions that transform your vision into reality.",
+    "categories": {
+      "apps": "Apps",
+      "websites": "Websites",
+      "consulting": "Services"
+    },
+    "apps": {
+      "mobile": {
+        "title": "Mobile Applications",
+        "description": "Native iOS and Android apps with cutting-edge features and seamless user experiences.",
+        "features": [
+          "Cross-platform development",
+          "Real-time synchronization", 
+          "Advanced analytics"
+        ]
+      },
+      "web": {
+        "title": "Web Applications",
+        "description": "Progressive web apps that deliver native-like experiences across all devices.",
+        "features": [
+          "Offline functionality",
+          "Push notifications",
+          "App store deployment"
+        ]
+      },
+      "desktop": {
+        "title": "Desktop Applications",
+        "description": "Cross-platform desktop solutions with native performance and modern interfaces.",
+        "features": [
+          "Multi-platform support",
+          "Native integrations",
+          "Auto-updates"
+        ]
+      }
+    },
+    "websites": {
+      "corporate": {
+        "title": "Corporate Websites",
+        "description": "Professional websites that establish credibility and drive business growth.",
+        "features": [
+          "SEO optimization",
+          "Content management",
+          "Analytics integration"
+        ]
+      },
+      "ecommerce": {
+        "title": "E-commerce Platforms",
+        "description": "Scalable online stores with advanced features and seamless checkout experiences.",
+        "features": [
+          "Payment integration",
+          "Inventory management",
+          "Customer analytics"
+        ]
+      },
+      "portfolio": {
+        "title": "Portfolio Websites",
+        "description": "Stunning portfolios that showcase your work and attract ideal clients.",
+        "features": [
+          "Interactive galleries",
+          "Contact forms",
+          "Social integration"
+        ]
+      }
+    },
+    "consulting": {
+      "strategy": {
+        "title": "Digital Strategy",
+        "description": "Comprehensive digital transformation strategies tailored to your business goals.",
+        "features": [
+          "Market analysis",
+          "Technology roadmap",
+          "ROI optimization"
+        ]
+      },
+      "design": {
+        "title": "UI/UX Design", 
+        "description": "User-centered design that creates intuitive and engaging digital experiences.",
+        "features": [
+          "User research",
+          "Prototyping",
+          "Usability testing"
+        ]
+      },
+      "technical": {
+        "title": "Technical Consulting",
+        "description": "Expert guidance on technology choices, architecture, and implementation strategies.",
+        "features": [
+          "Architecture review",
+          "Performance optimization",
+          "Security audit"
+        ]
+      }
+    }
+  },
+  "about": {
+    "title": "About Prodigy Labs",
+    "subtitle": "Speed and value drive everything we do. We leverage AI to build exceptional digital products faster and more affordably, turning ambitious ideas into reality without the traditional agency overhead.",
+    "story": {
+      "title": "Our Story",
+      "paragraphs": [
+        "Founded in 2025, Prodigy Labs started with a focused mission: build and acquire profitable digital assets. We were product builders first, creating our own platforms and scaling them in competitive markets.",
+        "But something unexpected happened. As we developed our portfolio, other entrepreneurs and businesses took notice. They wanted to know how we built products so efficiently and scaled them so quickly. Word spread, and soon we found ourselves fielding requests to build custom solutions for others.",
+        "That's when we realized we had something special—a lean, technology-first approach that delivers results without the bloat of traditional agencies. We use the same AI-powered workflows and rapid development methods for client projects that we use for our own successful ventures.",
+        "Today, we operate as both product builders and strategic partners. Our portfolio gives us real market insights, while our client work keeps us sharp and innovative. This dual perspective means we understand what actually works—not just what looks good in a presentation."
+      ]
+    },
+    "stats": {
+      "projects": "Projects Completed",
+      "clients": "Happy Clients", 
+      "experience": "Years Experience",
+      "successRate": "Success Rate"
+    }
+  },
+  "contact": {
+    "title": "Let's Create Something<br/>Extraordinary",
+    "subtitle": "Ready to transform your vision into reality? Let's discuss your next groundbreaking project.",
+    "form": {
+      "name": "Your Name",
+      "email": "Your Email", 
+      "projectType": "Select Project Type",
+      "message": "Tell us about your project...",
+      "submit": "Send Message",
+      "projectTypes": {
+        "select": "Select Project Type",
+        "web": "Web Application",
+        "mobile": "Mobile App",
+        "website": "Website",
+        "ecommerce": "E-commerce",
+        "other": "Other"
+      }
+    },
+    "info": {
+      "title": "Get in Touch",
+      "subtitle": "Ready to bring your vision to life? We're here to help you create something extraordinary.",
+      "email": "hello@prodigylabs.com",
+      "phone": "+359 899 520 856",
+      "location": "Plovdiv, Bulgaria",
+      "labels": {
+        "email": "Email",
+        "phone": "Phone",
+        "location": "Location"
+      }
+    },
+    "social": {
+      "title": "Follow Us",
+      "platforms": {
+        "twitter": "Twitter",
+        "linkedin": "LinkedIn",
+        "github": "GitHub",
+        "dribbble": "Dribbble"
+      }
+    }
+  }
+}

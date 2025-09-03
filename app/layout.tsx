@@ -6,6 +6,7 @@ import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { Suspense } from "react"
+import LanguageDetector from "../components/LanguageDetector"
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -42,7 +43,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
+      <head>
+        <link rel="alternate" hrefLang="en" href="https://localhost:3000/" />
+        <link rel="alternate" hrefLang="bg" href="https://localhost:3000/bg" />
+        <link rel="alternate" hrefLang="x-default" href="https://localhost:3000/" />
+      </head>
       <body className={`font-sans antialiased ${spaceGrotesk.variable} ${dmSans.variable} ${GeistMono.variable}`}>
+        <LanguageDetector />
         <Suspense fallback={null}>{children}</Suspense>
         <Analytics />
       </body>

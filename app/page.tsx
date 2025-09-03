@@ -5,6 +5,8 @@ import type React from "react"
 import { useEffect, useRef, useState } from "react"
 import { motion, useInView, useScroll, AnimatePresence } from "framer-motion"
 import { DotGrid, NeuroNoise } from "@paper-design/shaders-react"
+import { useTranslation } from "../lib/translations"
+import LanguageSwitcher from "../components/LanguageSwitcher"
 // ImageKit transformation utilities
 const IMAGEKIT_URL_ENDPOINT = "https://ik.imagekit.io/ts59gf2ul"
 
@@ -124,6 +126,7 @@ function ScrollProgress() {
 
 function LoadingScreen() {
   const [isLoading, setIsLoading] = useState(true)
+  const { t } = useTranslation()
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -152,7 +155,7 @@ function LoadingScreen() {
           }}
           transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
         >
-          Prodigy Labs
+          {t('brand.name')}
         </motion.div>
 
         <motion.div
@@ -362,6 +365,14 @@ function ShaderBackground() {
 
 function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const { t } = useTranslation()
+
+  const menuItems = [
+    { key: 'projects', label: t('navigation.projects') },
+    { key: 'services', label: t('navigation.services') },
+    { key: 'about', label: t('navigation.about') },
+    { key: 'contact', label: t('navigation.contact') }
+  ]
 
   return (
     <motion.nav
@@ -376,14 +387,14 @@ function Navigation() {
             className="font-heading font-bold text-xl md:text-2xl text-primary drop-shadow-lg"
             data-magnetic
           >
-            Prodigy Labs
+            {t('brand.name')}
           </motion.div>
 
-          <div className="hidden md:flex gap-4 lg:gap-8">
-            {["Projects", "Services", "About", "Contact"].map((item, index) => (
+          <div className="hidden md:flex items-center gap-4 lg:gap-8">
+            {menuItems.map((item, index) => (
               <motion.a
-                key={item}
-                href={`#${item.toLowerCase()}`}
+                key={item.key}
+                href={`#${item.key}`}
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: index * 0.1 + 0.5 }}
@@ -395,7 +406,7 @@ function Navigation() {
                 className="text-sm lg:text-base text-foreground hover:text-primary transition-colors cursor-pointer relative font-medium drop-shadow-sm"
                 data-magnetic
               >
-                {item}
+                {item.label}
                 <motion.div
                   className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary origin-left"
                   initial={{ scaleX: 0 }}
@@ -404,6 +415,8 @@ function Navigation() {
                 />
               </motion.a>
             ))}
+            
+            <LanguageSwitcher />
           </div>
 
           <motion.button
@@ -433,10 +446,10 @@ function Navigation() {
               className="md:hidden border-t border-border/20 bg-background/95 backdrop-blur-md rounded-b-2xl"
             >
               <div className="px-6 py-4 space-y-4">
-                {["Projects", "Services", "About", "Contact"].map((item, index) => (
+                {menuItems.map((item, index) => (
                   <motion.a
-                    key={item}
-                    href={`#${item.toLowerCase()}`}
+                    key={item.key}
+                    href={`#${item.key}`}
                     initial={{ x: -20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ delay: index * 0.1 }}
@@ -444,7 +457,7 @@ function Navigation() {
                       setIsMobileMenuOpen(false)
                       // Small delay to ensure menu closes before scrolling
                       setTimeout(() => {
-                        const element = document.querySelector(`#${item.toLowerCase()}`)
+                        const element = document.querySelector(`#${item.key}`)
                         if (element) {
                           element.scrollIntoView({
                             behavior: "smooth",
@@ -455,9 +468,12 @@ function Navigation() {
                     }}
                     className="block text-foreground hover:text-primary transition-colors py-2 font-medium"
                   >
-                    {item}
+                    {item.label}
                   </motion.a>
                 ))}
+                <div className="pt-4 border-t border-border/20">
+                  <LanguageSwitcher />
+                </div>
               </div>
             </motion.div>
           )}
@@ -652,6 +668,7 @@ function ProjectCard({
                 className="text-sm text-muted-foreground"
                 animate={isHovering ? { opacity: 1 } : { opacity: 0.7 }}
               >
+                {/* We'll add translation later */}
                 Click to visit
               </motion.span>
               <motion.svg
@@ -674,12 +691,13 @@ function ProjectCard({
 function ProjectsSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" })
+  const { t } = useTranslation()
 
   const digitalAssets = [
     {
       title: "Mr imot",
-      description: "Advanced real estate platform connecting buyers with verified developers. Interactive map search for off-plan and new construction projects.",
-      category: "Real Estate Platform",
+      description: t('projects.portfolio.mrimot.description'),
+      category: t('projects.portfolio.mrimot.category'),
       image: "/prodigy corp/288shots_so.png",
       url: "https://www.mrimot.com/",
     },
@@ -688,8 +706,8 @@ function ProjectsSection() {
   const clientSuccessStories = [
     {
       title: "teramedbio",
-      description: "High-converting wellness website that scaled to 20,000+ monthly organic visitors. Advanced booking integration and lightning-fast 2-day delivery.",
-      category: "Healthcare Website",
+      description: t('projects.portfolio.teramedbio.description'),
+      category: t('projects.portfolio.teramedbio.category'),
       image: "/prodigy corp/88shots_so.png",
       url: "https://teramedbio.com/",
     },
@@ -726,7 +744,7 @@ function ProjectsSection() {
               color: "transparent",
             }}
           >
-            Our Portfolio
+            {t('projects.title')}
           </motion.h2>
 
           <motion.p
@@ -735,7 +753,7 @@ function ProjectsSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto text-pretty px-4"
           >
-            Explore our digital assets and client success stories that showcase innovation and excellence.
+            {t('projects.subtitle')}
           </motion.p>
         </motion.div>
 
@@ -747,7 +765,7 @@ function ProjectsSection() {
           className="mb-20"
         >
           <h3 className="font-heading font-bold text-2xl md:text-3xl mb-8 text-center">
-            Our Digital Assets
+            {t('projects.digitalAssets')}
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
             {digitalAssets.map((project, index) => (
@@ -771,7 +789,7 @@ function ProjectsSection() {
           transition={{ duration: 0.8, delay: 0.6 }}
         >
           <h3 className="font-heading font-bold text-2xl md:text-3xl mb-8 text-center">
-            Client Success Stories
+            {t('projects.clientSuccessStories')}
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
             {clientSuccessStories.map((project, index) => (
@@ -2021,6 +2039,8 @@ function AboutSection() {
 }
 
 export default function HomePage() {
+  const { t } = useTranslation()
+  
   return (
     <main className="min-h-screen relative overflow-hidden md:cursor-none cursor-auto">
       <LoadingScreen />
@@ -2054,7 +2074,7 @@ export default function HomePage() {
               transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
               className="font-heading font-bold text-4xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-9xl mb-6 md:mb-8 text-balance"
             >
-              Premium<br/>
+{t('hero.title.line1')}<br/>
               <motion.span
                 animate={{
                   color: ["oklch(0.65 0.25 285)", "oklch(0.7 0.25 340)", "oklch(0.6 0.2 160)", "oklch(0.65 0.25 285)"],
@@ -2068,9 +2088,9 @@ export default function HomePage() {
                 transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
                 className="text-primary"
               >
-                Digital Products
+                {t('hero.title.line2')}
               </motion.span><br/>
-              Powered by AI
+              {t('hero.title.line3')}
             </motion.h1>
           </motion.div>
 
@@ -2081,7 +2101,7 @@ export default function HomePage() {
             className="text-lg md:text-xl lg:text-2xl text-muted-foreground mb-8 md:mb-12 max-w-3xl mx-auto text-pretty px-4"
           >
             <MixedTypographyText>
-              Leveraging AI to build faster, smarter, and more cost-effectively for both our clients and our portfolio.
+              {t('hero.subtitle')}
             </MixedTypographyText>
           </motion.div>
 
@@ -2113,7 +2133,7 @@ export default function HomePage() {
                 whileHover={{ x: "100%" }}
                 transition={{ duration: 0.6 }}
               />
-              <span className="relative z-10">Get Started</span>
+              <span className="relative z-10">{t('hero.ctaStart')}</span>
             </motion.button>
 
             <motion.button
@@ -2139,7 +2159,7 @@ export default function HomePage() {
                 whileHover={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.3 }}
               />
-              <span className="relative z-10">What We've Built</span>
+              <span className="relative z-10">{t('hero.ctaPortfolio')}</span>
             </motion.button>
           </motion.div>
 
