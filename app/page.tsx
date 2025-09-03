@@ -2022,14 +2022,20 @@ function AboutSection() {
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen relative overflow-hidden cursor-none">
+    <main className="min-h-screen relative overflow-hidden md:cursor-none cursor-auto">
       <LoadingScreen />
       <ScrollProgress />
-      <LiquidCursor />
+      {/* Liquid Cursor - Desktop only */}
+      <div className="hidden md:block">
+        <LiquidCursor />
+      </div>
       <ShaderBackground />
       <Navigation />
       <SmoothScroll />
-      <MagneticElements />
+      {/* Magnetic Elements - Desktop only */}
+      <div className="hidden md:block">
+        <MagneticElements />
+      </div>
       <FloatingActionButton />
 
       {/* Enhanced Hero Section */}
