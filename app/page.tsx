@@ -5,6 +5,25 @@ import type React from "react"
 import { useEffect, useRef, useState } from "react"
 import { motion, useInView, useScroll, AnimatePresence } from "framer-motion"
 import { DotGrid, NeuroNoise } from "@paper-design/shaders-react"
+// ImageKit transformation utilities
+const IMAGEKIT_URL_ENDPOINT = "https://ik.imagekit.io/ts59gf2ul"
+
+function buildImageKitUrl(src: string, transformations: string[]): string {
+  if (!src || src.startsWith('/placeholder')) return src
+  const transformationString = transformations.join(',')
+  return `${IMAGEKIT_URL_ENDPOINT}/tr:${transformationString}${src}`
+}
+
+// Responsive image transformations for different screen sizes
+function getResponsiveImageTransformations(): string[] {
+  return [
+    "w-400", // Set width to 400px
+    "h-auto", // Let height adjust automatically to maintain aspect ratio
+    "q-90", // High quality (90%)
+    "f-auto", // Auto format (WebP when supported)
+    "cm-maintain_ratio" // Maintain original aspect ratio without padding
+  ]
+}
 
 function LiquidCursor() {
   const cursorRef = useRef<HTMLDivElement>(null)
@@ -565,7 +584,7 @@ function ProjectCard({
         <div className="relative z-10 flex flex-col h-full">
           {/* Category badge */}
           <motion.span
-            className="inline-block w-fit px-3 sm:px-4 py-1.5 bg-primary/20 text-primary text-sm sm:text-base font-medium rounded-full mb-3 sm:mb-4 md:mb-5"
+            className="inline-block w-fit px-2 sm:px-3 py-1 bg-primary/20 text-primary text-xs sm:text-sm font-medium rounded-full mb-3 sm:mb-4"
             animate={isHovering ? { scale: 1.05 } : { scale: 1 }}
           >
             {category}
@@ -585,7 +604,12 @@ function ProjectCard({
             transition={{ duration: 0.3 }}
             style={{ transform: `translateZ(20px)` }}
           >
-            <img src={image || "/placeholder.svg"} alt={title} className="w-full h-36 sm:h-40 md:h-44 object-cover" />
+            <img
+              src={buildImageKitUrl(image || "/placeholder.svg", getResponsiveImageTransformations())}
+              alt={title}
+              className="w-full h-auto object-cover rounded-t-lg"
+              loading="lazy"
+            />
             <motion.div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </motion.div>
 
@@ -644,7 +668,7 @@ function ProjectsSection() {
       title: "Mr imot",
       description: "Advanced real estate platform connecting buyers with verified developers. Interactive map search for off-plan and new construction projects.",
       category: "Real Estate Platform",
-      image: "https://ik.imagekit.io/ts59gf2ul/prodigy%20corp/288shots_so.png?updatedAt=1756916353221",
+      image: "/prodigy corp/288shots_so.png",
       url: "https://www.mrimot.com/",
     },
   ]
@@ -654,7 +678,7 @@ function ProjectsSection() {
       title: "teramedbio",
       description: "High-converting wellness website that scaled to 20,000+ monthly organic visitors. Advanced booking integration and lightning-fast 2-day delivery.",
       category: "Healthcare Website",
-      image: "https://ik.imagekit.io/ts59gf2ul/prodigy%20corp/88shots_so.png?updatedAt=1756917461839",
+      image: "/prodigy corp/88shots_so.png",
       url: "https://teramedbio.com/",
     },
   ]
