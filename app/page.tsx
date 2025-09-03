@@ -1991,7 +1991,7 @@ export default function HomePage() {
               transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
               className="font-heading font-bold text-4xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-9xl mb-6 md:mb-8 text-balance"
             >
-              We Build{" "}
+              Premium<br/>
               <motion.span
                 animate={{
                   color: ["oklch(0.65 0.25 285)", "oklch(0.7 0.25 340)", "oklch(0.6 0.2 160)", "oklch(0.65 0.25 285)"],
@@ -2005,9 +2005,9 @@ export default function HomePage() {
                 transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
                 className="text-primary"
               >
-                Bold
-              </motion.span>{" "}
-              Digital Experiences
+                Digital Products
+              </motion.span><br/>
+              Powered by AI
             </motion.h1>
           </motion.div>
 
@@ -2018,8 +2018,7 @@ export default function HomePage() {
             className="text-lg md:text-xl lg:text-2xl text-muted-foreground mb-8 md:mb-12 max-w-3xl mx-auto text-pretty px-4"
           >
             <MixedTypographyText>
-              Premium apps websites and digital services that push boundaries We transform ideas into cutting-edge
-              solutions that captivate and convert
+              Leveraging AI to build faster, smarter, and more cost-effectively for both our clients and our portfolio.
             </MixedTypographyText>
           </motion.div>
 
@@ -2036,6 +2035,12 @@ export default function HomePage() {
                 y: -5,
               }}
               whileTap={{ scale: 0.95, transition: { type: "spring", stiffness: 400, damping: 10 } }}
+              onClick={() => {
+                const contactSection = document.getElementById("contact")
+                if (contactSection) {
+                  contactSection.scrollIntoView({ behavior: "smooth" })
+                }
+              }}
               className="w-full sm:w-auto bg-primary text-primary-foreground px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold text-base md:text-lg hover:bg-primary/90 transition-all duration-300 animate-glow relative overflow-hidden min-h-[48px]"
               data-magnetic
             >
@@ -2045,7 +2050,7 @@ export default function HomePage() {
                 whileHover={{ x: "100%" }}
                 transition={{ duration: 0.6 }}
               />
-              <span className="relative z-10">View Our Work</span>
+              <span className="relative z-10">Get Started</span>
             </motion.button>
 
             <motion.button
@@ -2056,6 +2061,12 @@ export default function HomePage() {
                 y: -5,
               }}
               whileTap={{ scale: 0.95, transition: { type: "spring", stiffness: 400, damping: 10 } }}
+              onClick={() => {
+                const projectsSection = document.getElementById("projects")
+                if (projectsSection) {
+                  projectsSection.scrollIntoView({ behavior: "smooth" })
+                }
+              }}
               className="w-full sm:w-auto border-2 border-muted text-foreground px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold text-base md:text-lg hover:border-primary transition-all duration-300 relative overflow-hidden min-h-[48px]"
               data-magnetic
             >
@@ -2065,7 +2076,7 @@ export default function HomePage() {
                 whileHover={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.3 }}
               />
-              <span className="relative z-10">Start a Project</span>
+              <span className="relative z-10">What We've Built</span>
             </motion.button>
           </motion.div>
 
