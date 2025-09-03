@@ -440,7 +440,19 @@ function Navigation() {
                     initial={{ x: -20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ delay: index * 0.1 }}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={(e) => {
+                      setIsMobileMenuOpen(false)
+                      // Small delay to ensure menu closes before scrolling
+                      setTimeout(() => {
+                        const element = document.querySelector(`#${item.toLowerCase()}`)
+                        if (element) {
+                          element.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
+                          })
+                        }
+                      }, 300)
+                    }}
                     className="block text-foreground hover:text-primary transition-colors py-2 font-medium"
                   >
                     {item}
@@ -2416,10 +2428,10 @@ function ContactSection() {
             </div>
 
             <div className="space-y-6">
-              {[
+              {              [
                 { icon: "📧", label: "Email", value: "hello@prodigylabs.com", href: "mailto:hello@prodigylabs.com" },
-                { icon: "📱", label: "Phone", value: "+1 (555) 123-4567", href: "tel:+15551234567" },
-                { icon: "📍", label: "Location", value: "San Francisco, CA", href: "#" },
+                { icon: "📱", label: "Phone", value: "+359 899 520 856", href: "tel:+359899520856" },
+                { icon: "📍", label: "Location", value: "Plovdiv, Bulgaria", href: "#" },
               ].map((contact, index) => (
                 <motion.a
                   key={contact.label}
