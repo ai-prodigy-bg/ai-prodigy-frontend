@@ -528,7 +528,7 @@ function ProjectCard({
         }
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         style={{ transformStyle: "preserve-3d" }}
-        className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-6 sm:p-8 md:p-10 relative overflow-hidden h-[450px] sm:h-[480px] md:h-[520px] flex flex-col cursor-pointer"
+        className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-6 sm:p-8 md:p-10 relative overflow-hidden min-h-[450px] sm:min-h-[480px] md:min-h-[520px] flex flex-col cursor-pointer"
         onClick={() => url && window.open(url, '_blank')}
       >
         {/* Floating animation when idle */}
@@ -573,7 +573,7 @@ function ProjectCard({
 
           {/* Project image */}
           <motion.div
-            className="relative mb-4 sm:mb-5 md:mb-6 rounded-xl overflow-hidden bg-muted/50 flex-shrink-0"
+            className="relative mb-4 sm:mb-5 md:mb-5 rounded-xl overflow-hidden bg-muted/50 flex-shrink-0"
             animate={
               isHovering
                 ? {
@@ -585,7 +585,7 @@ function ProjectCard({
             transition={{ duration: 0.3 }}
             style={{ transform: `translateZ(20px)` }}
           >
-            <img src={image || "/placeholder.svg"} alt={title} className="w-full h-40 sm:h-48 md:h-56 object-cover" />
+            <img src={image || "/placeholder.svg"} alt={title} className="w-full h-36 sm:h-40 md:h-44 object-cover" />
             <motion.div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </motion.div>
 
@@ -600,7 +600,7 @@ function ProjectCard({
             </motion.h3>
 
             <motion.p
-              className="text-muted-foreground text-sm sm:text-base md:text-lg leading-relaxed flex-grow mb-4 sm:mb-5"
+              className="text-muted-foreground text-sm sm:text-base md:text-base leading-normal flex-grow mb-4 sm:mb-5"
               style={{ transform: `translateZ(20px)` }}
             >
               {description}
@@ -608,12 +608,12 @@ function ProjectCard({
 
             {/* Hover indicator */}
             <motion.div
-              className="mt-auto pt-2 flex items-center justify-between"
+              className="mt-auto pt-3 flex items-center justify-between"
               animate={isHovering ? { y: -3 } : { y: 0 }}
               style={{ transform: `translateZ(40px)` }}
             >
               <motion.span
-                className="text-sm sm:text-base text-muted-foreground"
+                className="text-sm text-muted-foreground"
                 animate={isHovering ? { opacity: 1 } : { opacity: 0.7 }}
               >
                 Click to visit
@@ -642,7 +642,7 @@ function ProjectsSection() {
   const digitalAssets = [
     {
       title: "Mr imot",
-      description: "Premium real estate platform connecting buyers directly with verified developers. Features interactive map search and comprehensive listings of off-plan and new construction projects.",
+      description: "Advanced real estate platform connecting buyers with verified developers. Interactive map search for off-plan and new construction projects.",
       category: "Real Estate Platform",
       image: "https://ik.imagekit.io/ts59gf2ul/prodigy%20corp/288shots_so.png?updatedAt=1756916353221",
       url: "https://www.mrimot.com/",
