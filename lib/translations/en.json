@@ -143,9 +143,35 @@
         "Today, we operate as both product builders and strategic partners. Our portfolio gives us real market insights, while our client work keeps us sharp and innovative. This dual perspective means we understand what actually works—not just what looks good in a presentation."
       ]
     },
+    "team": {
+      "alex": {
+        "name": "Alex Chen",
+        "role": "Founder & CEO"
+      },
+      "sarah": {
+        "name": "Sarah Kim",
+        "role": "Lead Designer"
+      },
+      "marcus": {
+        "name": "Marcus Johnson",
+        "role": "Tech Director"
+      },
+      "elena": {
+        "name": "Elena Rodriguez",
+        "role": "Product Manager"
+      },
+      "david": {
+        "name": "David Park",
+        "role": "Full-Stack Developer"
+      },
+      "maya": {
+        "name": "Maya Patel",
+        "role": "AI Specialist"
+      }
+    },
     "stats": {
       "projects": "Projects Completed",
-      "clients": "Happy Clients", 
+      "clients": "Happy Clients",
       "experience": "Years Experience",
       "successRate": "Success Rate"
     }

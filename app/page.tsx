@@ -1063,6 +1063,7 @@ function ServicesSection() {
   const [activeService, setActiveService] = useState("Apps")
   const [isInView, setIsInView] = useState(false)
   const sectionRef = useRef<HTMLDivElement>(null)
+  const { t, tArray } = useTranslation()
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => setIsInView(entry.isIntersecting), { threshold: 0.3 })
@@ -1073,9 +1074,9 @@ function ServicesSection() {
   const services = {
     Apps: [
       {
-        title: "Mobile Applications",
-        description: "Native iOS and Android apps with cutting-edge features and seamless user experiences.",
-        features: ["Cross-platform development", "Real-time synchronization", "Advanced analytics"],
+        title: t('services.apps.mobile.title'),
+        description: t('services.apps.mobile.description'),
+        features: tArray('services.apps.mobile.features'),
         icon: (
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -1088,9 +1089,9 @@ function ServicesSection() {
         ),
       },
       {
-        title: "Web Applications",
-        description: "Progressive web apps that deliver native-like experiences across all devices.",
-        features: ["Offline functionality", "Push notifications", "App store deployment"],
+        title: t('services.apps.web.title'),
+        description: t('services.apps.web.description'),
+        features: tArray('services.apps.web.features'),
         icon: (
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -1103,9 +1104,9 @@ function ServicesSection() {
         ),
       },
       {
-        title: "Desktop Applications",
-        description: "Cross-platform desktop solutions with native performance and modern interfaces.",
-        features: ["Multi-platform support", "Native integrations", "Auto-updates"],
+        title: t('services.apps.desktop.title'),
+        description: t('services.apps.desktop.description'),
+        features: tArray('services.apps.desktop.features'),
         icon: (
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -1120,9 +1121,9 @@ function ServicesSection() {
     ],
     Websites: [
       {
-        title: "Corporate Websites",
-        description: "Professional websites that establish credibility and drive business growth.",
-        features: ["SEO optimization", "Content management", "Analytics integration"],
+        title: t('services.websites.corporate.title'),
+        description: t('services.websites.corporate.description'),
+        features: tArray('services.websites.corporate.features'),
         icon: (
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -1135,9 +1136,9 @@ function ServicesSection() {
         ),
       },
       {
-        title: "E-commerce Platforms",
-        description: "Scalable online stores with advanced features and seamless checkout experiences.",
-        features: ["Payment integration", "Inventory management", "Customer analytics"],
+        title: t('services.websites.ecommerce.title'),
+        description: t('services.websites.ecommerce.description'),
+        features: tArray('services.websites.ecommerce.features'),
         icon: (
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -1150,9 +1151,9 @@ function ServicesSection() {
         ),
       },
       {
-        title: "Portfolio Websites",
-        description: "Stunning portfolios that showcase your work and attract ideal clients.",
-        features: ["Interactive galleries", "Contact forms", "Social integration"],
+        title: t('services.websites.portfolio.title'),
+        description: t('services.websites.portfolio.description'),
+        features: tArray('services.websites.portfolio.features'),
         icon: (
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -1167,9 +1168,9 @@ function ServicesSection() {
     ],
     Services: [
       {
-        title: "Digital Strategy",
-        description: "Comprehensive digital transformation strategies tailored to your business goals.",
-        features: ["Market analysis", "Technology roadmap", "ROI optimization"],
+        title: t('services.consulting.strategy.title'),
+        description: t('services.consulting.strategy.description'),
+        features: tArray('services.consulting.strategy.features'),
         icon: (
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -1182,9 +1183,9 @@ function ServicesSection() {
         ),
       },
       {
-        title: "UI/UX Design",
-        description: "User-centered design that creates intuitive and engaging digital experiences.",
-        features: ["User research", "Prototyping", "Usability testing"],
+        title: t('services.consulting.design.title'),
+        description: t('services.consulting.design.description'),
+        features: tArray('services.consulting.design.features'),
         icon: (
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -1197,9 +1198,9 @@ function ServicesSection() {
         ),
       },
       {
-        title: "Technical Consulting",
-        description: "Expert guidance on technology choices, architecture, and implementation strategies.",
-        features: ["Architecture review", "Performance optimization", "Security audit"],
+        title: t('services.consulting.technical.title'),
+        description: t('services.consulting.technical.description'),
+        features: tArray('services.consulting.technical.features'),
         icon: (
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -1262,7 +1263,7 @@ function ServicesSection() {
               color: "transparent",
             }}
           >
-            Our Services
+{t('services.title')}
           </motion.h2>
 
           <motion.p
@@ -1271,8 +1272,7 @@ function ServicesSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto text-pretty"
           >
-            From concept to deployment, we offer comprehensive digital solutions that transform your vision into
-            reality.
+{t('services.subtitle')}
           </motion.p>
         </motion.div>
 
@@ -1701,21 +1701,24 @@ function StatCounter({
 function AboutSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" })
+  const { t, tArray } = useTranslation()
 
-  const teamMembers = [
-    { name: "Alex Chen", role: "Founder & CEO" },
-    { name: "Sarah Kim", role: "Lead Designer" },
-    { name: "Marcus Johnson", role: "Tech Director" },
-    { name: "Elena Rodriguez", role: "Product Manager" },
-    { name: "David Park", role: "Full-Stack Developer" },
-    { name: "Maya Patel", role: "AI Specialist" },
-  ]
+  // const teamMembers = [
+  //   { name: t('about.team.alex.name'), role: t('about.team.alex.role') },
+  //   { name: t('about.team.sarah.name'), role: t('about.team.sarah.role') },
+  //   { name: t('about.team.marcus.name'), role: t('about.team.marcus.role') },
+  //   { name: t('about.team.elena.name'), role: t('about.team.elena.role') },
+  //   { name: t('about.team.david.name'), role: t('about.team.david.role') },
+  //   { name: t('about.team.maya.name'), role: t('about.team.maya.role') },
+  // ]
+
+  const storyParagraphs = tArray('about.story.paragraphs')
 
   const stats = [
-    { value: 2, label: "Projects Completed", suffix: "+" },
-    { value: 1, label: "Happy Clients", suffix: "+" },
-    { value: 1, label: "Years Experience", suffix: "+" },
-    { value: 100, label: "Success Rate", suffix: "%" },
+    { value: 2, label: t('about.stats.projects'), suffix: "+" },
+    { value: 1, label: t('about.stats.clients'), suffix: "+" },
+    { value: 1, label: t('about.stats.experience'), suffix: "+" },
+    { value: 100, label: t('about.stats.successRate'), suffix: "%" },
   ]
 
   return (
@@ -1749,7 +1752,7 @@ function AboutSection() {
               color: "transparent",
             }}
           >
-            About Prodigy Labs
+{t('about.title')}
           </motion.h2>
 
           <motion.p
@@ -1758,7 +1761,7 @@ function AboutSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-xl text-muted-foreground max-w-4xl mx-auto text-pretty"
           >
-            Speed and value drive everything we do. We leverage AI to build exceptional digital products faster and more affordably, turning ambitious ideas into reality without the traditional agency overhead.
+{t('about.subtitle')}
           </motion.p>
         </motion.div>
 
@@ -1781,7 +1784,7 @@ function AboutSection() {
               }
               transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
             >
-              Our Story
+{t('about.story.title')}
             </motion.h3>
             <motion.p
               className="text-muted-foreground text-lg mb-6 text-pretty"
@@ -1789,11 +1792,11 @@ function AboutSection() {
               animate={isInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
-              Founded in 2025, Prodigy Labs started with a focused mission: build and acquire profitable digital assets. We were product builders first, creating our own platforms and scaling them in competitive markets.
+{storyParagraphs[0]}
               <br /><br />
-              But something unexpected happened. As we developed our portfolio, other entrepreneurs and businesses took notice. They wanted to know how we built products so efficiently and scaled them so quickly. Word spread, and soon we found ourselves fielding requests to build custom solutions for others.
+{storyParagraphs[1]}
               <br /><br />
-              That's when we realized we had something special—a lean, technology-first approach that delivers results without the bloat of traditional agencies. We use the same AI-powered workflows and rapid development methods for client projects that we use for our own successful ventures.
+{storyParagraphs[2]}
             </motion.p>
             <motion.p
               className="text-muted-foreground text-lg text-pretty"
@@ -1801,7 +1804,7 @@ function AboutSection() {
               animate={isInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.8 }}
             >
-              Today, we operate as both product builders and strategic partners. Our portfolio gives us real market insights, while our client work keeps us sharp and innovative. This dual perspective means we understand what actually works—not just what looks good in a presentation.
+{storyParagraphs[3]}
             </motion.p>
           </div>
 

@@ -44,6 +44,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
+        <meta charSet="UTF-8" />
         <link rel="alternate" hrefLang="en" href="https://localhost:3000/" />
         <link rel="alternate" hrefLang="bg" href="https://localhost:3000/bg" />
         <link rel="alternate" hrefLang="x-default" href="https://localhost:3000/" />
