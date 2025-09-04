@@ -2202,6 +2202,7 @@ export default function HomePage() {
 }
 
 function ContactSection() {
+  const { t } = useTranslation()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -2283,18 +2284,14 @@ function ContactSection() {
               color: "transparent",
             }}
           >
-            Let's Create Something
+            {t('contact.title').split('<br/>')[0]}
             <br />
-            <motion.span
-              animate={{ rotate: [0, 5, -5, 0] }}
-              transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-              className="inline-block"
-            >
-              Extraordinary
-            </motion.span>
+            <span>
+              {t('contact.title').split('<br/>')[1]}
+            </span>
           </motion.h2>
           <p className="text-xl md:text-xl text-muted-foreground max-w-2xl mx-auto text-pretty px-4">
-            Ready to transform your vision into reality? Let's discuss your next groundbreaking project.
+            {t('contact.subtitle')}
           </p>
         </motion.div>
 
@@ -2328,7 +2325,7 @@ function ContactSection() {
                     <motion.input
                       type="text"
                       name="name"
-                      placeholder="Your Name"
+                      placeholder={t('contact.form.name')}
                       value={formData.name}
                       onChange={handleInputChange}
                       className="w-full bg-background/50 border border-border/50 rounded-xl px-4 py-3 md:py-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 min-h-[48px]"
@@ -2350,7 +2347,7 @@ function ContactSection() {
                     <motion.input
                       type="email"
                       name="email"
-                      placeholder="Your Email"
+                      placeholder={t('contact.form.email')}
                       value={formData.email}
                       onChange={handleInputChange}
                       className="w-full bg-background/50 border border-border/50 rounded-xl px-4 py-3 md:py-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 min-h-[48px]"
@@ -2381,12 +2378,12 @@ function ContactSection() {
                     }}
                     data-magnetic
                   >
-                    <option value="">Select Project Type</option>
-                    <option value="web-app">Web Application</option>
-                    <option value="mobile-app">Mobile App</option>
-                    <option value="website">Website</option>
-                    <option value="ecommerce">E-commerce</option>
-                    <option value="other">Other</option>
+                    <option value="">{t('contact.form.projectTypes.select')}</option>
+                    <option value="web-app">{t('contact.form.projectTypes.web')}</option>
+                    <option value="mobile-app">{t('contact.form.projectTypes.mobile')}</option>
+                    <option value="website">{t('contact.form.projectTypes.website')}</option>
+                    <option value="ecommerce">{t('contact.form.projectTypes.ecommerce')}</option>
+                    <option value="other">{t('contact.form.projectTypes.other')}</option>
                   </motion.select>
                   <motion.div
                     className="absolute inset-0 rounded-xl border-2 border-primary/50 pointer-events-none"
@@ -2399,7 +2396,7 @@ function ContactSection() {
                 <motion.div whileHover={{ scale: 1.02 }} whileFocus={{ scale: 1.02 }} className="relative">
                   <motion.textarea
                     name="message"
-                    placeholder="Tell us about your project..."
+                    placeholder={t('contact.form.message')}
                     value={formData.message}
                     onChange={handleInputChange}
                     rows={5}
@@ -2435,7 +2432,7 @@ function ContactSection() {
                     whileHover={{ x: "100%" }}
                     transition={{ duration: 0.6 }}
                   />
-                  <span className="relative z-10">Send Message</span>
+                  <span className="relative z-10">{t('contact.form.submit')}</span>
                 </motion.button>
               </form>
             </div>
@@ -2450,17 +2447,17 @@ function ContactSection() {
             className="space-y-8"
           >
             <div>
-              <h3 className="font-heading font-bold text-3xl mb-6 text-foreground">Get in Touch</h3>
+              <h3 className="font-heading font-bold text-3xl mb-6 text-foreground">{t('contact.info.title')}</h3>
               <p className="text-lg text-muted-foreground mb-8 text-pretty">
-                Ready to bring your vision to life? We're here to help you create something extraordinary.
+                {t('contact.info.subtitle')}
               </p>
             </div>
 
             <div className="space-y-6">
               {              [
-                { icon: "📧", label: "Email", value: "hello@prodigylabs.com", href: "mailto:hello@prodigylabs.com" },
-                { icon: "📱", label: "Phone", value: "+359 899 520 856", href: "tel:+359899520856" },
-                { icon: "📍", label: "Location", value: "Plovdiv, Bulgaria", href: "#" },
+                { icon: "📧", label: t('contact.info.labels.email'), value: t('contact.info.email'), href: "mailto:hello@prodigylabs.com" },
+                { icon: "📱", label: t('contact.info.labels.phone'), value: t('contact.info.phone'), href: "tel:+359899520856" },
+                { icon: "📍", label: t('contact.info.labels.location'), value: t('contact.info.location'), href: "#" },
               ].map((contact, index) => (
                 <motion.a
                   key={contact.label}
@@ -2496,13 +2493,13 @@ function ContactSection() {
 
             {/* Social Media Links */}
             <div className="pt-8">
-              <h4 className="font-semibold text-lg mb-4 text-foreground">Follow Us</h4>
+              <h4 className="font-semibold text-lg mb-4 text-foreground">{t('contact.social.title')}</h4>
               <div className="flex gap-4">
                 {[
-                  { name: "Twitter", icon: "🐦", href: "#" },
-                  { name: "LinkedIn", icon: "💼", href: "#" },
-                  { name: "GitHub", icon: "🐙", href: "#" },
-                  { name: "Dribbble", icon: "🏀", href: "#" },
+                  { name: t('contact.social.platforms.twitter'), icon: "🐦", href: "#" },
+                  { name: t('contact.social.platforms.linkedin'), icon: "💼", href: "#" },
+                  { name: t('contact.social.platforms.github'), icon: "🐙", href: "#" },
+                  { name: t('contact.social.platforms.dribbble'), icon: "🏀", href: "#" },
                 ].map((social, index) => (
                   <motion.a
                     key={social.name}
