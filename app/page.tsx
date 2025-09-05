@@ -384,10 +384,28 @@ function Navigation() {
         <div className="flex justify-between items-center max-w-7xl mx-auto px-6 py-4">
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="font-heading font-bold text-xl md:text-2xl text-primary drop-shadow-lg"
+            className="flex items-center"
             data-magnetic
           >
-            {t('brand.name')}
+            <img
+              src={buildImageKitUrl("/prodigy%20corp/Logo/prodigy-corp-text-logo-nobg-cut.png", [
+                "w-326",
+                "q-90",
+                "f-auto",
+                "dpr-2",
+                "cm-maintain_ratio",
+                "bo-2_FFFFFF",
+              ])}
+              alt="Prodigy Corp"
+              className="h-8 md:h-10 w-auto"
+              style={{
+                filter:
+                  // White edge, then brand-purple outer glow layers
+                  "drop-shadow(0 0 2px rgba(255,255,255,0.5)) " +
+                  "drop-shadow(0 0 8px rgba(139,92,246,0.45)) " +
+                  "drop-shadow(0 0 18px rgba(139,92,246,0.25))",
+              }}
+            />
           </motion.div>
 
           <div className="hidden md:flex items-center gap-4 lg:gap-8">
