@@ -7,6 +7,7 @@ import { motion, useInView, useScroll, AnimatePresence } from "framer-motion"
 import { DotGrid, NeuroNoise } from "@paper-design/shaders-react"
 import { useTranslation } from "../lib/translations"
 import LanguageSwitcher from "../components/LanguageSwitcher"
+import LoadingCat from "../components/LoadingCat"
 // ImageKit transformation utilities
 const IMAGEKIT_URL_ENDPOINT = "https://ik.imagekit.io/ts59gf2ul"
 
@@ -131,7 +132,7 @@ function LoadingScreen() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false)
-    }, 2000)
+    }, 3000) // Increased to 3 seconds to show the cat properly
 
     return () => clearTimeout(timer)
   }, [])
@@ -142,45 +143,17 @@ function LoadingScreen() {
     <motion.div
       initial={{ opacity: 1 }}
       animate={{ opacity: 0 }}
-      transition={{ duration: 0.5, delay: 1.5 }}
+      transition={{ duration: 0.8, delay: 2.5 }}
       className="fixed inset-0 bg-background z-[100] flex items-center justify-center"
       onAnimationComplete={() => setIsLoading(false)}
     >
       <div className="text-center">
-        <motion.div
-          className="font-heading font-bold text-4xl md:text-6xl mb-8 text-primary"
-          animate={{
-            scale: [1, 1.1, 1],
-            opacity: [0.5, 1, 0.5],
-          }}
-          transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-        >
-          {t('brand.name')}
-        </motion.div>
-
-        <motion.div
-          className="flex justify-center gap-2"
-          animate={{
-            opacity: [0.3, 1, 0.3],
-          }}
-          transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY }}
-        >
-          {[...Array(3)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="w-3 h-3 bg-primary rounded-full"
-              animate={{
-                scale: [1, 1.5, 1],
-                opacity: [0.5, 1, 0.5],
-              }}
-              transition={{
-                duration: 1,
-                delay: i * 0.2,
-                repeat: Number.POSITIVE_INFINITY,
-              }}
-            />
-          ))}
-        </motion.div>
+        {/* Replace with LoadingCat component */}
+        <LoadingCat 
+          size="xl" 
+          message={t('brand.name')}
+          showMessage={true}
+        />
       </div>
     </motion.div>
   )

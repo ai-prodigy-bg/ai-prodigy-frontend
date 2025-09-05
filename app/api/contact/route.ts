@@ -44,7 +44,7 @@ const contactFormSchema = z.object({
     .trim(),
 })
 
-// Branded HTML email template using Prodigy Labs branding
+// Branded HTML email template using Prodigy Corp branding
 const createEmailTemplate = (formData: {
   name: string
   email: string
@@ -57,7 +57,7 @@ const createEmailTemplate = (formData: {
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>New Contact Form Submission - Prodigy Labs</title>
+      <title>New Contact Form Submission - Prodigy Corp</title>
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -237,7 +237,7 @@ const createEmailTemplate = (formData: {
     <body>
       <div class="container">
         <div class="header">
-          <div class="logo">PRODIGY LABS</div>
+          <div class="logo">PRODIGY CORP</div>
           <div class="tagline">Premium Digital Solutions</div>
         </div>
         
@@ -358,7 +358,7 @@ export async function POST(request: NextRequest) {
     
     // Text fallback for email clients that don't support HTML
     const textContent = `
-New Contact Form Submission - Prodigy Labs
+New Contact Form Submission - Prodigy Corp
 
 Name: ${validatedData.name}
 Email: ${validatedData.email}
@@ -372,7 +372,7 @@ Received: ${new Date().toISOString()}
 
     // Send email
     const mailOptions = {
-      from: `"Prodigy Labs Contact Form" <${process.env.EMAIL_FROM}>`,
+      from: `"Prodigy Corp Contact Form" <${process.env.EMAIL_FROM}>`,
       to: process.env.EMAIL_TO,
       replyTo: validatedData.email,
       subject: subject,

@@ -1,6 +1,6 @@
 # Email Setup Guide for Contact Form
 
-This guide explains how to set up the email functionality for the Prodigy Labs contact form.
+This guide explains how to set up the email functionality for the Prodigy Corp contact form.
 
 ## Quick Start
 

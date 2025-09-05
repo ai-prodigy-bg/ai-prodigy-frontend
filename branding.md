@@ -1,4 +1,4 @@
-# Prodigy Labs Branding Guide
+# Prodigy Corp Branding Guide
 
 ## Colors
 
