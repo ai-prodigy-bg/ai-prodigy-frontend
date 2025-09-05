@@ -127,6 +127,11 @@
     @apply bg-background text-foreground;
   }
 
+  /* Hide blinking text caret on non-editable elements (common v0 issue) */
+  :where(*):not(input):not(textarea):not([contenteditable="true"]) {
+    caret-color: transparent;
+  }
+
   /* Added custom utility classes for heading font */
   .font-heading {
     font-family: var(--font-heading);
