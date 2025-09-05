@@ -850,6 +850,8 @@ function ProjectsSection() {
           />
         ))}
       </div>
+
+      
     </section>
   )
 }
@@ -2215,6 +2217,137 @@ export default function HomePage() {
       <AboutSection />
 
       <ContactSection />
+
+      {/* Global Footer */}
+      <footer className="mt-6 border-t border-border/20">
+        <div className="max-w-7xl mx-auto px-6 py-4 pb-8">
+          {/* Mobile Layout: Social icons above copyright */}
+          <div className="flex flex-col md:hidden items-center gap-3">
+            {/* Follow Us Text + Social Icons */}
+            <div className="flex flex-col items-center gap-2">
+              <p className="text-base text-muted-foreground">{t('contact.social.followUs')}</p>
+              <div className="flex gap-3 justify-center">
+                {[
+                  { name: t('contact.social.platforms.twitter'), icon: "🐦", href: "#" },
+                  { name: t('contact.social.platforms.linkedin'), icon: "💼", href: "#" },
+                  { name: t('contact.social.platforms.github'), icon: "🐙", href: "#" },
+                  { name: t('contact.social.platforms.dribbble'), icon: "🏀", href: "#" },
+                ].map((social, index) => (
+                  <motion.a
+                    key={social.name}
+                    href={social.href}
+                    initial={{ opacity: 0, scale: 0 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                    whileHover={{
+                      scale: 1.12,
+                      boxShadow: "0 0 20px oklch(0.65 0.25 285 / 0.25)",
+                    }}
+                    className="w-12 h-12 bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl flex items-center justify-center text-xl hover:border-primary/50 hover:bg-primary/10 transition-all duration-300"
+                    data-magnetic
+                    aria-label={social.name}
+                  >
+                    {social.icon}
+                  </motion.a>
+                ))}
+              </div>
+            </div>
+
+            {/* Logo + Copyright */}
+            <div className="flex items-center gap-3 justify-center">
+              <img
+                src={buildImageKitUrl("/prodigy%20corp/Logo/prodigy-corp-logo-nobg-cut.png", [
+                  "w-96",
+                  "q-90",
+                  "f-auto",
+                  "dpr-2",
+                  "cm-maintain_ratio",
+                  "bo-2_FFFFFF",
+                ])}
+                alt=""
+                aria-hidden="true"
+                width={96}
+                height={96}
+                className="w-10 h-10"
+                style={{
+                  filter:
+                    "drop-shadow(0 0 2px rgba(255,255,255,0.5)) " +
+                    "drop-shadow(0 0 8px rgba(139,92,246,0.4)) " +
+                    "drop-shadow(0 0 16px rgba(139,92,246,0.22))",
+                }}
+                loading="lazy"
+              />
+              <p className="text-sm text-muted-foreground text-center">
+                © {new Date().getFullYear()} Prodigy Corp
+              </p>
+            </div>
+          </div>
+
+          {/* Desktop Layout: Copyright left, Socials right */}
+          <div className="hidden md:flex items-center justify-between">
+            {/* Left: Logo + Copyright */}
+            <div className="flex items-center gap-4">
+              <img
+                src={buildImageKitUrl("/prodigy%20corp/Logo/prodigy-corp-logo-nobg-cut.png", [
+                  "w-96",
+                  "q-90",
+                  "f-auto",
+                  "dpr-2",
+                  "cm-maintain_ratio",
+                  "bo-2_FFFFFF",
+                ])}
+                alt=""
+                aria-hidden="true"
+                width={96}
+                height={96}
+                className="w-12 h-12"
+                style={{
+                  filter:
+                    "drop-shadow(0 0 2px rgba(255,255,255,0.5)) " +
+                    "drop-shadow(0 0 8px rgba(139,92,246,0.4)) " +
+                    "drop-shadow(0 0 16px rgba(139,92,246,0.22))",
+                }}
+                loading="lazy"
+              />
+              <p className="text-base text-muted-foreground">
+                © {new Date().getFullYear()} Prodigy Corp
+              </p>
+            </div>
+
+            {/* Right: Follow Us + Social Icons */}
+            <div className="flex items-center gap-4">
+              <p className="text-base text-muted-foreground">{t('contact.social.followUs')}</p>
+              <div className="flex gap-3">
+                {[
+                  { name: t('contact.social.platforms.twitter'), icon: "🐦", href: "#" },
+                  { name: t('contact.social.platforms.linkedin'), icon: "💼", href: "#" },
+                  { name: t('contact.social.platforms.github'), icon: "🐙", href: "#" },
+                  { name: t('contact.social.platforms.dribbble'), icon: "🏀", href: "#" },
+                ].map((social, index) => (
+                  <motion.a
+                    key={social.name}
+                    href={social.href}
+                    initial={{ opacity: 0, scale: 0 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                    whileHover={{
+                      scale: 1.12,
+                      boxShadow: "0 0 20px oklch(0.65 0.25 285 / 0.25)",
+                    }}
+                    className="w-11 h-11 bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl flex items-center justify-center text-xl hover:border-primary/50 hover:bg-primary/10 transition-all duration-300"
+                    data-magnetic
+                    aria-label={social.name}
+                  >
+                    {social.icon}
+                  </motion.a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
     </main>
   )
 }
@@ -2509,36 +2642,7 @@ function ContactSection() {
               ))}
             </div>
 
-            {/* Social Media Links */}
-            <div className="pt-8">
-              <h4 className="font-semibold text-lg mb-4 text-foreground">{t('contact.social.title')}</h4>
-              <div className="flex gap-4">
-                {[
-                  { name: t('contact.social.platforms.twitter'), icon: "🐦", href: "#" },
-                  { name: t('contact.social.platforms.linkedin'), icon: "💼", href: "#" },
-                  { name: t('contact.social.platforms.github'), icon: "🐙", href: "#" },
-                  { name: t('contact.social.platforms.dribbble'), icon: "🏀", href: "#" },
-                ].map((social, index) => (
-                  <motion.a
-                    key={social.name}
-                    href={social.href}
-                    initial={{ opacity: 0, scale: 0 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    whileHover={{
-                      scale: 1.2,
-                      rotate: 360,
-                      boxShadow: "0 0 20px oklch(0.65 0.25 285 / 0.4)",
-                    }}
-                    className="w-12 h-12 bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl flex items-center justify-center text-xl hover:border-primary/50 hover:bg-primary/10 transition-all duration-300"
-                    data-magnetic
-                  >
-                    {social.icon}
-                  </motion.a>
-                ))}
-              </div>
-            </div>
+            {/* Social Media moved to global footer below */}
 
             {/* Floating Elements */}
             <div className="absolute inset-0 pointer-events-none">
