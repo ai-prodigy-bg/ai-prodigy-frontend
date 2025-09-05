@@ -208,6 +208,7 @@
     },
     "social": {
       "title": "Follow Us",
+      "followUs": "Follow us",
       "platforms": {
         "twitter": "Twitter",
         "linkedin": "LinkedIn",
