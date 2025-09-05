@@ -463,7 +463,7 @@ function Navigation() {
                   </motion.a>
                 ))}
                 <div className="pt-4 border-t border-border/20">
-                  <LanguageSwitcher />
+                  <LanguageSwitcher isMobile={true} />
                 </div>
               </div>
             </motion.div>

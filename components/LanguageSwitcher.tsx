@@ -8,13 +8,15 @@ const languages = [
     code: 'en',
     name: 'English',
     flag: '🇺🇸',
-    shortName: 'EN'
+    shortName: 'EN',
+    unicodeFlag: '\u{1F1FA}\u{1F1F8}' // Unicode fallback for US flag
   },
   {
     code: 'bg', 
     name: 'Български',
     flag: '🇧🇬',
-    shortName: 'BG'
+    shortName: 'BG',
+    unicodeFlag: '\u{1F1E7}\u{1F1EC}' // Unicode fallback for Bulgarian flag
   }
 ]
 
@@ -24,7 +26,11 @@ function getCurrentLocale(): string {
   return pathname.startsWith('/bg') ? 'bg' : 'en'
 }
 
-export default function LanguageSwitcher() {
+interface LanguageSwitcherProps {
+  isMobile?: boolean
+}
+
+export default function LanguageSwitcher({ isMobile = false }: LanguageSwitcherProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [currentLocale, setCurrentLocale] = useState('en')
 
@@ -33,6 +39,21 @@ export default function LanguageSwitcher() {
   }, [])
 
   const currentLanguage = languages.find(lang => lang.code === currentLocale) || languages[0]
+
+  // Enhanced flag rendering with fallbacks
+  const renderFlag = (language: typeof languages[0]) => {
+    return (
+      <span 
+        className="text-lg leading-none flex items-center justify-center min-w-[20px]"
+        style={{ 
+          fontFamily: 'system-ui, -apple-system, "Segoe UI", "Noto Color Emoji", "Apple Color Emoji"',
+          textRendering: 'optimizeQuality'
+        }}
+      >
+        {language.flag}
+      </span>
+    )
+  }
 
   const switchLanguage = (locale: string) => {
     // Set language preference cookie
@@ -62,15 +83,24 @@ export default function LanguageSwitcher() {
     <div className="relative">
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 rounded-lg bg-card/50 backdrop-blur-sm border border-border/50 hover:bg-card/80 transition-colors"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        data-magnetic
+        className={`flex items-center gap-2 px-3 py-2 rounded-lg bg-card/50 backdrop-blur-sm border border-border/50 hover:bg-card/80 transition-colors ${
+          isMobile ? 'w-full justify-between' : ''
+        }`}
+        whileHover={{ scale: isMobile ? 1.01 : 1.05 }}
+        whileTap={{ scale: 0.98 }}
+        data-magnetic={!isMobile}
       >
-        <span className="text-lg">{currentLanguage.flag}</span>
-        <span className="font-medium text-sm">{currentLanguage.shortName}</span>
+        <div className="flex items-center gap-2">
+          {renderFlag(currentLanguage)}
+          <span className="font-medium text-sm">{currentLanguage.shortName}</span>
+          {isMobile && (
+            <span className="text-xs text-muted-foreground ml-1">
+              {currentLanguage.name}
+            </span>
+          )}
+        </div>
         <motion.svg
-          className="w-4 h-4 text-muted-foreground"
+          className="w-4 h-4 text-muted-foreground flex-shrink-0"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -90,38 +120,72 @@ export default function LanguageSwitcher() {
               onClick={() => setIsOpen(false)}
             />
             
+            {/* Connection Line (Visual bridge for mobile) */}
+            {isMobile && (
+              <motion.div
+                initial={{ scaleY: 0 }}
+                animate={{ scaleY: 1 }}
+                exit={{ scaleY: 0 }}
+                className="absolute top-full left-1/2 transform -translate-x-1/2 w-0.5 h-2 bg-border/50 z-45"
+              />
+            )}
+            
             {/* Dropdown */}
             <motion.div
-              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              initial={{ opacity: 0, y: isMobile ? -5 : -10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              exit={{ opacity: 0, y: isMobile ? -5 : -10, scale: 0.95 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="absolute top-full right-0 mt-2 min-w-[140px] bg-card/95 backdrop-blur-md border border-border/50 rounded-xl shadow-lg z-50 overflow-hidden"
+              className={`absolute top-full ${
+                isMobile ? 'left-0 right-0 mt-2' : 'right-0 mt-3'
+              } ${
+                isMobile ? 'min-w-full' : 'min-w-[160px]'
+              } bg-card/95 backdrop-blur-md border border-border/50 rounded-xl shadow-xl z-50 overflow-hidden`}
+              style={{
+                boxShadow: `
+                  0 10px 25px -5px rgba(0, 0, 0, 0.1),
+                  0 8px 10px -6px rgba(0, 0, 0, 0.1),
+                  0 0 0 1px rgba(255, 255, 255, 0.05)
+                `
+              }}
             >
-              {languages.map((language) => (
-                <motion.button
-                  key={language.code}
-                  onClick={() => switchLanguage(language.code)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-primary/10 transition-colors ${
-                    currentLocale === language.code ? 'bg-primary/5 text-primary' : 'text-foreground'
-                  }`}
-                  whileHover={{ x: 4 }}
-                  disabled={currentLocale === language.code}
-                >
-                  <span className="text-lg">{language.flag}</span>
-                  <div className="text-left">
-                    <div className="font-medium text-sm">{language.name}</div>
-                  </div>
-                  {currentLocale === language.code && (
-                    <motion.div
-                      className="ml-auto w-2 h-2 bg-primary rounded-full"
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: 0.1 }}
-                    />
-                  )}
-                </motion.button>
-              ))}
+              {/* Arrow pointer for better connection */}
+              <div className={`absolute top-0 ${
+                isMobile ? 'left-1/2 transform -translate-x-1/2' : 'right-4'
+              } w-3 h-3 bg-card/95 border-l border-t border-border/50 transform rotate-45 -translate-y-1.5 z-10`} />
+              
+              <div className="relative z-20 bg-card/95 rounded-xl">
+                {languages.map((language, index) => (
+                  <motion.button
+                    key={language.code}
+                    onClick={() => switchLanguage(language.code)}
+                    className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-primary/10 transition-colors ${
+                      currentLocale === language.code ? 'bg-primary/5 text-primary' : 'text-foreground'
+                    } ${index === 0 ? 'rounded-t-xl' : ''} ${index === languages.length - 1 ? 'rounded-b-xl' : ''}`}
+                    whileHover={{ x: isMobile ? 2 : 4 }}
+                    disabled={currentLocale === language.code}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                  >
+                    {renderFlag(language)}
+                    <div className="text-left flex-1">
+                      <div className="font-medium text-sm">{language.name}</div>
+                      {isMobile && (
+                        <div className="text-xs text-muted-foreground">{language.shortName}</div>
+                      )}
+                    </div>
+                    {currentLocale === language.code && (
+                      <motion.div
+                        className="ml-auto w-2 h-2 bg-primary rounded-full"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.1 }}
+                      />
+                    )}
+                  </motion.button>
+                ))}
+              </div>
             </motion.div>
           </>
         )}
