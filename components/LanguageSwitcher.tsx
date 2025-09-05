@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import USFlag from './flags/USFlag'
+import BulgarianFlag from './flags/BulgarianFlag'
 
 const languages = [
   {
@@ -33,25 +35,48 @@ interface LanguageSwitcherProps {
 export default function LanguageSwitcher({ isMobile = false }: LanguageSwitcherProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [currentLocale, setCurrentLocale] = useState('en')
+  const [isTouchDevice, setIsTouchDevice] = useState(false)
 
   useEffect(() => {
     setCurrentLocale(getCurrentLocale())
+    
+    // Detect if device supports touch (mobile/tablet indicator)
+    const checkTouchDevice = () => {
+      return (
+        'ontouchstart' in window ||
+        navigator.maxTouchPoints > 0 ||
+        /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+      )
+    }
+    
+    setIsTouchDevice(checkTouchDevice())
   }, [])
 
   const currentLanguage = languages.find(lang => lang.code === currentLocale) || languages[0]
 
-  // Enhanced flag rendering with fallbacks
+  // Hybrid flag rendering: SVG for desktop, emoji for mobile
   const renderFlag = (language: typeof languages[0]) => {
+    // Use emoji on touch devices (mobile/tablet) where they render well
+    if (isTouchDevice) {
+      return (
+        <span 
+          className="text-lg leading-none flex items-center justify-center min-w-[20px]"
+          style={{ 
+            fontFamily: 'system-ui, -apple-system, "Segoe UI", "Noto Color Emoji", "Apple Color Emoji"',
+            textRendering: 'optimizeQuality'
+          }}
+        >
+          {language.flag}
+        </span>
+      )
+    }
+    
+    // Use SVG flags on desktop for crisp, consistent rendering
+    const FlagComponent = language.code === 'en' ? USFlag : BulgarianFlag
     return (
-      <span 
-        className="text-lg leading-none flex items-center justify-center min-w-[20px]"
-        style={{ 
-          fontFamily: 'system-ui, -apple-system, "Segoe UI", "Noto Color Emoji", "Apple Color Emoji"',
-          textRendering: 'optimizeQuality'
-        }}
-      >
-        {language.flag}
-      </span>
+      <div className="flex items-center justify-center min-w-[20px]">
+        <FlagComponent size={20} className="rounded-sm" />
+      </div>
     )
   }
 
