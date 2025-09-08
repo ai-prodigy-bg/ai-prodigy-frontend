@@ -185,6 +185,9 @@
       "projectType": "Select Project Type",
       "message": "Tell us about your project...",
       "submit": "Send Message",
+      "sending": "Sending...",
+      "success": "Thank you! Your message has been sent successfully.",
+      "error": "Something went wrong. Please try again.",
       "projectTypes": {
         "select": "Select Project Type",
         "web": "Web Application",

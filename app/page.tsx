@@ -2333,12 +2333,63 @@ function ContactSection() {
     project: "",
     message: "",
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitResult, setSubmitResult] = useState<{
+    type: 'success' | 'error' | null
+    message: string
+  }>({ type: null, message: '' })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setSubmitResult({ type: null, message: '' })
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: "88ab9b06-511c-4c5a-9531-9137d2aa69f9",
+          name: formData.name,
+          email: formData.email,
+          projectType: formData.project,
+          message: formData.message,
+          botcheck: false, // Honeypot spam protection
+        }),
+      })
+
+      const result = await response.json()
+      
+      if (result.success) {
+        setSubmitResult({ 
+          type: 'success', 
+          message: t('contact.form.success') || 'Thank you! Your message has been sent successfully.' 
+        })
+        setFormData({ name: "", email: "", project: "", message: "" })
+      } else {
+        setSubmitResult({ 
+          type: 'error', 
+          message: result.message || t('contact.form.error') || 'Something went wrong. Please try again.' 
+        })
+      }
+    } catch (error) {
+      setSubmitResult({ 
+        type: 'error', 
+        message: t('contact.form.error') || 'Network error. Please check your connection and try again.' 
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -2443,7 +2494,7 @@ function ContactSection() {
                 transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
               />
 
-              <form className="space-y-6 relative z-10">
+              <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
                 <div className="grid sm:grid-cols-2 gap-6">
                   <motion.div whileHover={{ scale: 1.02 }} whileFocus={{ scale: 1.02 }} className="relative">
                     <motion.input
@@ -2539,24 +2590,48 @@ function ContactSection() {
                   />
                 </motion.div>
 
+                {/* Success/Error Message */}
+                {submitResult.type && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`p-4 rounded-xl text-center font-medium ${
+                      submitResult.type === 'success' 
+                        ? 'bg-green-500/10 text-green-400 border border-green-500/20' 
+                        : 'bg-red-500/10 text-red-400 border border-red-500/20'
+                    }`}
+                  >
+                    {submitResult.message}
+                  </motion.div>
+                )}
+
                 <motion.button
                   type="submit"
-                  whileHover={{
+                  disabled={isSubmitting}
+                  whileHover={!isSubmitting ? {
                     scale: 1.05,
                     boxShadow: "0 0 40px oklch(0.65 0.25 285 / 0.6)",
                     y: -5,
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full bg-primary text-primary-foreground px-8 py-4 rounded-xl font-semibold text-lg hover:bg-primary/90 transition-all duration-300 relative overflow-hidden"
+                  } : {}}
+                  whileTap={!isSubmitting ? { scale: 0.95 } : {}}
+                  className={`w-full px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 relative overflow-hidden ${
+                    isSubmitting 
+                      ? 'bg-muted text-muted-foreground cursor-not-allowed' 
+                      : 'bg-primary text-primary-foreground hover:bg-primary/90'
+                  }`}
                   data-magnetic
                 >
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                    initial={{ x: "-100%" }}
-                    whileHover={{ x: "100%" }}
-                    transition={{ duration: 0.6 }}
-                  />
-                  <span className="relative z-10">{t('contact.form.submit')}</span>
+                  {!isSubmitting && (
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                      initial={{ x: "-100%" }}
+                      whileHover={{ x: "100%" }}
+                      transition={{ duration: 0.6 }}
+                    />
+                  )}
+                  <span className="relative z-10">
+                    {isSubmitting ? t('contact.form.sending') || 'Sending...' : t('contact.form.submit')}
+                  </span>
                 </motion.button>
               </form>
             </div>
