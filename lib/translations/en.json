@@ -26,12 +26,19 @@
     "visitLink": "Click to visit",
     "portfolio": {
       "mrimot": {
+        "name": "Mister Imot",
         "category": "Real Estate Platform",
         "description": "Advanced real estate platform connecting buyers with verified developers. Interactive map search for off-plan and new construction projects."
       },
       "teramedbio": {
+        "name": "Teramedbio",
         "category": "Healthcare Website",
         "description": "High-converting wellness website that scaled to 20,000+ monthly organic visitors. Advanced booking integration and lightning-fast 2-day delivery."
+      },
+      "elichobanova": {
+        "name": "Eli Chobanova",
+        "category": "Psychology & self-help",
+        "description": "Professional psychology consulting website offering online sessions for relationship guidance, personal development, and mental health support."
       }
     }
   },
@@ -200,7 +207,7 @@
     "info": {
       "title": "Get in Touch",
       "subtitle": "Ready to bring your vision to life? We're here to help you create something extraordinary.",
-      "email": "hello@prodigylabs.com",
+      "email": "support@prodigycorp.io",
       "phone": "+359 899 520 856",
       "location": "Plovdiv, Bulgaria",
       "labels": {

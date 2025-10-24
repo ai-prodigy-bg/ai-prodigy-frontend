@@ -8,6 +8,7 @@ import { DotGrid, NeuroNoise } from "@paper-design/shaders-react"
 import { useTranslation } from "../lib/translations"
 import LanguageSwitcher from "../components/LanguageSwitcher"
 import LoadingCat from "../components/LoadingCat"
+import { useIsMobile } from "../hooks/use-mobile"
 // ImageKit transformation utilities
 const IMAGEKIT_URL_ENDPOINT = "https://ik.imagekit.io/ts59gf2ul"
 
@@ -523,6 +524,7 @@ function ProjectCard({
   image,
   index,
   url,
+  alt,
 }: {
   title: string
   description: string
@@ -530,6 +532,7 @@ function ProjectCard({
   image: string
   index: number
   url?: string
+  alt: string
 }) {
   const [isHovering, setIsHovering] = useState(false)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
@@ -542,7 +545,10 @@ function ProjectCard({
   }
 
   return (
-    <motion.div
+    <motion.a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -550,7 +556,7 @@ function ProjectCard({
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
-      className="group relative"
+      className="group relative block"
       data-magnetic
     >
       <motion.div
@@ -567,7 +573,6 @@ function ProjectCard({
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         style={{ transformStyle: "preserve-3d" }}
         className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-6 sm:p-8 md:p-10 relative overflow-hidden min-h-[450px] sm:min-h-[480px] md:min-h-[520px] flex flex-col cursor-pointer"
-        onClick={() => url && window.open(url, '_blank')}
       >
         {/* Floating animation when idle */}
         <motion.div
@@ -625,7 +630,7 @@ function ProjectCard({
           >
             <img
               src={buildImageKitUrl(image || "/placeholder.svg", getResponsiveImageTransformations())}
-              alt={title}
+              alt={alt}
               className="w-full h-auto object-cover rounded-t-lg"
               loading="lazy"
             />
@@ -675,7 +680,7 @@ function ProjectCard({
           </div>
         </div>
       </motion.div>
-    </motion.div>
+    </motion.a>
   )
 }
 
@@ -686,21 +691,31 @@ function ProjectsSection() {
 
   const digitalAssets = [
     {
-      title: "Mr imot",
+      title: t('projects.portfolio.mrimot.name'),
       description: t('projects.portfolio.mrimot.description'),
       category: t('projects.portfolio.mrimot.category'),
-      image: "/prodigy corp/288shots_so.png",
+      image: "/prodigy%20corp/projects/mrimot.com-showcase.png",
       url: "https://www.mrimot.com/",
+      alt: "mrimot.com showcase on prodigy corp website",
     },
   ]
 
   const clientSuccessStories = [
     {
-      title: "teramedbio",
+      title: t('projects.portfolio.teramedbio.name'),
       description: t('projects.portfolio.teramedbio.description'),
       category: t('projects.portfolio.teramedbio.category'),
       image: "/prodigy corp/88shots_so.png",
       url: "https://teramedbio.com/",
+      alt: "teramedbio.com showcase on prodigy corp website",
+    },
+    {
+      title: t('projects.portfolio.elichobanova.name'),
+      description: t('projects.portfolio.elichobanova.description'),
+      category: t('projects.portfolio.elichobanova.category'),
+      image: "/prodigy%20corp/projects/elichobanova.com-showcase.png",
+      url: "https://elichobanova.com/",
+      alt: "elichobanova.com showcase on prodigy corp website",
     },
   ]
 
@@ -768,6 +783,7 @@ function ProjectsSection() {
                 image={project.image}
                 index={index}
                 url={project.url}
+                alt={project.alt}
               />
             ))}
           </div>
@@ -792,6 +808,7 @@ function ProjectsSection() {
                 image={project.image}
                 index={index + digitalAssets.length}
                 url={project.url}
+                alt={project.alt}
               />
             ))}
           </div>
@@ -1708,8 +1725,8 @@ function AboutSection() {
   const storyParagraphs = tArray('about.story.paragraphs')
 
   const stats = [
-    { value: 2, label: t('about.stats.projects'), suffix: "+" },
-    { value: 1, label: t('about.stats.clients'), suffix: "+" },
+    { value: 3, label: t('about.stats.projects'), suffix: "+" },
+    { value: 2, label: t('about.stats.clients'), suffix: "+" },
     { value: 1, label: t('about.stats.experience'), suffix: "+" },
     { value: 100, label: t('about.stats.successRate'), suffix: "%" },
   ]
@@ -2327,6 +2344,7 @@ export default function HomePage() {
 
 function ContactSection() {
   const { t } = useTranslation()
+  const isMobile = useIsMobile()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -2503,7 +2521,7 @@ function ContactSection() {
                       placeholder={t('contact.form.name')}
                       value={formData.name}
                       onChange={handleInputChange}
-                      className="w-full bg-background/50 border border-border/50 rounded-xl px-4 py-3 md:py-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 min-h-[48px]"
+                      className="w-full bg-background/50 border border-border/50 rounded-xl px-4 py-3 md:py-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 min-h-[48px] caret-primary"
                       whileFocus={{
                         boxShadow: "0 0 20px oklch(0.65 0.25 285 / 0.3)",
                         borderColor: "oklch(0.65 0.25 285)",
@@ -2525,7 +2543,7 @@ function ContactSection() {
                       placeholder={t('contact.form.email')}
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="w-full bg-background/50 border border-border/50 rounded-xl px-4 py-3 md:py-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 min-h-[48px]"
+                      className="w-full bg-background/50 border border-border/50 rounded-xl px-4 py-3 md:py-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 min-h-[48px] caret-primary"
                       whileFocus={{
                         boxShadow: "0 0 20px oklch(0.65 0.25 285 / 0.3)",
                         borderColor: "oklch(0.65 0.25 285)",
@@ -2575,7 +2593,7 @@ function ContactSection() {
                     value={formData.message}
                     onChange={handleInputChange}
                     rows={5}
-                    className="w-full bg-background/50 border border-border/50 rounded-xl px-4 py-3 md:py-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 resize-none min-h-[48px]"
+                    className="w-full bg-background/50 border border-border/50 rounded-xl px-4 py-3 md:py-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 resize-none min-h-[48px] caret-primary"
                     whileFocus={{
                       boxShadow: "0 0 20px oklch(0.65 0.25 285 / 0.3)",
                       borderColor: "oklch(0.65 0.25 285)",
@@ -2653,41 +2671,46 @@ function ContactSection() {
             </div>
 
             <div className="space-y-6">
-              {              [
-                { icon: "📧", label: t('contact.info.labels.email'), value: t('contact.info.email'), href: "mailto:hello@prodigylabs.com" },
-                { icon: "📱", label: t('contact.info.labels.phone'), value: t('contact.info.phone'), href: "tel:+359899520856" },
-                { icon: "📍", label: t('contact.info.labels.location'), value: t('contact.info.location'), href: "#" },
-              ].map((contact, index) => (
-                <motion.a
-                  key={contact.label}
-                  href={contact.href}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  whileHover={{
-                    scale: 1.05,
-                    x: 10,
-                    boxShadow: "0 10px 30px oklch(0.65 0.25 285 / 0.2)",
-                  }}
-                  className="flex items-center gap-4 p-4 bg-card/30 backdrop-blur-sm border border-border/30 rounded-xl hover:border-primary/50 transition-all duration-300 group"
-                  data-magnetic
-                >
-                  <motion.div
-                    className="text-2xl"
-                    whileHover={{ rotate: 360, scale: 1.2 }}
-                    transition={{ duration: 0.5 }}
+              {[
+                { icon: "📧", label: t('contact.info.labels.email'), value: t('contact.info.email'), href: "mailto:support@prodigycorp.io", clickable: true },
+                { icon: "📱", label: t('contact.info.labels.phone'), value: t('contact.info.phone'), href: "tel:+359899520856", clickable: true },
+                { icon: "📍", label: t('contact.info.labels.location'), value: t('contact.info.location'), href: "#", clickable: false },
+              ].map((contact, index) => {
+                const ContactComponent = (contact.clickable && isMobile) ? motion.a : motion.div
+                const contactProps = (contact.clickable && isMobile) ? { href: contact.href } : {}
+                
+                return (
+                  <ContactComponent
+                    key={contact.label}
+                    {...contactProps}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                    whileHover={{
+                      scale: 1.05,
+                      x: 10,
+                      boxShadow: "0 10px 30px oklch(0.65 0.25 285 / 0.2)",
+                    }}
+                    className="flex items-center gap-4 p-4 bg-card/30 backdrop-blur-sm border border-border/30 rounded-xl hover:border-primary/50 transition-all duration-300 group"
+                    data-magnetic
                   >
-                    {contact.icon}
-                  </motion.div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">{contact.label}</p>
-                    <p className="text-foreground font-medium group-hover:text-primary transition-colors">
-                      {contact.value}
-                    </p>
-                  </div>
-                </motion.a>
-              ))}
+                    <motion.div
+                      className="text-2xl"
+                      whileHover={{ rotate: 360, scale: 1.2 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {contact.icon}
+                    </motion.div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">{contact.label}</p>
+                      <p className="text-foreground font-medium group-hover:text-primary transition-colors">
+                        {contact.value}
+                      </p>
+                    </div>
+                  </ContactComponent>
+                )
+              })}
             </div>
 
             {/* Social Media moved to global footer below */}
