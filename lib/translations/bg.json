@@ -194,10 +194,9 @@
       "title": "Последвайте Ни",
       "followUs": "Последвайте ни",
       "platforms": {
-        "twitter": "Twitter",
-        "linkedin": "LinkedIn",
-        "github": "GitHub",
-        "dribbble": "Dribbble"
+        "x": "X (Twitter)",
+        "instagram": "Instagram",
+        "facebook": "Facebook"
       }
     }
   }

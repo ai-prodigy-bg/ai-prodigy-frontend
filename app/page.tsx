@@ -9,6 +9,7 @@ import { useTranslation } from "../lib/translations"
 import LanguageSwitcher from "../components/LanguageSwitcher"
 import LoadingCat from "../components/LoadingCat"
 import { useIsMobile } from "../hooks/use-mobile"
+import { XIcon, InstagramIcon, FacebookIcon } from "../components/SocialIcons"
 // ImageKit transformation utilities
 const IMAGEKIT_URL_ENDPOINT = "https://ik.imagekit.io/ts59gf2ul"
 
@@ -2218,14 +2219,15 @@ export default function HomePage() {
               <p className="text-base text-muted-foreground">{t('contact.social.followUs')}</p>
               <div className="flex gap-3 justify-center">
                 {[
-                  { name: t('contact.social.platforms.twitter'), icon: "🐦", href: "#" },
-                  { name: t('contact.social.platforms.linkedin'), icon: "💼", href: "#" },
-                  { name: t('contact.social.platforms.github'), icon: "🐙", href: "#" },
-                  { name: t('contact.social.platforms.dribbble'), icon: "🏀", href: "#" },
+                  { name: t('contact.social.platforms.x'), icon: <XIcon />, href: "https://x.com/prodigy_corp" },
+                  { name: t('contact.social.platforms.instagram'), icon: <InstagramIcon />, href: "https://www.instagram.com/prodigy_corp/" },
+                  { name: t('contact.social.platforms.facebook'), icon: <FacebookIcon />, href: "https://www.facebook.com/prodigycorp.io/" },
                 ].map((social, index) => (
                   <motion.a
                     key={social.name}
                     href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     initial={{ opacity: 0, scale: 0 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -2234,7 +2236,7 @@ export default function HomePage() {
                       scale: 1.12,
                       boxShadow: "0 0 20px oklch(0.65 0.25 285 / 0.25)",
                     }}
-                    className="w-12 h-12 bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl flex items-center justify-center text-xl hover:border-primary/50 hover:bg-primary/10 transition-all duration-300"
+                    className="w-12 h-12 bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl flex items-center justify-center text-foreground hover:border-primary/50 hover:bg-primary/10 transition-all duration-300"
                     data-magnetic
                     aria-label={social.name}
                   >
@@ -2310,14 +2312,15 @@ export default function HomePage() {
               <p className="text-base text-muted-foreground">{t('contact.social.followUs')}</p>
               <div className="flex gap-3">
                 {[
-                  { name: t('contact.social.platforms.twitter'), icon: "🐦", href: "#" },
-                  { name: t('contact.social.platforms.linkedin'), icon: "💼", href: "#" },
-                  { name: t('contact.social.platforms.github'), icon: "🐙", href: "#" },
-                  { name: t('contact.social.platforms.dribbble'), icon: "🏀", href: "#" },
+                  { name: t('contact.social.platforms.x'), icon: <XIcon />, href: "https://x.com/prodigy_corp" },
+                  { name: t('contact.social.platforms.instagram'), icon: <InstagramIcon />, href: "https://www.instagram.com/prodigy_corp/" },
+                  { name: t('contact.social.platforms.facebook'), icon: <FacebookIcon />, href: "https://www.facebook.com/prodigycorp.io/" },
                 ].map((social, index) => (
                   <motion.a
                     key={social.name}
                     href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     initial={{ opacity: 0, scale: 0 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -2326,7 +2329,7 @@ export default function HomePage() {
                       scale: 1.12,
                       boxShadow: "0 0 20px oklch(0.65 0.25 285 / 0.25)",
                     }}
-                    className="w-11 h-11 bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl flex items-center justify-center text-xl hover:border-primary/50 hover:bg-primary/10 transition-all duration-300"
+                    className="w-11 h-11 bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl flex items-center justify-center text-foreground hover:border-primary/50 hover:bg-primary/10 transition-all duration-300"
                     data-magnetic
                     aria-label={social.name}
                   >

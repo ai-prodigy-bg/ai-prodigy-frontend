@@ -220,10 +220,9 @@
       "title": "Follow Us",
       "followUs": "Follow us",
       "platforms": {
-        "twitter": "Twitter",
-        "linkedin": "LinkedIn",
-        "github": "GitHub",
-        "dribbble": "Dribbble"
+        "x": "X (Twitter)",
+        "instagram": "Instagram",
+        "facebook": "Facebook"
       }
     }
   }
