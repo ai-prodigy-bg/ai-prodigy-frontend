@@ -1,12 +1,12 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { motion } from "framer-motion"
 import { useTranslation } from "../../lib/translations"
 import LoadingCat from "../LoadingCat"
 
 export default function LoadingScreen() {
   const [isLoading, setIsLoading] = useState(true)
+  const [isFading, setIsFading] = useState(false)
   const { t } = useTranslation()
 
   useEffect(() => {
@@ -16,13 +16,22 @@ export default function LoadingScreen() {
       lcpImage.style.display = 'none'
     }
 
-    // Reduced delay to 1s for better LCP - content can render behind
-    const timer = setTimeout(() => {
-      setIsLoading(false)
+    let removeTimer: NodeJS.Timeout | null = null
+
+    // Start fade after 1s, then remove after fade completes
+    const fadeTimer = setTimeout(() => {
+      setIsFading(true)
+      // Remove after CSS transition completes (500ms)
+      removeTimer = setTimeout(() => {
+        setIsLoading(false)
+      }, 500)
     }, 1000)
 
     return () => {
-      clearTimeout(timer)
+      clearTimeout(fadeTimer)
+      if (removeTimer) {
+        clearTimeout(removeTimer)
+      }
       // Show server-rendered LCP image again if still exists
       if (lcpImage) {
         lcpImage.style.display = ''
@@ -33,12 +42,10 @@ export default function LoadingScreen() {
   if (!isLoading) return null
 
   return (
-    <motion.div
-      initial={{ opacity: 1 }}
-      animate={{ opacity: 0 }}
-      transition={{ duration: 0.5, delay: 0.5 }}
-      className="fixed inset-0 bg-background z-[100] flex items-center justify-center pointer-events-none"
-      onAnimationComplete={() => setIsLoading(false)}
+    <div
+      className={`fixed inset-0 bg-background z-[100] flex items-center justify-center pointer-events-none transition-opacity duration-500 ${
+        isFading ? 'opacity-0' : 'opacity-100'
+      }`}
       style={{ willChange: 'opacity' }}
     >
       <div className="text-center">
@@ -48,6 +55,6 @@ export default function LoadingScreen() {
           showMessage={true}
         />
       </div>
-    </motion.div>
+    </div>
   )
 }
