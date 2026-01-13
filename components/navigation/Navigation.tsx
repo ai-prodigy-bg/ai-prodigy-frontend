@@ -4,7 +4,7 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTranslation } from "../../lib/translations"
 import LanguageSwitcher from "../LanguageSwitcher"
-import { buildImageKitUrl, getLogoTransformations, getLogoImageSrcSet } from "../../lib/utils/imagekit"
+import { buildSrcSetString, getLogoImageSrcSet } from "../../lib/utils/imagekit"
 
 export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -33,13 +33,13 @@ export default function Navigation() {
           {(() => {
             const logoPath = "/prodigy%20corp/Logo/prodigy-corp-text-logo-nobg-cut.png"
             const srcSet = getLogoImageSrcSet(logoPath, 80)
-            const srcSetString = srcSet.map(item => `${item.src} ${item.descriptor}`).join(', ')
+            const srcSetString = buildSrcSetString(srcSet)
             const fallbackSrc = srcSet.find(item => item.width === 128)?.src || srcSet[0].src
             
             return (
               <img
                 src={fallbackSrc}
-                srcSet={srcSetString}
+                srcSet={srcSetString || undefined}
                 alt="Prodigy Corp"
                 className="h-8 md:h-10 w-auto"
                 width={128}

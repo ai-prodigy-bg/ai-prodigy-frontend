@@ -44,17 +44,6 @@ class ShaderErrorBoundary extends Component<
   }
 }
 
-// Type definitions for requestIdleCallback (if not already defined)
-type IdleCallbackHandle = number;
-type IdleRequestCallback = (deadline: IdleDeadline) => void;
-interface IdleDeadline {
-  readonly didTimeout: boolean;
-  timeRemaining(): DOMHighResTimeStamp;
-}
-interface IdleRequestOptions {
-  timeout?: number;
-}
-
 export default function ShaderBackground() {
   const [enabled, setEnabled] = useState(false)
   const [visible, setVisible] = useState(true)
@@ -75,7 +64,7 @@ export default function ShaderBackground() {
     }
   }, [])
 
-  // Load shaders when idle (best for Lighthouse)
+  // Load shaders immediately (make shader the LCP)
   useEffect(() => {
     if (typeof window === 'undefined') return
 
@@ -87,32 +76,7 @@ export default function ShaderBackground() {
       return
     }
 
-    // Upgrade when idle (best for Lighthouse)
-    const ric = (window as any).requestIdleCallback as undefined | ((cb: () => void, opts?: any) => any)
-    let idleId: any
-    let timerId: any
-
-    const start = () => {
-      setEnabled(true)
-    }
-
-    if (ric) {
-      // Use requestIdleCallback with 2500ms timeout (don't wait forever)
-      idleId = ric(start, { timeout: 2500 })
-    } else {
-      // Fallback: wait a bit after first paint (1200ms)
-      timerId = window.setTimeout(start, 1200)
-    }
-
-    return () => {
-      if (ric && idleId) {
-        const cancel = (window as any).cancelIdleCallback
-        if (cancel) cancel(idleId)
-      }
-      if (timerId) {
-        window.clearTimeout(timerId)
-      }
-    }
+    setEnabled(true)
   }, [])
 
   return (
