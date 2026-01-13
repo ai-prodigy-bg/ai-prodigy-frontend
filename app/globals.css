@@ -162,6 +162,23 @@
     }
   }
 
+  /* Floating animation for LCP loading image */
+  .animate-lcp-float {
+    animation: lcpFloat 3s ease-in-out infinite;
+  }
+
+  @keyframes lcpFloat {
+    0% {
+      transform: translate(-50%, calc(-50% - 4px)) rotate(-2deg);
+    }
+    50% {
+      transform: translate(-50%, calc(-50% + 4px)) rotate(2deg);
+    }
+    100% {
+      transform: translate(-50%, calc(-50% - 4px)) rotate(-2deg);
+    }
+  }
+
   .animate-glow {
     animation: glow 2s ease-in-out infinite alternate;
   }
