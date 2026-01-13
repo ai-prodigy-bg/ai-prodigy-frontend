@@ -218,6 +218,8 @@ export default async function RootLayout({
         />
       </head>
       <body className={`font-sans antialiased ${spaceGrotesk.variable} ${dmSans.variable} ${GeistMono.variable}`}>
+        {/* Server-rendered static background fallback - zero JS, instant display */}
+        <div className="fixed inset-0 -z-10 bg-[linear-gradient(180deg,#0a0f1e_0%,#1a2a47_100%)]" />
         <LanguageDetector />
         <Suspense fallback={null}>{children}</Suspense>
         <Analytics />
