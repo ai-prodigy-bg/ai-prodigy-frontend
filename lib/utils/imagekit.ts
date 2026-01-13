@@ -75,6 +75,24 @@ export function getLogoImageSrcSet(baseImagePath: string, quality: number = 80):
   }))
 }
 
+// Generate LCP image URL for preloading
+// Returns the most appropriate size for LCP (mobile: 308px, desktop: 176px)
+export function getLCPImageUrl(baseImagePath: string, size: 'mobile' | 'desktop' = 'desktop', quality: number = 80): string {
+  const displaySize = size === 'mobile' ? 308 : 176
+  return buildImageKitUrl(baseImagePath, [
+    `w-${displaySize}`,
+    `h-${displaySize}`,
+    `q-${quality}`,
+    "f-auto",
+    "cm-maintain_ratio",
+    "bo-4_8B5CF6",
+    "e-sharpen",
+    "e-contrast:1.1",
+    "e-saturate:1.2",
+    "bg-transparent"
+  ])
+}
+
 // Generate responsive srcset for loading cat images
 // Supports different sizes: sm (48px), md (80px), lg (112px), xl (176px)
 // Uses 2x DPI for crisp display

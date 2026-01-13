@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { getLoadingCatImageSrcSet } from "../lib/utils/imagekit"
+import { getLoadingCatImageSrcSet, getLCPImageUrl } from "../lib/utils/imagekit"
 
 // ImageKit URL for the cat logo with transformations
 const IMAGEKIT_BASE_URL = "/prodigy%20corp/Logo/prodigy-corp-logo-nobg-cut.png"
@@ -59,11 +59,32 @@ export default function LoadingCat({
   const config = sizeConfig[size]
 
   // Generate responsive srcset for the image
-  const srcSet = getLoadingCatImageSrcSet(IMAGEKIT_BASE_URL, config.displaySize, 80)
+  // For xl size, include both mobile (308px) and desktop (176px) sizes to match preload hints
+  let srcSet: Array<{ src: string; width: number; descriptor: string }>
+  if (size === 'xl') {
+    // Include mobile (308px) and desktop (176px, 352px 2x) sizes for xl
+    const mobileSrc = getLCPImageUrl(IMAGEKIT_BASE_URL, 'mobile', 80)
+    const desktopSrc = getLCPImageUrl(IMAGEKIT_BASE_URL, 'desktop', 80)
+    // Generate 2x desktop version
+    const desktop2xSet = getLoadingCatImageSrcSet(IMAGEKIT_BASE_URL, 176, 80)
+    const desktop2xSrc = desktop2xSet.find(item => item.width === 352)?.src || desktopSrc
+    srcSet = [
+      { src: mobileSrc, width: 308, descriptor: '308w' },
+      { src: desktopSrc, width: 176, descriptor: '176w' },
+      { src: desktop2xSrc, width: 352, descriptor: '352w' },
+    ]
+  } else {
+    srcSet = getLoadingCatImageSrcSet(IMAGEKIT_BASE_URL, config.displaySize, 80)
+  }
+  
   const srcSetString = srcSet.map((item: { src: string; width: number; descriptor: string }) => `${item.src} ${item.descriptor}`).join(', ')
   
-  // Fallback src (1x DPI)
-  const fallbackSrc = srcSet[0]?.src || ''
+  // Use LCP-optimized URL as fallback to match preload hints
+  // For xl size: use mobile (308px) as fallback since that's what Lighthouse tests on mobile
+  // Browser will pick the correct one from srcset based on viewport
+  const fallbackSrc = size === 'xl' 
+    ? getLCPImageUrl(IMAGEKIT_BASE_URL, 'mobile', 80)
+    : srcSet[0]?.src || ''
 
   return (
     <div className="flex flex-col items-center justify-center gap-6">
