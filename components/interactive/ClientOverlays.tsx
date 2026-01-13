@@ -36,15 +36,22 @@ export default function ClientOverlays() {
 
     checkConditions()
     
+    // Debounce resize handler to avoid excessive checks
+    let resizeTimeout: NodeJS.Timeout
+    const handleResize = () => {
+      clearTimeout(resizeTimeout)
+      resizeTimeout = setTimeout(checkConditions, 150) // Debounce by 150ms
+    }
+    
     // Listen for resize and motion preference changes
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const handleResize = () => checkConditions()
     const handleMotionChange = () => checkConditions()
 
-    window.addEventListener('resize', handleResize)
+    window.addEventListener('resize', handleResize, { passive: true })
     mediaQuery.addEventListener('change', handleMotionChange)
 
     return () => {
+      clearTimeout(resizeTimeout)
       window.removeEventListener('resize', handleResize)
       mediaQuery.removeEventListener('change', handleMotionChange)
     }

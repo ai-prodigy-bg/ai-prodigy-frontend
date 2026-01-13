@@ -6,7 +6,8 @@ import { motion } from "framer-motion"
 export default function LiquidCursor() {
   const cursorRef = useRef<HTMLDivElement>(null)
   const [isHovering, setIsHovering] = useState(false)
-  const [magneticTarget, setMagneticTarget] = useState<HTMLElement | null>(null)
+  // Use ref instead of state to avoid re-running effect
+  const magneticTargetRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     const cursor = cursorRef.current
@@ -21,6 +22,7 @@ export default function LiquidCursor() {
 
     const updateCursor = () => {
       // Magnetic attraction effect
+      const magneticTarget = magneticTargetRef.current
       if (magneticTarget) {
         const now = performance.now()
         // Cache rect to avoid forced reflows
@@ -64,13 +66,17 @@ export default function LiquidCursor() {
       setIsHovering(true)
       const target = e.target as HTMLElement
       if (target.hasAttribute("data-magnetic")) {
-        setMagneticTarget(target)
+        magneticTargetRef.current = target
+        // Clear cached rect when target changes
+        cachedRect = null
       }
     }
 
     const handleMouseLeave = () => {
       setIsHovering(false)
-      setMagneticTarget(null)
+      magneticTargetRef.current = null
+      // Clear cached rect when leaving
+      cachedRect = null
     }
 
     document.addEventListener("mousemove", moveCursor)
@@ -92,7 +98,7 @@ export default function LiquidCursor() {
         cancelAnimationFrame(rafId)
       }
     }
-  }, [magneticTarget])
+  }, []) // Empty dependency array - effect only runs once on mount
 
   return (
     <motion.div

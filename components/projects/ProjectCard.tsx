@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react"
 import { motion } from "framer-motion"
-import { buildImageKitUrl, getProjectImageTransformations } from "../../lib/utils/imagekit"
+import { buildImageKitUrl, getProjectImageTransformations, getProjectImageSrcSet } from "../../lib/utils/imagekit"
 
 interface ProjectCardProps {
   title: string
@@ -135,12 +135,16 @@ export default function ProjectCard({
             style={{ transform: `translateZ(20px)` }}
           >
             <img
-              src={buildImageKitUrl(image || "/placeholder.svg", getProjectImageTransformations(400, 85))}
+              src={buildImageKitUrl(image || "/placeholder.svg", getProjectImageTransformations(323, 80))}
+              srcSet={image && !image.startsWith('/placeholder') 
+                ? getProjectImageSrcSet(image, 80).map(item => `${item.src} ${item.descriptor}`).join(', ')
+                : undefined
+              }
               alt={alt}
               className="w-full h-auto object-cover rounded-t-lg"
-              width={400}
-              height={300}
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
+              width={323}
+              height={242}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 323px"
               loading="lazy"
             />
             <motion.div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

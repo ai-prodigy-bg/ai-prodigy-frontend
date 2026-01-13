@@ -4,7 +4,7 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTranslation } from "../../lib/translations"
 import LanguageSwitcher from "../LanguageSwitcher"
-import { buildImageKitUrl, getLogoTransformations } from "../../lib/utils/imagekit"
+import { buildImageKitUrl, getLogoTransformations, getLogoImageSrcSet } from "../../lib/utils/imagekit"
 
 export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -30,26 +30,32 @@ export default function Navigation() {
           className="flex items-center"
           data-magnetic
         >
-          <img
-            src={buildImageKitUrl("/prodigy%20corp/Logo/prodigy-corp-text-logo-nobg-cut.png", 
-              // Mobile: h-8 = 32px height, aspect ratio ~3.2:1, so width ~179px
-              // Desktop: h-10 = 40px height, aspect ratio ~3.2:1, so width ~204px
-              // Using responsive approach: serve 204px for desktop, browser will scale down on mobile
-              getLogoTransformations(204, 85)
-            )}
-            alt="Prodigy Corp"
-            className="h-8 md:h-10 w-auto"
-            width={204}
-            height={64}
-            fetchPriority="high"
-            style={{
-              filter:
-                // White edge, then brand-purple outer glow layers
-                "drop-shadow(0 0 2px rgba(255,255,255,0.5)) " +
-                "drop-shadow(0 0 8px rgba(139,92,246,0.45)) " +
-                "drop-shadow(0 0 18px rgba(139,92,246,0.25))",
-            }}
-          />
+          {(() => {
+            const logoPath = "/prodigy%20corp/Logo/prodigy-corp-text-logo-nobg-cut.png"
+            const srcSet = getLogoImageSrcSet(logoPath, 80)
+            const srcSetString = srcSet.map(item => `${item.src} ${item.descriptor}`).join(', ')
+            const fallbackSrc = srcSet.find(item => item.width === 128)?.src || srcSet[0].src
+            
+            return (
+              <img
+                src={fallbackSrc}
+                srcSet={srcSetString}
+                alt="Prodigy Corp"
+                className="h-8 md:h-10 w-auto"
+                width={128}
+                height={40}
+                fetchPriority="high"
+                sizes="(max-width: 768px) 102px, 128px"
+                style={{
+                  filter:
+                    // White edge, then brand-purple outer glow layers
+                    "drop-shadow(0 0 2px rgba(255,255,255,0.5)) " +
+                    "drop-shadow(0 0 8px rgba(139,92,246,0.45)) " +
+                    "drop-shadow(0 0 18px rgba(139,92,246,0.25))",
+                }}
+              />
+            )
+          })()}
         </motion.div>
 
         <div className="hidden md:flex items-center gap-4 lg:gap-8">
