@@ -75,7 +75,7 @@ export default function ShaderBackground() {
     }
   }, [])
 
-  // Load shaders when idle (best for Lighthouse)
+  // Load shaders after LCP + idle (best for Lighthouse)
   useEffect(() => {
     if (typeof window === 'undefined') return
 
@@ -87,24 +87,64 @@ export default function ShaderBackground() {
       return
     }
 
-    // Upgrade when idle (best for Lighthouse)
+    // Upgrade when idle after LCP (best for Lighthouse)
     const ric = (window as any).requestIdleCallback as undefined | ((cb: () => void, opts?: any) => any)
     let idleId: any
     let timerId: any
+    let lcpObserver: PerformanceObserver | null = null
+    let lcpTimeoutId: number | null = null
+    let started = false
 
     const start = () => {
       setEnabled(true)
     }
 
-    if (ric) {
-      // Use requestIdleCallback with 2500ms timeout (don't wait forever)
-      idleId = ric(start, { timeout: 2500 })
-    } else {
-      // Fallback: wait a bit after first paint (1200ms)
-      timerId = window.setTimeout(start, 1200)
+    const scheduleIdleStart = () => {
+      if (started) return
+      started = true
+      if (ric) {
+        // Use requestIdleCallback with 3000ms timeout (don't wait forever)
+        idleId = ric(start, { timeout: 3000 })
+      } else {
+        // Fallback: wait for post-LCP idle window (3000ms)
+        timerId = window.setTimeout(start, 3000)
+      }
     }
 
+    const watchLcp = () => {
+      if (!('PerformanceObserver' in window)) {
+        scheduleIdleStart()
+        return
+      }
+
+      try {
+        lcpObserver = new PerformanceObserver((entryList) => {
+          if (entryList.getEntries().length === 0) return
+          lcpObserver?.disconnect()
+          lcpObserver = null
+          if (lcpTimeoutId) {
+            window.clearTimeout(lcpTimeoutId)
+            lcpTimeoutId = null
+          }
+          scheduleIdleStart()
+        })
+        lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true })
+        // Safety fallback: if LCP never fires, still start after 3.5s
+        lcpTimeoutId = window.setTimeout(scheduleIdleStart, 3500)
+      } catch {
+        scheduleIdleStart()
+      }
+    }
+
+    watchLcp()
+
     return () => {
+      if (lcpObserver) {
+        lcpObserver.disconnect()
+      }
+      if (lcpTimeoutId) {
+        window.clearTimeout(lcpTimeoutId)
+      }
       if (ric && idleId) {
         const cancel = (window as any).cancelIdleCallback
         if (cancel) cancel(idleId)
