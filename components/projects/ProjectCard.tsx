@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react"
 import { motion } from "framer-motion"
-import { buildImageKitUrl, getProjectImageTransformations, getProjectImageSrcSet } from "../../lib/utils/imagekit"
+import { buildImageKitUrl, buildSrcSetString, getProjectImageTransformations, getProjectImageSrcSet } from "../../lib/utils/imagekit"
 
 interface ProjectCardProps {
   title: string
@@ -153,7 +153,7 @@ export default function ProjectCard({
             <img
               src={buildImageKitUrl(image || "/placeholder.svg", getProjectImageTransformations(323, 80))}
               srcSet={image && !image.startsWith('/placeholder') 
-                ? getProjectImageSrcSet(image, 80).map(item => `${item.src} ${item.descriptor}`).join(', ')
+                ? buildSrcSetString(getProjectImageSrcSet(image, 80)) || undefined
                 : undefined
               }
               alt={alt}

@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { getLoadingCatImageSrcSet, getLCPImageUrl } from "../lib/utils/imagekit"
+import { buildSrcSetString, getLoadingCatImageSrcSet, getLCPImageUrl } from "../lib/utils/imagekit"
 
 // ImageKit URL for the cat logo with transformations
 const IMAGEKIT_BASE_URL = "/prodigy%20corp/Logo/prodigy-corp-logo-nobg-cut.png"
@@ -77,7 +77,7 @@ export default function LoadingCat({
     srcSet = getLoadingCatImageSrcSet(IMAGEKIT_BASE_URL, config.displaySize, 80)
   }
   
-  const srcSetString = srcSet.map((item: { src: string; width: number; descriptor: string }) => `${item.src} ${item.descriptor}`).join(', ')
+  const srcSetString = buildSrcSetString(srcSet)
   
   // Use LCP-optimized URL as fallback to match preload hints
   // For xl size: use mobile (308px) as fallback since that's what Lighthouse tests on mobile
@@ -156,7 +156,7 @@ export default function LoadingCat({
         >
           <img
             src={fallbackSrc}
-            srcSet={srcSetString}
+            srcSet={srcSetString || undefined}
             alt="Loading..."
             className="w-full h-full object-contain"
             loading="eager"

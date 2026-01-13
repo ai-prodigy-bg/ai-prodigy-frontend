@@ -121,6 +121,15 @@ export function getLoadingCatImageSrcSet(baseImagePath: string, displaySize: num
   }))
 }
 
+export function buildSrcSetString(entries: Array<{ src?: string; descriptor?: string }>): string {
+  const validDescriptor = (descriptor: string) => /^\d+w$|^\d+x$/.test(descriptor)
+
+  return entries
+    .filter((entry) => entry?.src && entry?.descriptor && validDescriptor(entry.descriptor))
+    .map((entry) => `${entry.src} ${entry.descriptor}`)
+    .join(', ')
+}
+
 // Calculate aspect ratio from original dimensions
 export function calculateAspectRatio(width: number, height: number): number {
   return width / height
