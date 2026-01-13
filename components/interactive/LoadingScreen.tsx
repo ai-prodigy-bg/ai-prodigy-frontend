@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { motion } from "framer-motion"
 import { useTranslation } from "../../lib/translations"
 
@@ -8,6 +8,19 @@ export default function LoadingScreen() {
   const [isLoading, setIsLoading] = useState(true)
   const [isFading, setIsFading] = useState(false)
   const { t } = useTranslation()
+  const hasHiddenLcpImage = useRef(false)
+
+  // Hide LCP image immediately when component unmounts or loading finishes
+  useEffect(() => {
+    return () => {
+      const lcpImage = document.getElementById('lcp-image')
+      if (lcpImage) {
+        lcpImage.style.display = 'none'
+        lcpImage.style.visibility = 'hidden'
+        lcpImage.classList.remove('animate-lcp-float')
+      }
+    }
+  }, [])
 
   useEffect(() => {
     let removeTimer: NodeJS.Timeout | null = null
@@ -17,13 +30,22 @@ export default function LoadingScreen() {
       setIsFading(true)
       // Immediately hide LCP image and remove animation when fading starts
       const lcpImage = document.getElementById('lcp-image')
-      if (lcpImage) {
+      if (lcpImage && !hasHiddenLcpImage.current) {
         lcpImage.classList.remove('animate-lcp-float')
         lcpImage.style.display = 'none'
+        lcpImage.style.visibility = 'hidden'
+        hasHiddenLcpImage.current = true
       }
       // Remove after CSS transition completes (500ms)
       removeTimer = setTimeout(() => {
         setIsLoading(false)
+        // Final cleanup - ensure LCP image is permanently hidden
+        const finalLcpImage = document.getElementById('lcp-image')
+        if (finalLcpImage) {
+          finalLcpImage.style.display = 'none'
+          finalLcpImage.style.visibility = 'hidden'
+          finalLcpImage.classList.remove('animate-lcp-float')
+        }
       }, 500)
     }, 1000)
 
@@ -36,20 +58,20 @@ export default function LoadingScreen() {
   }, [])
 
   useEffect(() => {
-    // Apply floating animation to the existing LCP image
+    // Apply floating animation to the existing LCP image only during loading
     const lcpImage = document.getElementById('lcp-image')
-    if (lcpImage && isLoading && !isFading) {
+    
+    if (!lcpImage) return
+
+    if (isLoading && !isFading) {
+      // Ensure the image is visible and positioned correctly
+      lcpImage.style.display = ''
+      lcpImage.style.visibility = ''
       lcpImage.classList.add('animate-lcp-float')
-      
-      return () => {
-        const currentLcpImage = document.getElementById('lcp-image')
-        if (currentLcpImage) {
-          currentLcpImage.classList.remove('animate-lcp-float')
-        }
-      }
-    } else if (lcpImage && isFading) {
-      // Ensure animation is removed when fading starts
+    } else {
+      // Remove animation when not loading or when fading
       lcpImage.classList.remove('animate-lcp-float')
+      // Don't reset transform here - let CSS handle it naturally
     }
   }, [isLoading, isFading])
 

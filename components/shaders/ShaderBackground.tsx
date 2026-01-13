@@ -29,12 +29,12 @@ export default function ShaderBackground() {
 
     const initializeShaders = () => {
       try {
-        // Check all conditions before loading
-        const isDesktop = window.innerWidth >= 768
+        // Check conditions before loading (works on both desktop and mobile)
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
         const webGLAvailable = isWebGLAvailable()
         
-        if (!isDesktop || prefersReducedMotion || !webGLAvailable) {
+        // Only block if user prefers reduced motion or WebGL is unavailable
+        if (prefersReducedMotion || !webGLAvailable) {
           setHasError(true) // Use fallback background
           return
         }

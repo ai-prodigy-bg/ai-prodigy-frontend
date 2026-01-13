@@ -163,8 +163,10 @@
   }
 
   /* Floating animation for LCP loading image */
+  /* Works with fixed positioning: top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 */
   .animate-lcp-float {
     animation: lcpFloat 3s ease-in-out infinite;
+    transform-origin: center center;
   }
 
   @keyframes lcpFloat {
