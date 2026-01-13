@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion"
 import { useTranslation } from "../../lib/translations"
-import DrawingSVG from "./DrawingSVG"
 import MixedTypographyText from "./MixedTypographyText"
 
 export default function HeroSection() {
@@ -10,8 +9,6 @@ export default function HeroSection() {
 
   return (
     <section className="min-h-screen flex items-center justify-center px-4 md:px-6 relative">
-      <DrawingSVG />
-
       <div className="max-w-6xl mx-auto text-center relative">
         <motion.div
           initial={{ clipPath: "inset(0 100% 0 0)" }}

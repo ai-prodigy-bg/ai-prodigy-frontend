@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { motion } from "framer-motion"
 import { buildImageKitUrl, getProjectImageTransformations, getProjectImageSrcSet } from "../../lib/utils/imagekit"
 
@@ -29,12 +29,28 @@ export default function ProjectCard({
   const rectCacheRef = useRef<{ rect: DOMRect; time: number } | null>(null)
   const RECT_CACHE_DURATION = 16 // Cache rect for 16ms (60fps)
 
+  // Cleanup RAF on unmount
+  useEffect(() => {
+    return () => {
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current)
+        rafIdRef.current = null
+      }
+    }
+  }, [])
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     // Throttle updates using requestAnimationFrame
     if (rafIdRef.current === null) {
       rafIdRef.current = requestAnimationFrame(() => {
         const now = performance.now()
         const element = e.currentTarget
+        
+        // Guard against null element (component may have unmounted)
+        if (!element) {
+          rafIdRef.current = null
+          return
+        }
         
         // Cache rect to avoid forced reflows
         if (!rectCacheRef.current || now - rectCacheRef.current.time > RECT_CACHE_DURATION) {
