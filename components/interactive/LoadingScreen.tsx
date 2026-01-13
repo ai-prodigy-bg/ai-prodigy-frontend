@@ -15,14 +15,15 @@ export default function LoadingScreen() {
     // Start fade after 1s, then remove after fade completes
     const fadeTimer = setTimeout(() => {
       setIsFading(true)
+      // Immediately hide LCP image and remove animation when fading starts
+      const lcpImage = document.getElementById('lcp-image')
+      if (lcpImage) {
+        lcpImage.classList.remove('animate-lcp-float')
+        lcpImage.style.display = 'none'
+      }
       // Remove after CSS transition completes (500ms)
       removeTimer = setTimeout(() => {
         setIsLoading(false)
-        // Hide server-rendered LCP image only after LoadingScreen is done
-        const lcpImage = document.getElementById('lcp-image')
-        if (lcpImage) {
-          lcpImage.style.display = 'none'
-        }
       }, 500)
     }, 1000)
 
@@ -41,10 +42,14 @@ export default function LoadingScreen() {
       lcpImage.classList.add('animate-lcp-float')
       
       return () => {
-        if (lcpImage) {
-          lcpImage.classList.remove('animate-lcp-float')
+        const currentLcpImage = document.getElementById('lcp-image')
+        if (currentLcpImage) {
+          currentLcpImage.classList.remove('animate-lcp-float')
         }
       }
+    } else if (lcpImage && isFading) {
+      // Ensure animation is removed when fading starts
+      lcpImage.classList.remove('animate-lcp-float')
     }
   }, [isLoading, isFading])
 
