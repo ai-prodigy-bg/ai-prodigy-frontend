@@ -10,7 +10,7 @@ export default function LoadingScreen() {
   const { t } = useTranslation()
 
   useEffect(() => {
-    // Hide LCP image IMMEDIATELY - do this first thing
+    // Hide LCP image IMMEDIATELY
     const hideLcp = () => {
       const lcpImage = document.getElementById('lcp-image')
       if (lcpImage) {
@@ -20,12 +20,10 @@ export default function LoadingScreen() {
       }
     }
     
-    // Hide immediately
     hideLcp()
-    
-    // Also hide on next frame to be sure
     requestAnimationFrame(hideLcp)
 
+    // Show for 3 seconds, then fade out
     const timer = setTimeout(() => {
       setIsLoading(false)
       hideLcp()
@@ -44,7 +42,7 @@ export default function LoadingScreen() {
       initial={{ opacity: 1 }}
       animate={{ opacity: 0 }}
       transition={{ duration: 0.8, delay: 2.5 }}
-      className="fixed inset-0 bg-background z-[100] flex items-center justify-center"
+      className="fixed inset-0 bg-background z-[100] flex items-center justify-center pointer-events-none"
       onAnimationComplete={() => setIsLoading(false)}
     >
       <div className="text-center">
