@@ -9,7 +9,6 @@ import { Suspense } from "react"
 import LanguageDetector from "../components/LanguageDetector"
 import { getBaseUrl, getAlternateUrls } from "../lib/utils/seo"
 import { headers } from "next/headers"
-import { getLCPImageUrl } from "../lib/utils/imagekit"
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -146,22 +145,6 @@ export default async function RootLayout({
         {/* Preconnect to ImageKit for faster image loading */}
         <link rel="preconnect" href="https://ik.imagekit.io" />
         <link rel="dns-prefetch" href="https://ik.imagekit.io" />
-        {/* Preload LCP image for mobile (308px) */}
-        <link
-          rel="preload"
-          as="image"
-          href={getLCPImageUrl("/prodigy%20corp/Logo/prodigy-corp-logo-nobg-cut.png", "mobile", 80)}
-          fetchPriority="high"
-          media="(max-width: 640px)"
-        />
-        {/* Preload LCP image for desktop (176px) */}
-        <link
-          rel="preload"
-          as="image"
-          href={getLCPImageUrl("/prodigy%20corp/Logo/prodigy-corp-logo-nobg-cut.png", "desktop", 80)}
-          fetchPriority="high"
-          media="(min-width: 641px)"
-        />
         {/* Structured Data - Organization Schema */}
         <script
           type="application/ld+json"

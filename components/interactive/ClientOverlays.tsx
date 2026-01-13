@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import dynamic from "next/dynamic"
-import LoadingScreen from "./LoadingScreen"
 import Navigation from "../navigation/Navigation"
 
 // Dynamic imports for expensive effects - desktop only
@@ -84,7 +83,6 @@ export default function ClientOverlays() {
 
   return (
     <>
-      <LoadingScreen />
       <Navigation />
       {shouldLoadDeferredComponents && (
         <>
