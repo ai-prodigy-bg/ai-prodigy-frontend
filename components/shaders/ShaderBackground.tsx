@@ -81,10 +81,9 @@ export default function ShaderBackground() {
 
     // Check conditions
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const isDesktop = window.matchMedia('(min-width: 768px)').matches
     
-    // Block if reduced motion, not desktop, or WebGL unavailable
-    if (prefersReducedMotion || !isDesktop || !webglOK()) {
+    // Block if reduced motion or WebGL unavailable (works on both desktop and mobile)
+    if (prefersReducedMotion || !webglOK()) {
       return
     }
 
