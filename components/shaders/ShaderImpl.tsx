@@ -15,7 +15,7 @@ export default function ShaderImpl() {
       // @ts-expect-error - colors prop exists at runtime but types may be incomplete
       colors={["#FFFFFF", "#4A90E2", "#00000000"]}
       scale={2.0}
-      speed={0.08}
+      speed={0.05}
       style={{ position: "absolute", inset: 0, opacity: 0.6 }}
     />
   )
