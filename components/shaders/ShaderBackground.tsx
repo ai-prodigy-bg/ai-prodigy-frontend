@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState } from "react"
 
 // Helper to check WebGL availability
 function isWebGLAvailable(): boolean {
@@ -15,63 +15,15 @@ function isWebGLAvailable(): boolean {
   }
 }
 
-// Helper to detect low-end devices
-function isLowEndDevice(): boolean {
-  if (typeof window === 'undefined') return false
-  
-  // Check hardware concurrency (CPU cores)
-  const cores = navigator.hardwareConcurrency || 4
-  if (cores < 4) return true
-  
-  // Check device memory (if available)
-  const memory = (navigator as any).deviceMemory
-  if (memory && memory < 4) return true
-  
-  // Check connection speed
-  const connection = (navigator as any).connection
-  if (connection && connection.effectiveType === 'slow-2g') return true
-  
-  return false
-}
-
 export default function ShaderBackground() {
-  const [shouldRender, setShouldRender] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  const [shouldLoadShaders, setShouldLoadShaders] = useState(false)
   const [hasError, setHasError] = useState(false)
-  const [isPaused, setIsPaused] = useState(false)
-  const [isVisible, setIsVisible] = useState(true)
-  const [useSimpleShader, setUseSimpleShader] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
 
-  // Page Visibility API - Pause when tab is hidden
   useEffect(() => {
-    const handleVisibilityChange = () => {
-      setIsPaused(document.hidden)
-    }
-    
-    document.addEventListener('visibilitychange', handleVisibilityChange)
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange)
-  }, [])
+    // Set mounted immediately to prevent flickering
+    setMounted(true)
 
-  // Intersection Observer - Pause when not visible in viewport
-  useEffect(() => {
-    if (!containerRef.current) return
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          // Pause if less than 10% visible
-          setIsVisible(entry.intersectionRatio >= 0.1)
-        })
-      },
-      { threshold: [0, 0.1, 1] }
-    )
-
-    observer.observe(containerRef.current)
-    return () => observer.disconnect()
-  }, [])
-
-  // Initialization
-  useEffect(() => {
     // Guard against SSR
     if (typeof window === 'undefined') return
 
@@ -83,17 +35,14 @@ export default function ShaderBackground() {
         const webGLAvailable = isWebGLAvailable()
         
         if (!isDesktop || prefersReducedMotion || !webGLAvailable) {
-          return // Don't render shaders
+          setHasError(true) // Use fallback background
+          return
         }
 
-        // Detect low-end devices - use simplified shader
-        const lowEnd = isLowEndDevice()
-        setUseSimpleShader(lowEnd)
-
-        // Load after LCP (2000ms delay instead of 100ms)
+        // Load after first paint to avoid blocking render
         const timer = setTimeout(() => {
-          setShouldRender(true)
-        }, 2000)
+          setShouldLoadShaders(true)
+        }, 100)
         
         return () => clearTimeout(timer)
       } catch (error) {
@@ -106,43 +55,26 @@ export default function ShaderBackground() {
     return cleanup
   }, [])
 
-  // Fallback for mobile, reduced motion, WebGL unavailable, or errors
-  if (!shouldRender || hasError) {
-    return (
-      <div
-        ref={containerRef}
-        style={{
-          position: "fixed",
-          width: "100%",
-          height: "100%",
-          backgroundColor: "#0a0f1e",
-          overflow: "hidden",
-          zIndex: -10,
-        }}
-      />
-    )
-  }
-
-  // Lazy load shader components only when needed
+  // Always render container to prevent flickering
   return (
-    <ShaderComponents
-      isPaused={isPaused}
-      isVisible={isVisible}
-      useSimpleShader={useSimpleShader}
-    />
+    <div
+      style={{
+        position: "fixed",
+        width: "100%",
+        height: "100%",
+        backgroundColor: "#0a0f1e",
+        overflow: "hidden",
+        zIndex: -10,
+      }}
+    >
+      {/* Only render shaders when mounted and should load */}
+      {mounted && shouldLoadShaders && !hasError && <ShaderComponents />}
+    </div>
   )
 }
 
 // Separate component to isolate shader rendering
-function ShaderComponents({
-  isPaused,
-  isVisible,
-  useSimpleShader,
-}: {
-  isPaused: boolean
-  isVisible: boolean
-  useSimpleShader: boolean
-}) {
+function ShaderComponents() {
   const [ShaderComponents, setShaderComponents] = useState<{
     DotGrid: any
     NeuroNoise: any
@@ -176,65 +108,37 @@ function ShaderComponents({
     }
   }, [])
 
-  // Render static background when paused, not visible, loading, or error
-  if (loadError || !ShaderComponents || isPaused || !isVisible) {
-    return (
-      <div
-        style={{
-          position: "fixed",
-          width: "100%",
-          height: "100%",
-          backgroundColor: "#0a0f1e",
-          overflow: "hidden",
-          zIndex: -10,
-        }}
-      />
-    )
+  // Don't render anything until shaders are loaded (container is already rendered by parent)
+  if (loadError || !ShaderComponents) {
+    return null
   }
 
   const { DotGrid, NeuroNoise } = ShaderComponents
 
-  return (
-    <div
-      style={{
-        position: "fixed",
-        width: "100%",
-        height: "100%",
-        backgroundColor: "#0a0f1e",
-        overflow: "hidden",
-        zIndex: -10,
-        willChange: 'transform',
-        transform: 'translateZ(0)',
-      }}
-    >
-      {/* Conditional shader rendering based on device capabilities */}
-      {useSimpleShader ? (
-        // Low-end devices: Single animated shader only
+  try {
+    return (
+      <>
+        {/* Base Layer: The Architectural Blueprint */}
+        <DotGrid
+          colors={["#0a0f1e", "#1a2a47"]}
+          scale={0.2}
+          speed={0}
+          style={{ position: "absolute", width: "100%", height: "100%", top: 0, left: 0 }}
+          onError={() => setLoadError(true)}
+        />
+        {/* Top Layer: The Flow of Ideas & Data */}
         <NeuroNoise
           colors={["#FFFFFF", "#4A90E2", "#00000000"]}
           scale={2.0}
-          speed={0.05}
-          style={{ position: "absolute", width: "100%", height: "100%", opacity: 0.4 }}
+          speed={0.15}
+          style={{ position: "absolute", width: "100%", height: "100%", top: 0, left: 0, opacity: 0.6 }}
+          onError={() => setLoadError(true)}
         />
-      ) : (
-        // High-end devices: Dual shaders for full visual effect
-        <>
-          {/* Base Layer: The Architectural Blueprint */}
-          <DotGrid
-            colors={["#0a0f1e", "#1a2a47"]}
-            scale={0.2}
-            speed={0}
-            style={{ position: "absolute", width: "100%", height: "100%" }}
-          />
-          {/* Top Layer: The Flow of Ideas & Data */}
-          <NeuroNoise
-            colors={["#FFFFFF", "#4A90E2", "#00000000"]}
-            scale={2.0}
-            speed={0.05}
-            style={{ position: "absolute", width: "100%", height: "100%", opacity: 0.4 }}
-          />
-        </>
-      )}
-    </div>
-  )
+      </>
+    )
+  } catch (error) {
+    console.warn('ShaderBackground: Shader rendering error, falling back:', error)
+    setLoadError(true)
+    return null
+  }
 }
