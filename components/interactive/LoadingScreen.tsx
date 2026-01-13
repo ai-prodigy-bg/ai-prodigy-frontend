@@ -10,12 +10,24 @@ export default function LoadingScreen() {
   const { t } = useTranslation()
 
   useEffect(() => {
+    // Hide server-rendered LCP image when client component mounts
+    const lcpImage = document.getElementById('lcp-image')
+    if (lcpImage) {
+      lcpImage.style.display = 'none'
+    }
+
     // Reduced delay to 1s for better LCP - content can render behind
     const timer = setTimeout(() => {
       setIsLoading(false)
     }, 1000)
 
-    return () => clearTimeout(timer)
+    return () => {
+      clearTimeout(timer)
+      // Show server-rendered LCP image again if still exists
+      if (lcpImage) {
+        lcpImage.style.display = ''
+      }
+    }
   }, [])
 
   if (!isLoading) return null
