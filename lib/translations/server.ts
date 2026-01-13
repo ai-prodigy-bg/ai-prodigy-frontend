@@ -1,5 +1,60 @@
 import { cookies, headers } from 'next/headers'
-import { getTranslation, type Locale, type TranslationKey } from './index'
+import en from './en.json'
+import bg from './bg.json'
+
+type Locale = 'en' | 'bg'
+type TranslationKey = string
+
+const translations = {
+  en,
+  bg,
+} as const
+
+function getTranslation(locale: Locale, key: TranslationKey): string {
+  const keys = key.split('.')
+  let current: any = translations[locale]
+
+  for (const k of keys) {
+    if (current && typeof current === 'object' && k in current) {
+      current = current[k]
+    } else {
+      // Fallback to English
+      current = translations.en
+      for (const fallbackKey of keys) {
+        if (current && typeof current === 'object' && fallbackKey in current) {
+          current = current[fallbackKey]
+        } else {
+          return key // Return the key itself if no translation is found
+        }
+      }
+    }
+  }
+
+  return typeof current === 'string' ? current : key
+}
+
+function getTranslationRaw(locale: Locale, key: TranslationKey): any {
+  const keys = key.split('.')
+  let current: any = translations[locale]
+
+  for (const k of keys) {
+    if (current && typeof current === 'object' && k in current) {
+      current = current[k]
+    } else {
+      // Fallback to English
+      current = translations.en
+      for (const fallbackKey of keys) {
+        if (current && typeof current === 'object' && fallbackKey in current) {
+          current = current[fallbackKey]
+        } else {
+          return null
+        }
+      }
+    }
+  }
+
+  return current
+}
 
 export async function getServerLocale(): Promise<Locale> {
   const headersList = await headers()
@@ -44,26 +99,4 @@ export async function getServerTranslations() {
   }
 }
 
-function getTranslationRaw(locale: Locale, key: TranslationKey): any {
-  const { translations } = require('./index')
-  const keys = key.split('.')
-  let current: any = translations[locale]
-
-  for (const k of keys) {
-    if (current && typeof current === 'object' && k in current) {
-      current = current[k]
-    } else {
-      // Fallback to English
-      current = translations.en
-      for (const fallbackKey of keys) {
-        if (current && typeof current === 'object' && fallbackKey in current) {
-          current = current[fallbackKey]
-        } else {
-          return null
-        }
-      }
-    }
-  }
-
-  return current
-}
+export type { Locale, TranslationKey }
