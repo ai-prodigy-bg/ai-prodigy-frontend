@@ -142,6 +142,9 @@ export default async function RootLayout({
     <html lang={locale} className="dark">
       <head>
         <meta charSet="UTF-8" />
+        {/* Preconnect to ImageKit for faster image loading */}
+        <link rel="preconnect" href="https://ik.imagekit.io" />
+        <link rel="dns-prefetch" href="https://ik.imagekit.io" />
         {/* Structured Data - Organization Schema */}
         <script
           type="application/ld+json"

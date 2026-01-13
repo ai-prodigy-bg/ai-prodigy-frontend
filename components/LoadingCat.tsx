@@ -133,6 +133,9 @@ export default function LoadingCat({
             alt="Loading..."
             className="w-full h-full object-contain"
             loading="eager"
+            fetchPriority="high"
+            width={176}
+            height={176}
           />
         </motion.div>
 

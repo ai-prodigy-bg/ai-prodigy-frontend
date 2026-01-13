@@ -171,7 +171,7 @@ export default function AnimatedAvatar({
                   animate={
                     isHovering
                       ? {
-                          r: [2, 4, 2],
+                          scale: [1, 2, 1],
                           opacity: [0.6, 1, 0.6],
                           cx: pos.animX,
                           cy: pos.animY,

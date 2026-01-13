@@ -14,14 +14,21 @@ export default function LiquidCursor() {
 
     let mouseX = 0
     let mouseY = 0
+    let rafId: number | null = null
+    let cachedRect: DOMRect | null = null
+    let rectCacheTime = 0
+    const RECT_CACHE_DURATION = 16 // Cache rect for 16ms (60fps)
 
-    const moveCursor = (e: MouseEvent) => {
-      mouseX = e.clientX
-      mouseY = e.clientY
-
+    const updateCursor = () => {
       // Magnetic attraction effect
       if (magneticTarget) {
-        const rect = magneticTarget.getBoundingClientRect()
+        const now = performance.now()
+        // Cache rect to avoid forced reflows
+        if (!cachedRect || now - rectCacheTime > RECT_CACHE_DURATION) {
+          cachedRect = magneticTarget.getBoundingClientRect()
+          rectCacheTime = now
+        }
+        const rect = cachedRect
         const centerX = rect.left + rect.width / 2
         const centerY = rect.top + rect.height / 2
         const distance = Math.sqrt(Math.pow(mouseX - centerX, 2) + Math.pow(mouseY - centerY, 2))
@@ -32,12 +39,25 @@ export default function LiquidCursor() {
           const attractY = centerY + (mouseY - centerY) * (1 - strength * 0.3)
           cursor.style.left = attractX + "px"
           cursor.style.top = attractY + "px"
-          return
+        } else {
+          cursor.style.left = mouseX + "px"
+          cursor.style.top = mouseY + "px"
         }
+      } else {
+        cursor.style.left = mouseX + "px"
+        cursor.style.top = mouseY + "px"
       }
+      rafId = null
+    }
 
-      cursor.style.left = mouseX + "px"
-      cursor.style.top = mouseY + "px"
+    const moveCursor = (e: MouseEvent) => {
+      mouseX = e.clientX
+      mouseY = e.clientY
+
+      // Throttle updates using requestAnimationFrame
+      if (rafId === null) {
+        rafId = requestAnimationFrame(updateCursor)
+      }
     }
 
     const handleMouseEnter = (e: Event) => {
@@ -68,6 +88,9 @@ export default function LiquidCursor() {
         el.removeEventListener("mouseenter", handleMouseEnter)
         el.removeEventListener("mouseleave", handleMouseLeave)
       })
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId)
+      }
     }
   }, [magneticTarget])
 

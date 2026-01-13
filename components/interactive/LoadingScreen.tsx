@@ -10,9 +10,10 @@ export default function LoadingScreen() {
   const { t } = useTranslation()
 
   useEffect(() => {
+    // Reduced delay to 1s for better LCP - content can render behind
     const timer = setTimeout(() => {
       setIsLoading(false)
-    }, 3000) // Increased to 3 seconds to show the cat properly
+    }, 1000)
 
     return () => clearTimeout(timer)
   }, [])
@@ -23,9 +24,10 @@ export default function LoadingScreen() {
     <motion.div
       initial={{ opacity: 1 }}
       animate={{ opacity: 0 }}
-      transition={{ duration: 0.8, delay: 2.5 }}
-      className="fixed inset-0 bg-background z-[100] flex items-center justify-center"
+      transition={{ duration: 0.5, delay: 0.5 }}
+      className="fixed inset-0 bg-background z-[100] flex items-center justify-center pointer-events-none"
       onAnimationComplete={() => setIsLoading(false)}
+      style={{ willChange: 'opacity' }}
     >
       <div className="text-center">
         <LoadingCat 

@@ -43,7 +43,7 @@ export default function AboutSection() {
                   }
                 : {}
             }
-            transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY }}
+            transition={{ duration: 4, repeat: isInView ? Number.POSITIVE_INFINITY : 0 }}
             style={{
               backgroundClip: "text",
               WebkitBackgroundClip: "text",
@@ -121,7 +121,7 @@ export default function AboutSection() {
               animate={{
                 rotate: [0, 1, -1, 0],
               }}
-              transition={{ duration: 6, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+              transition={{ duration: 6, repeat: isInView ? Number.POSITIVE_INFINITY : 0, ease: "easeInOut" }}
             >
               {/* Background shapes */}
               <motion.circle
@@ -134,7 +134,7 @@ export default function AboutSection() {
                   r: [120, 130, 120],
                   opacity: [0.1, 0.2, 0.1],
                 }}
-                transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY }}
+                transition={{ duration: 4, repeat: isInView ? Number.POSITIVE_INFINITY : 0 }}
               />
 
               {/* Central hub */}
@@ -146,7 +146,7 @@ export default function AboutSection() {
                 animate={{
                   scale: [1, 1.1, 1],
                 }}
-                transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+                transition={{ duration: 2, repeat: isInView ? Number.POSITIVE_INFINITY : 0 }}
               />
 
               {/* Connecting nodes */}
@@ -179,7 +179,7 @@ export default function AboutSection() {
                       transition={{
                         duration: 2,
                         delay: i * 0.2,
-                        repeat: Number.POSITIVE_INFINITY,
+                        repeat: isInView ? Number.POSITIVE_INFINITY : 0,
                       }}
                     />
                     <motion.circle
@@ -194,7 +194,7 @@ export default function AboutSection() {
                       transition={{
                         duration: 3,
                         delay: i * 0.3,
-                        repeat: Number.POSITIVE_INFINITY,
+                        repeat: isInView ? Number.POSITIVE_INFINITY : 0,
                       }}
                     />
                   </g>

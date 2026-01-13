@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { motion } from "framer-motion"
 import { buildImageKitUrl, getProjectImageTransformations } from "../../lib/utils/imagekit"
 
@@ -25,12 +25,29 @@ export default function ProjectCard({
 }: ProjectCardProps) {
   const [isHovering, setIsHovering] = useState(false)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const rafIdRef = useRef<number | null>(null)
+  const rectCacheRef = useRef<{ rect: DOMRect; time: number } | null>(null)
+  const RECT_CACHE_DURATION = 16 // Cache rect for 16ms (60fps)
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    const x = e.clientX - rect.left - rect.width / 2
-    const y = e.clientY - rect.top - rect.height / 2
-    setMousePosition({ x, y })
+    // Throttle updates using requestAnimationFrame
+    if (rafIdRef.current === null) {
+      rafIdRef.current = requestAnimationFrame(() => {
+        const now = performance.now()
+        const element = e.currentTarget
+        
+        // Cache rect to avoid forced reflows
+        if (!rectCacheRef.current || now - rectCacheRef.current.time > RECT_CACHE_DURATION) {
+          rectCacheRef.current = { rect: element.getBoundingClientRect(), time: now }
+        }
+        
+        const rect = rectCacheRef.current.rect
+        const x = e.clientX - rect.left - rect.width / 2
+        const y = e.clientY - rect.top - rect.height / 2
+        setMousePosition({ x, y })
+        rafIdRef.current = null
+      })
+    }
   }
 
   return (
