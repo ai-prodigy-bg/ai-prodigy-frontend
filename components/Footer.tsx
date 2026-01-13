@@ -1,4 +1,4 @@
-import { buildImageKitUrl } from "../lib/utils/imagekit"
+import { buildImageKitUrl, getLogoTransformations } from "../lib/utils/imagekit"
 import { XIcon, InstagramIcon, FacebookIcon } from "./SocialIcons"
 import type { TranslationFunction } from "../lib/translations/server"
 
@@ -38,18 +38,13 @@ export default function Footer({ t }: FooterProps) {
           {/* Logo + Copyright */}
           <div className="flex items-center gap-3 justify-center">
             <img
-              src={buildImageKitUrl("/prodigy%20corp/Logo/prodigy-corp-logo-nobg-cut.png", [
-                "w-96",
-                "q-90",
-                "f-auto",
-                "dpr-2",
-                "cm-maintain_ratio",
-                "bo-2_FFFFFF",
-              ])}
+              src={buildImageKitUrl("/prodigy%20corp/Logo/prodigy-corp-logo-nobg-cut.png", 
+                getLogoTransformations(40, 85)
+              )}
               alt=""
               aria-hidden="true"
-              width={96}
-              height={96}
+              width={40}
+              height={40}
               className="w-10 h-10"
               style={{
                 filter:
@@ -70,18 +65,13 @@ export default function Footer({ t }: FooterProps) {
           {/* Left: Logo + Copyright */}
           <div className="flex items-center gap-4">
             <img
-              src={buildImageKitUrl("/prodigy%20corp/Logo/prodigy-corp-logo-nobg-cut.png", [
-                "w-96",
-                "q-90",
-                "f-auto",
-                "dpr-2",
-                "cm-maintain_ratio",
-                "bo-2_FFFFFF",
-              ])}
+              src={buildImageKitUrl("/prodigy%20corp/Logo/prodigy-corp-logo-nobg-cut.png", 
+                getLogoTransformations(48, 85)
+              )}
               alt=""
               aria-hidden="true"
-              width={96}
-              height={96}
+              width={48}
+              height={48}
               className="w-12 h-12"
               style={{
                 filter:

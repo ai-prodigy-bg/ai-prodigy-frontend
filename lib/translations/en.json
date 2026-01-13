@@ -6,7 +6,9 @@
     "projects": "Projects",
     "services": "Services",
     "about": "About",
-    "contact": "Contact"
+    "contact": "Contact",
+    "mobileMenuToggle": "Toggle mobile menu",
+    "mobileMenuClose": "Close mobile menu"
   },
   "hero": {
     "title": {
@@ -190,6 +192,7 @@
       "name": "Your Name",
       "email": "Your Email", 
       "projectType": "Select Project Type",
+      "projectTypeLabel": "Project Type",
       "message": "Tell us about your project...",
       "submit": "Send Message",
       "sending": "Sending...",

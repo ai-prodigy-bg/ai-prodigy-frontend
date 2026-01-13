@@ -223,10 +223,15 @@ export default function ContactSection() {
                 </div>
 
                 <motion.div whileHover={{ scale: 1.02 }} whileFocus={{ scale: 1.02 }} className="relative">
+                  <label htmlFor="project-select" className="sr-only">
+                    {t('contact.form.projectTypeLabel')}
+                  </label>
                   <motion.select
+                    id="project-select"
                     name="project"
                     value={formData.project}
                     onChange={handleInputChange}
+                    aria-label={t('contact.form.projectTypeLabel')}
                     className="w-full bg-background/50 border border-border/50 rounded-xl px-4 py-3 md:py-4 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 min-h-[48px]"
                     whileFocus={{
                       boxShadow: "0 0 20px oklch(0.65 0.25 285 / 0.3)",

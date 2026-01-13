@@ -15,6 +15,12 @@ export function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
+  // Create response
+  const response = NextResponse.next()
+  
+  // Set pathname header for layout to read
+  response.headers.set('x-pathname', pathname)
+
   // Check if pathname already has a locale
   const locales = ['bg']
   const pathnameHasLocale = locales.some(
@@ -22,7 +28,7 @@ export function middleware(request: NextRequest) {
   )
 
   if (pathnameHasLocale) {
-    return NextResponse.next()
+    return response
   }
 
   // Get the preferred locale from Accept-Language header
@@ -44,11 +50,13 @@ export function middleware(request: NextRequest) {
 
   // Only redirect to /bg if Bulgarian is preferred, otherwise serve English at root
   if (pathname === '/' && shouldUseBulgarian) {
-    return NextResponse.redirect(new URL(`/bg${search}`, request.url))
+    const redirectResponse = NextResponse.redirect(new URL(`/bg${search}`, request.url))
+    redirectResponse.headers.set('x-pathname', '/bg')
+    return redirectResponse
   }
 
   // For English (default), continue to serve from root
-  return NextResponse.next()
+  return response
 }
 
 export const config = {

@@ -7,6 +7,8 @@ import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { Suspense } from "react"
 import LanguageDetector from "../components/LanguageDetector"
+import { getBaseUrl, getAlternateUrls } from "../lib/utils/seo"
+import { headers } from "next/headers"
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -25,15 +27,41 @@ const dmSans = DM_Sans({
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
+  maximumScale: 5,
 }
 
+const baseUrl = getBaseUrl()
+const alternateUrls = getAlternateUrls()
+
 export const metadata: Metadata = {
-  title: "Prodigy Corp - Premium Digital Solutions",
+  metadataBase: new URL(baseUrl),
+  title: {
+    default: "Prodigy Corp - Premium Digital Solutions | AI-Powered Development",
+    template: "%s | Prodigy Corp"
+  },
   description:
-    "Bold, innovative apps, websites, and digital services. We build cutting-edge solutions that push boundaries.",
-  generator: "v0.app",
-  keywords: ["web development", "app development", "digital services", "prodigy corp"],
+    "Premium digital products powered by AI. We build faster, smarter, and more cost-effectively. Mobile apps, web applications, websites, and digital services. Based in Plovdiv, Bulgaria.",
+  keywords: [
+    "web development",
+    "app development", 
+    "digital services",
+    "AI development",
+    "mobile apps",
+    "web applications",
+    "e-commerce",
+    "digital transformation",
+    "Prodigy Corp",
+    "Bulgaria",
+    "Plovdiv"
+  ],
   authors: [{ name: "Prodigy Corp" }],
+  creator: "Prodigy Corp",
+  publisher: "Prodigy Corp",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   icons: {
     icon: [
       { url: "/favicon_io/favicon-32x32.png", sizes: "32x32", type: "image/png" },
@@ -49,27 +77,125 @@ export const metadata: Metadata = {
     ],
   },
   manifest: "/favicon_io/site.webmanifest",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: alternateUrls.en,
+    siteName: "Prodigy Corp",
+    title: "Prodigy Corp - Premium Digital Solutions | AI-Powered Development",
+    description: "Premium digital products powered by AI. We build faster, smarter, and more cost-effectively. Mobile apps, web applications, websites, and digital services.",
+    images: [
+      {
+        url: `${baseUrl}/prodigy-corp-logo-nobg.png`,
+        width: 1200,
+        height: 630,
+        alt: "Prodigy Corp - Premium Digital Solutions",
+      },
+    ],
+    alternateLocale: ["bg_BG"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Prodigy Corp - Premium Digital Solutions | AI-Powered Development",
+    description: "Premium digital products powered by AI. We build faster, smarter, and more cost-effectively.",
+    images: [`${baseUrl}/prodigy-corp-logo-nobg.png`],
+    creator: "@prodigycorp", // Update with actual Twitter handle if available
+  },
+  alternates: {
+    canonical: alternateUrls.en,
+    languages: {
+      "en": alternateUrls.en,
+      "bg": alternateUrls.bg,
+      "x-default": alternateUrls.xDefault,
+    },
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    // Add your verification codes here when available
+    // google: "your-google-verification-code",
+    // yandex: "your-yandex-verification-code",
+    // bing: "your-bing-verification-code",
+  },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  // Determine locale from pathname
+  const headersList = await headers()
+  const pathname = headersList.get('x-pathname') || headersList.get('referer') || ''
+  const locale = pathname.includes('/bg') ? 'bg' : 'en'
+  
   return (
-    <html lang="en" className="dark">
+    <html lang={locale} className="dark">
       <head>
         <meta charSet="UTF-8" />
-        <link rel="alternate" hrefLang="en" href="https://localhost:3000/" />
-        <link rel="alternate" hrefLang="bg" href="https://localhost:3000/bg" />
-        <link rel="alternate" hrefLang="x-default" href="https://localhost:3000/" />
-        
-        {/* Favicon Links */}
-        <link rel="icon" type="image/x-icon" href="/favicon_io/favicon.ico" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png" />
-        <link rel="manifest" href="/favicon_io/site.webmanifest" />
+        {/* Structured Data - Organization Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Prodigy Corp",
+              "url": baseUrl,
+              "logo": `${baseUrl}/prodigy-corp-logo-nobg.png`,
+              "description": "Premium digital products powered by AI. We build faster, smarter, and more cost-effectively.",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Plovdiv",
+                "addressCountry": "BG"
+              },
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+359-899-520-856",
+                "contactType": "Customer Service",
+                "email": "support@prodigycorp.io",
+                "availableLanguage": ["en", "bg"]
+              },
+              "sameAs": [
+                // Add social media URLs when available
+                // "https://twitter.com/prodigycorp",
+                // "https://www.facebook.com/prodigycorp",
+                // "https://www.instagram.com/prodigycorp"
+              ]
+            })
+          }}
+        />
+        {/* Structured Data - WebSite Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "Prodigy Corp",
+              "url": baseUrl,
+              "alternateName": "Prodigy Corp - Premium Digital Solutions",
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": `${baseUrl}/search?q={search_term_string}`
+                },
+                "query-input": "required name=search_term_string"
+              },
+              "inLanguage": ["en", "bg"]
+            })
+          }}
+        />
       </head>
       <body className={`font-sans antialiased ${spaceGrotesk.variable} ${dmSans.variable} ${GeistMono.variable}`}>
         <LanguageDetector />

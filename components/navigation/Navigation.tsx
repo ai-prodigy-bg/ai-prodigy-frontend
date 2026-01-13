@@ -4,7 +4,7 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTranslation } from "../../lib/translations"
 import LanguageSwitcher from "../LanguageSwitcher"
-import { buildImageKitUrl } from "../../lib/utils/imagekit"
+import { buildImageKitUrl, getLogoTransformations } from "../../lib/utils/imagekit"
 
 export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -31,16 +31,17 @@ export default function Navigation() {
           data-magnetic
         >
           <img
-            src={buildImageKitUrl("/prodigy%20corp/Logo/prodigy-corp-text-logo-nobg-cut.png", [
-              "w-326",
-              "q-90",
-              "f-auto",
-              "dpr-2",
-              "cm-maintain_ratio",
-              "bo-2_FFFFFF",
-            ])}
+            src={buildImageKitUrl("/prodigy%20corp/Logo/prodigy-corp-text-logo-nobg-cut.png", 
+              // Mobile: h-8 = 32px height, aspect ratio ~3.2:1, so width ~179px
+              // Desktop: h-10 = 40px height, aspect ratio ~3.2:1, so width ~204px
+              // Using responsive approach: serve 204px for desktop, browser will scale down on mobile
+              getLogoTransformations(204, 85)
+            )}
             alt="Prodigy Corp"
             className="h-8 md:h-10 w-auto"
+            width={204}
+            height={64}
+            fetchPriority="high"
             style={{
               filter:
                 // White edge, then brand-purple outer glow layers
@@ -84,6 +85,8 @@ export default function Navigation() {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label={isMobileMenuOpen ? t('navigation.mobileMenuClose') : t('navigation.mobileMenuToggle')}
+          aria-expanded={isMobileMenuOpen}
           className="md:hidden text-foreground p-2 drop-shadow-sm"
           data-magnetic
         >
