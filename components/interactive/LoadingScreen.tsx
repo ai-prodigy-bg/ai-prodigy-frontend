@@ -10,20 +10,20 @@ export default function LoadingScreen() {
   const { t } = useTranslation()
 
   useEffect(() => {
-    // Hide server-rendered LCP image when client component mounts
-    const lcpImage = document.getElementById('lcp-image')
-    if (lcpImage) {
-      lcpImage.style.display = 'none'
-    }
-
     let removeTimer: NodeJS.Timeout | null = null
 
     // Start fade after 1s, then remove after fade completes
+    // Don't hide the server-rendered LCP image - let it be visible for LCP
     const fadeTimer = setTimeout(() => {
       setIsFading(true)
       // Remove after CSS transition completes (500ms)
       removeTimer = setTimeout(() => {
         setIsLoading(false)
+        // Hide server-rendered LCP image only after LoadingScreen is done
+        const lcpImage = document.getElementById('lcp-image')
+        if (lcpImage) {
+          lcpImage.style.display = 'none'
+        }
       }, 500)
     }, 1000)
 
@@ -32,10 +32,6 @@ export default function LoadingScreen() {
       if (removeTimer) {
         clearTimeout(removeTimer)
       }
-      // Show server-rendered LCP image again if still exists
-      if (lcpImage) {
-        lcpImage.style.display = ''
-      }
     }
   }, [])
 
@@ -43,10 +39,14 @@ export default function LoadingScreen() {
 
   return (
     <div
-      className={`fixed inset-0 bg-background z-[100] flex items-center justify-center pointer-events-none transition-opacity duration-500 ${
+      className={`fixed inset-0 z-[100] flex items-center justify-center pointer-events-none transition-opacity duration-500 ${
         isFading ? 'opacity-0' : 'opacity-100'
       }`}
-      style={{ willChange: 'opacity' }}
+      style={{ 
+        willChange: 'opacity',
+        // Transparent background so LCP image shows through
+        backgroundColor: 'transparent'
+      }}
     >
       <div className="text-center">
         <LoadingCat 

@@ -62,6 +62,7 @@ export default async function HomePage() {
   return (
     <main className="min-h-screen relative overflow-hidden md:cursor-none cursor-auto">
       {/* LCP Image - Server-rendered in initial HTML for immediate discovery */}
+      {/* Lower z-index so LoadingScreen can overlay, but image is still visible for LCP */}
       <img
         src={lcpMobileUrl}
         srcSet={lcpSrcSet}
@@ -71,7 +72,7 @@ export default async function HomePage() {
         loading="eager"
         fetchPriority="high"
         sizes="(max-width: 640px) 308px, 176px"
-        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[100] w-[308px] h-[308px] md:w-[176px] md:h-[176px] object-contain"
+        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[90] w-[308px] h-[308px] md:w-[176px] md:h-[176px] object-contain"
         style={{
           filter: `
             drop-shadow(0 0 8px rgba(139, 92, 246, 0.6))
