@@ -62,7 +62,7 @@ export default async function HomePage() {
   return (
     <main className="min-h-screen relative overflow-hidden md:cursor-none cursor-auto">
       {/* LCP Image - Server-rendered in initial HTML for immediate discovery */}
-      {/* Lower z-index so LoadingScreen can overlay, but image is still visible for LCP */}
+      {/* Hidden by default, only visible for LCP measurement, then hidden by LoadingScreen */}
       <img
         src={lcpMobileUrl}
         srcSet={lcpSrcSet}
@@ -78,7 +78,8 @@ export default async function HomePage() {
             drop-shadow(0 0 8px rgba(139, 92, 246, 0.6))
             drop-shadow(0 0 16px rgba(139, 92, 246, 0.4))
             drop-shadow(0 0 24px rgba(139, 92, 246, 0.2))
-          `
+          `,
+          display: 'none'
         }}
         id="lcp-image"
       />

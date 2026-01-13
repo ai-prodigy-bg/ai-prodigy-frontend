@@ -34,6 +34,7 @@ const FloatingActionButton = dynamic(() => import("./FloatingActionButton"), {
 export default function ClientOverlays() {
   const [shouldLoadDesktopEffects, setShouldLoadDesktopEffects] = useState(false)
   const [shouldLoadDeferredComponents, setShouldLoadDeferredComponents] = useState(false)
+  const [shouldLoadShaders, setShouldLoadShaders] = useState(false)
 
   useEffect(() => {
     // Only load desktop effects on desktop and when motion is preferred
@@ -43,6 +44,8 @@ export default function ClientOverlays() {
       const isDesktop = window.innerWidth >= 768
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
       setShouldLoadDesktopEffects(isDesktop && !prefersReducedMotion)
+      // Shaders work on both mobile and desktop (only blocked by reduced motion preference)
+      setShouldLoadShaders(!prefersReducedMotion)
     }
 
     checkConditions()
@@ -93,10 +96,12 @@ export default function ClientOverlays() {
           <FloatingActionButton />
         </>
       )}
+      {/* Shaders work on both mobile and desktop */}
+      {shouldLoadShaders && <ShaderBackground />}
+      {/* Desktop-only effects */}
       {shouldLoadDesktopEffects && (
         <>
           <LiquidCursor />
-          <ShaderBackground />
           <MagneticElements />
         </>
       )}
