@@ -80,6 +80,33 @@ export default function ShaderBackground() {
       setEnabled(true)
     }, 0)
 
+    const watchLcp = () => {
+      if (!('PerformanceObserver' in window)) {
+        scheduleIdleStart()
+        return
+      }
+
+      try {
+        lcpObserver = new PerformanceObserver((entryList) => {
+          if (entryList.getEntries().length === 0) return
+          lcpObserver?.disconnect()
+          lcpObserver = null
+          if (lcpTimeoutId) {
+            window.clearTimeout(lcpTimeoutId)
+            lcpTimeoutId = null
+          }
+          scheduleIdleStart()
+        })
+        lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true })
+        // Safety fallback: if LCP never fires, still start after 3.5s
+        lcpTimeoutId = window.setTimeout(scheduleIdleStart, 3500)
+      } catch {
+        scheduleIdleStart()
+      }
+    }
+
+    watchLcp()
+
     return () => {
       if (timerId) {
         window.clearTimeout(timerId)
