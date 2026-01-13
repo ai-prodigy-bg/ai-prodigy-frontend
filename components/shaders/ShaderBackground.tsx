@@ -44,17 +44,6 @@ class ShaderErrorBoundary extends Component<
   }
 }
 
-// Type definitions for requestIdleCallback (if not already defined)
-type IdleCallbackHandle = number;
-type IdleRequestCallback = (deadline: IdleDeadline) => void;
-interface IdleDeadline {
-  readonly didTimeout: boolean;
-  timeRemaining(): DOMHighResTimeStamp;
-}
-interface IdleRequestOptions {
-  timeout?: number;
-}
-
 export default function ShaderBackground() {
   const [enabled, setEnabled] = useState(false)
   const [visible, setVisible] = useState(true)
@@ -75,7 +64,7 @@ export default function ShaderBackground() {
     }
   }, [])
 
-  // Load shaders after LCP + idle (best for Lighthouse)
+  // Load shaders immediately (make shader the LCP)
   useEffect(() => {
     if (typeof window === 'undefined') return
 
@@ -87,29 +76,9 @@ export default function ShaderBackground() {
       return
     }
 
-    // Upgrade when idle after LCP (best for Lighthouse)
-    const ric = (window as any).requestIdleCallback as undefined | ((cb: () => void, opts?: any) => any)
-    let idleId: any
-    let timerId: any
-    let lcpObserver: PerformanceObserver | null = null
-    let lcpTimeoutId: number | null = null
-    let started = false
-
-    const start = () => {
+    const timerId = window.setTimeout(() => {
       setEnabled(true)
-    }
-
-    const scheduleIdleStart = () => {
-      if (started) return
-      started = true
-      if (ric) {
-        // Use requestIdleCallback with 3000ms timeout (don't wait forever)
-        idleId = ric(start, { timeout: 3000 })
-      } else {
-        // Fallback: wait for post-LCP idle window (3000ms)
-        timerId = window.setTimeout(start, 3000)
-      }
-    }
+    }, 0)
 
     const watchLcp = () => {
       if (!('PerformanceObserver' in window)) {
@@ -139,16 +108,6 @@ export default function ShaderBackground() {
     watchLcp()
 
     return () => {
-      if (lcpObserver) {
-        lcpObserver.disconnect()
-      }
-      if (lcpTimeoutId) {
-        window.clearTimeout(lcpTimeoutId)
-      }
-      if (ric && idleId) {
-        const cancel = (window as any).cancelIdleCallback
-        if (cancel) cancel(idleId)
-      }
       if (timerId) {
         window.clearTimeout(timerId)
       }
