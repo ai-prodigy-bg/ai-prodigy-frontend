@@ -63,6 +63,7 @@ export default function RootLayout({
         <link rel="alternate" hrefLang="en" href="https://localhost:3000/" />
         <link rel="alternate" hrefLang="bg" href="https://localhost:3000/bg" />
         <link rel="alternate" hrefLang="x-default" href="https://localhost:3000/" />
+        <link rel="preconnect" href="https://ik.imagekit.io" crossOrigin="" />
         
         {/* Favicon Links */}
         <link rel="icon" type="image/x-icon" href="/favicon_io/favicon.ico" />

@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { motion } from "framer-motion"
 
 // ImageKit URL for the cat logo with transformations
@@ -22,34 +23,39 @@ export default function LoadingCat({
     sm: { 
       container: "w-16 h-16", 
       image: "w-12 h-12",
-      imageSize: "w-64,h-264", 
-      text: "text-sm" 
+      imageSize: 96,
+      imageDimensions: 48,
+      text: "text-sm",
     },
     md: { 
       container: "w-24 h-24", 
       image: "w-20 h-20",
-      imageSize: "w-320,h-320", 
-      text: "text-base" 
+      imageSize: 160,
+      imageDimensions: 80,
+      text: "text-base",
     },
     lg: { 
       container: "w-32 h-32", 
       image: "w-28 h-28",
-      imageSize: "w-448,h-448", 
-      text: "text-lg" 
+      imageSize: 224,
+      imageDimensions: 112,
+      text: "text-lg",
     },
     xl: { 
       container: "w-48 h-48", 
       image: "w-44 h-44",
-      imageSize: "w-704,h-704", 
-      text: "text-xl" 
-    }
+      imageSize: 352,
+      imageDimensions: 176,
+      text: "text-xl",
+    },
   }
 
   const config = sizeConfig[size]
 
   // ImageKit transformations for high quality cat with purple glow
   const catImageUrl = `${IMAGEKIT_BASE_URL}?tr=${[
-    config.imageSize,           // High resolution
+    `w-${config.imageSize}`,
+    `h-${config.imageSize}`,
     "q-95",                     // High quality
     "f-auto",                   // Auto format
     "cm-maintain_ratio",        // Maintain aspect ratio
@@ -128,11 +134,14 @@ export default function LoadingCat({
             `
           }}
         >
-          <img
+          <Image
             src={catImageUrl}
             alt="Loading..."
+            width={config.imageDimensions}
+            height={config.imageDimensions}
             className="w-full h-full object-contain"
-            loading="eager"
+            priority
+            fetchPriority="high"
           />
         </motion.div>
 

@@ -2,6 +2,7 @@
 
 import type React from "react"
 
+import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import { motion, useInView, useScroll, AnimatePresence } from "framer-motion"
 import { DotGrid, NeuroNoise } from "@paper-design/shaders-react"
@@ -34,6 +35,7 @@ function LiquidCursor() {
   const cursorRef = useRef<HTMLDivElement>(null)
   const [isHovering, setIsHovering] = useState(false)
   const [magneticTarget, setMagneticTarget] = useState<HTMLElement | null>(null)
+  const magneticRectRef = useRef<DOMRect | null>(null)
 
   useEffect(() => {
     const cursor = cursorRef.current
@@ -47,8 +49,8 @@ function LiquidCursor() {
       mouseY = e.clientY
 
       // Magnetic attraction effect
-      if (magneticTarget) {
-        const rect = magneticTarget.getBoundingClientRect()
+      if (magneticTarget && magneticRectRef.current) {
+        const rect = magneticRectRef.current
         const centerX = rect.left + rect.width / 2
         const centerY = rect.top + rect.height / 2
         const distance = Math.sqrt(Math.pow(mouseX - centerX, 2) + Math.pow(mouseY - centerY, 2))
@@ -72,12 +74,14 @@ function LiquidCursor() {
       const target = e.target as HTMLElement
       if (target.hasAttribute("data-magnetic")) {
         setMagneticTarget(target)
+        magneticRectRef.current = target.getBoundingClientRect()
       }
     }
 
     const handleMouseLeave = () => {
       setIsHovering(false)
       setMagneticTarget(null)
+      magneticRectRef.current = null
     }
 
     document.addEventListener("mousemove", moveCursor)
@@ -196,6 +200,7 @@ function SmoothScroll() {
 
 function FloatingActionButton() {
   const [isVisible, setIsVisible] = useState(false)
+  const { t } = useTranslation()
 
   useEffect(() => {
     const toggleVisibility = () => {
@@ -233,6 +238,7 @@ function FloatingActionButton() {
       }}
       whileTap={{ scale: 0.9 }}
       data-magnetic
+      aria-label={t('navigation.contact')}
     >
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
@@ -362,7 +368,7 @@ function Navigation() {
             className="flex items-center"
             data-magnetic
           >
-            <img
+            <Image
               src={buildImageKitUrl("/prodigy%20corp/Logo/prodigy-corp-text-logo-nobg-cut.png", [
                 "w-326",
                 "q-90",
@@ -373,6 +379,9 @@ function Navigation() {
               ])}
               alt="Prodigy Corp"
               className="h-8 md:h-10 w-auto"
+              width={179}
+              height={56}
+              sizes="(min-width: 768px) 179px, 140px"
               style={{
                 filter:
                   // White edge, then brand-purple outer glow layers
@@ -418,6 +427,7 @@ function Navigation() {
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="md:hidden text-foreground p-2 drop-shadow-sm"
             data-magnetic
+            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {isMobileMenuOpen ? (
@@ -629,12 +639,15 @@ function ProjectCard({
             transition={{ duration: 0.3 }}
             style={{ transform: `translateZ(20px)` }}
           >
-            <img
-              src={buildImageKitUrl(image || "/placeholder.svg", getResponsiveImageTransformations())}
-              alt={alt}
-              className="w-full h-auto object-cover rounded-t-lg"
-              loading="lazy"
-            />
+            <div className="relative w-full aspect-[4/3]">
+              <Image
+                src={buildImageKitUrl(image || "/placeholder.svg", getResponsiveImageTransformations())}
+                alt={alt}
+                fill
+                sizes="(min-width: 1280px) 360px, (min-width: 768px) 45vw, 90vw"
+                className="object-cover rounded-t-lg"
+              />
+            </div>
             <motion.div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </motion.div>
 
@@ -2248,7 +2261,7 @@ export default function HomePage() {
 
             {/* Logo + Copyright */}
             <div className="flex items-center gap-3 justify-center">
-              <img
+              <Image
                 src={buildImageKitUrl("/prodigy%20corp/Logo/prodigy-corp-logo-nobg-cut.png", [
                   "w-96",
                   "q-90",
@@ -2259,8 +2272,9 @@ export default function HomePage() {
                 ])}
                 alt=""
                 aria-hidden="true"
-                width={96}
-                height={96}
+                width={40}
+                height={40}
+                sizes="40px"
                 className="w-10 h-10"
                 style={{
                   filter:
@@ -2268,7 +2282,6 @@ export default function HomePage() {
                     "drop-shadow(0 0 8px rgba(139,92,246,0.4)) " +
                     "drop-shadow(0 0 16px rgba(139,92,246,0.22))",
                 }}
-                loading="lazy"
               />
               <p className="text-sm text-muted-foreground text-center">
                 © {new Date().getFullYear()} Prodigy Corp
@@ -2280,7 +2293,7 @@ export default function HomePage() {
           <div className="hidden md:flex items-center justify-between">
             {/* Left: Logo + Copyright */}
             <div className="flex items-center gap-4">
-              <img
+              <Image
                 src={buildImageKitUrl("/prodigy%20corp/Logo/prodigy-corp-logo-nobg-cut.png", [
                   "w-96",
                   "q-90",
@@ -2291,8 +2304,9 @@ export default function HomePage() {
                 ])}
                 alt=""
                 aria-hidden="true"
-                width={96}
-                height={96}
+                width={48}
+                height={48}
+                sizes="48px"
                 className="w-12 h-12"
                 style={{
                   filter:
@@ -2300,7 +2314,6 @@ export default function HomePage() {
                     "drop-shadow(0 0 8px rgba(139,92,246,0.4)) " +
                     "drop-shadow(0 0 16px rgba(139,92,246,0.22))",
                 }}
-                loading="lazy"
               />
               <p className="text-base text-muted-foreground">
                 © {new Date().getFullYear()} Prodigy Corp
@@ -2563,7 +2576,11 @@ function ContactSection() {
                 </div>
 
                 <motion.div whileHover={{ scale: 1.02 }} whileFocus={{ scale: 1.02 }} className="relative">
+                  <label htmlFor="project-type" className="sr-only">
+                    {t('contact.form.projectType')}
+                  </label>
                   <motion.select
+                    id="project-type"
                     name="project"
                     value={formData.project}
                     onChange={handleInputChange}
