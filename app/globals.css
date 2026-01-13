@@ -11,7 +11,7 @@
   --card-foreground: oklch(0.98 0 0); /* White text on cards */
   --popover: oklch(0.15 0.02 264); /* Dark popover */
   --popover-foreground: oklch(0.98 0 0); /* White text on popovers */
-  --primary: oklch(0.65 0.25 285); /* Vibrant purple/violet */
+  --primary: oklch(0.6 0.25 285); /* Vibrant purple/violet */
   --primary-foreground: oklch(0.98 0 0); /* White text on primary */
   --secondary: oklch(0.25 0.02 264); /* Darker secondary */
   --secondary-foreground: oklch(0.98 0 0); /* White text on secondary */
@@ -48,7 +48,7 @@
   --card-foreground: oklch(0.98 0 0);
   --popover: oklch(0.15 0.02 264);
   --popover-foreground: oklch(0.98 0 0);
-  --primary: oklch(0.65 0.25 285);
+  --primary: oklch(0.55 0.25 285);
   --primary-foreground: oklch(0.98 0 0);
   --secondary: oklch(0.25 0.02 264);
   --secondary-foreground: oklch(0.98 0 0);
@@ -264,5 +264,18 @@
 
   .hover-scale:hover {
     transform: scale(1.05);
+  }
+
+  /* Screen reader only class for accessibility */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
   }
 }

@@ -188,6 +188,7 @@
   "contact": {
     "title": "Let's Create Something<br/>Extraordinary",
     "subtitle": "Ready to transform your vision into reality? Let's discuss your next groundbreaking project.",
+    "scrollToContact": "Go to contact section",
     "form": {
       "name": "Your Name",
       "email": "Your Email", 

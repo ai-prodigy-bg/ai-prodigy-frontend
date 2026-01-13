@@ -37,7 +37,7 @@ export default function FloatingActionButton() {
       }}
       transition={{ duration: 0.3 }}
       onClick={scrollToContact}
-      aria-label={t('contact.title').split('<br/>')[0] || "Go to contact section"}
+      aria-label={t('contact.scrollToContact')}
       className="fixed bottom-8 right-8 w-14 h-14 bg-primary text-primary-foreground rounded-full shadow-lg z-40 flex items-center justify-center"
       whileHover={{
         scale: 1.1,
