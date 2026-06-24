@@ -6,25 +6,30 @@ import bg from './bg.json'
 
 type TranslationKey = string
 type Locale = 'en' | 'bg'
+type TranslationValue = string | readonly TranslationValue[] | { readonly [key: string]: TranslationValue }
 
 const translations = {
   en,
   bg,
 } as const
 
+function isTranslationRecord(value: unknown): value is Record<string, TranslationValue> {
+  return Boolean(value && typeof value === 'object' && !Array.isArray(value))
+}
+
 export function getTranslation(locale: Locale, key: TranslationKey): string {
   const keys = key.split('.')
-  let current: any = translations[locale]
+  let current: unknown = translations[locale]
 
   for (const k of keys) {
-    if (current && typeof current === 'object' && k in current) {
+    if (isTranslationRecord(current) && k in current) {
       current = current[k]
     } else {
       console.warn(`Translation key "${key}" not found for locale "${locale}"`)
       // Fallback to English
       current = translations.en
       for (const fallbackKey of keys) {
-        if (current && typeof current === 'object' && fallbackKey in current) {
+        if (isTranslationRecord(current) && fallbackKey in current) {
           current = current[fallbackKey]
         } else {
           return key // Return the key itself if no translation is found
@@ -73,18 +78,18 @@ export function useTranslation() {
   return { t, tArray, locale }
 }
 
-function getTranslationRaw(locale: Locale, key: TranslationKey): any {
+function getTranslationRaw(locale: Locale, key: TranslationKey): unknown {
   const keys = key.split('.')
-  let current: any = translations[locale]
+  let current: unknown = translations[locale]
 
   for (const k of keys) {
-    if (current && typeof current === 'object' && k in current) {
+    if (isTranslationRecord(current) && k in current) {
       current = current[k]
     } else {
       // Fallback to English
       current = translations.en
       for (const fallbackKey of keys) {
-        if (current && typeof current === 'object' && fallbackKey in current) {
+        if (isTranslationRecord(current) && fallbackKey in current) {
           current = current[fallbackKey]
         } else {
           return null

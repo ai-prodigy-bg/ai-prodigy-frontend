@@ -6,7 +6,7 @@
     "projects": "Projects",
     "services": "Services",
     "about": "About",
-    "contact": "Contact",
+    "contact": "Let’s talk",
     "mobileMenuToggle": "Toggle mobile menu",
     "mobileMenuClose": "Close mobile menu"
   },
@@ -14,11 +14,17 @@
     "title": {
       "line1": "Premium",
       "line2": "Digital Products", 
-      "line3": "Powered by AI"
+      "line3": ""
     },
     "subtitle": "Leveraging AI to build faster, smarter, and more cost-effectively for both our clients and our portfolio.",
     "ctaStart": "Get Started",
-    "ctaPortfolio": "What We've Built"
+    "ctaPortfolio": "What We've Built",
+    "sideLabel": "",
+    "sideTitle": {
+      "line1": "POWERED BY",
+      "line2": "AI"
+    },
+    "sideSubtitle": ""
   },
   "projects": {
     "title": "Our Portfolio",
@@ -226,8 +232,18 @@
       "platforms": {
         "x": "X (Twitter)",
         "instagram": "Instagram",
-        "facebook": "Facebook"
+        "facebook": "Facebook",
+        "whatsapp": "WhatsApp"
       }
     }
+  },
+  "notFound": {
+    "eyebrow": "Signal lost",
+    "code": "404",
+    "title": "This route vanished",
+    "description": "The page you're looking for is outside our map. Head back to the main deck or start a project with us.",
+    "homeCta": "Back to home",
+    "contactCta": "Contact us",
+    "logoAlt": "Prodigy Corp alien cat logo"
   }
 }

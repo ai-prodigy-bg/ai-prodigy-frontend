@@ -1,4 +1,8 @@
 import bundleAnalyzer from '@next/bundle-analyzer'
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const projectRoot = dirname(fileURLToPath(import.meta.url))
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
@@ -6,11 +10,9 @@ const withBundleAnalyzer = bundleAnalyzer({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
+  allowedDevOrigins: ['127.0.0.1'],
+  turbopack: {
+    root: projectRoot,
   },
   images: {
     unoptimized: true, // ImageKit handles optimization via URL transformations

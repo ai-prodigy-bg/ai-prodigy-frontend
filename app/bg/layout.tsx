@@ -3,6 +3,7 @@ import { getBaseUrl, getAlternateUrls } from "../../lib/utils/seo"
 
 const baseUrl = getBaseUrl()
 const alternateUrls = getAlternateUrls()
+const logoUrl = `${baseUrl}/favicon_io/prodigy-corp-logo.png`
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -39,9 +40,9 @@ export const metadata: Metadata = {
     description: "Премиум дигитални продукти, задвижвани от AI. Работим по-бързо, по-умно и на достъпна цена. Мобилни приложения, уеб приложения, уебсайтове и дигитални услуги.",
     images: [
       {
-        url: `${baseUrl}/prodigy-corp-logo-nobg.png`,
+        url: logoUrl,
         width: 1200,
-        height: 630,
+        height: 1200,
         alt: "Prodigy Corp - Премиум Дигитални Решения",
       },
     ],
@@ -51,7 +52,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Prodigy Corp - Премиум Дигитални Решения | Разработка с AI",
     description: "Премиум дигитални продукти, задвижвани от AI. Работим по-бързо, по-умно и на достъпна цена.",
-    images: [`${baseUrl}/prodigy-corp-logo-nobg.png`],
+    images: [logoUrl],
     creator: "@prodigycorp",
   },
   alternates: {

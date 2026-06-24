@@ -12,10 +12,10 @@ export default function ProjectsSection() {
 
   const digitalAssets = [
     {
-      title: t('projects.portfolio.mrimot.name'),
-      description: t('projects.portfolio.mrimot.description'),
-      category: t('projects.portfolio.mrimot.category'),
-      image: "/prodigy%20corp/projects/mrimot.com-showcase.png",
+      title: t("projects.portfolio.mrimot.name"),
+      description: t("projects.portfolio.mrimot.description"),
+      category: t("projects.portfolio.mrimot.category"),
+      image: "/prodigy%20corp/projects/mrimot.com-client.png",
       url: "https://www.mrimot.com/",
       alt: "mrimot.com showcase on prodigy corp website",
     },
@@ -23,17 +23,17 @@ export default function ProjectsSection() {
 
   const clientSuccessStories = [
     {
-      title: t('projects.portfolio.teramedbio.name'),
-      description: t('projects.portfolio.teramedbio.description'),
-      category: t('projects.portfolio.teramedbio.category'),
+      title: t("projects.portfolio.teramedbio.name"),
+      description: t("projects.portfolio.teramedbio.description"),
+      category: t("projects.portfolio.teramedbio.category"),
       image: "/prodigy corp/88shots_so.png",
       url: "https://teramedbio.com/",
       alt: "teramedbio.com showcase on prodigy corp website",
     },
     {
-      title: t('projects.portfolio.elichobanova.name'),
-      description: t('projects.portfolio.elichobanova.description'),
-      category: t('projects.portfolio.elichobanova.category'),
+      title: t("projects.portfolio.elichobanova.name"),
+      description: t("projects.portfolio.elichobanova.description"),
+      category: t("projects.portfolio.elichobanova.category"),
       image: "/prodigy%20corp/projects/elichobanova.com-showcase.png",
       url: "https://elichobanova.com/",
       alt: "elichobanova.com showcase on prodigy corp website",
@@ -41,125 +41,45 @@ export default function ProjectsSection() {
   ]
 
   return (
-    <section ref={sectionRef} id="projects" className="min-h-screen py-16 md:py-20 px-4 md:px-6 relative">
-      <div className="max-w-7xl mx-auto">
-        {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12 md:mb-16"
-        >
-          <motion.h2
-            className="font-heading font-bold text-4xl md:text-5xl lg:text-7xl mb-4 md:mb-6 text-balance"
-            animate={
-              isInView
-                ? {
-                    backgroundImage: [
-                      "linear-gradient(45deg, oklch(0.98 0 0), oklch(0.65 0.25 285))",
-                      "linear-gradient(45deg, oklch(0.65 0.25 285), oklch(0.7 0.25 340))",
-                      "linear-gradient(45deg, oklch(0.7 0.25 340), oklch(0.6 0.2 160))",
-                      "linear-gradient(45deg, oklch(0.6 0.2 160), oklch(0.65 0.25 285))",
-                    ],
-                  }
-                : {}
-            }
-            transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY }}
-            style={{
-              backgroundClip: "text",
-              WebkitBackgroundClip: "text",
-              color: "transparent",
-            }}
-          >
-            {t('projects.title')}
-          </motion.h2>
+    <section ref={sectionRef} id="projects" className="relative min-h-screen bg-black px-6 py-32">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] bg-[length:24px_24px] opacity-[0.035]" />
 
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto text-pretty px-4"
-          >
-            {t('projects.subtitle')}
-          </motion.p>
+      <div className="relative mx-auto max-w-6xl">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 1 }}
+          className="mx-auto mb-20 max-w-3xl text-center"
+        >
+          <h2 className="mb-8 text-[clamp(34px,7vw,72px)] font-normal leading-[1.08] tracking-[-0.03em] text-white">
+            {t("projects.title")}
+          </h2>
+          <p className="mx-auto max-w-xl text-[15px] leading-relaxed text-white/45 sm:text-[17px]">
+            {t("projects.subtitle")}
+          </p>
         </motion.div>
 
-        {/* Our Digital Assets Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="mb-20"
-        >
-          <h3 className="font-heading font-bold text-2xl md:text-3xl mb-8 text-center">
-            {t('projects.digitalAssets')}
+        <div className="mb-20">
+          <h3 className="mb-6 border-t border-white/10 pt-5 text-[14px] uppercase tracking-[0.2em] text-white/40">
+            {t("projects.digitalAssets")}
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
             {digitalAssets.map((project, index) => (
-              <ProjectCard
-                key={project.title}
-                title={project.title}
-                description={project.description}
-                category={project.category}
-                image={project.image}
-                index={index}
-                url={project.url}
-                alt={project.alt}
-              />
+              <ProjectCard key={project.title} {...project} index={index} />
             ))}
           </div>
-        </motion.div>
+        </div>
 
-        {/* Client Success Stories Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        >
-          <h3 className="font-heading font-bold text-2xl md:text-3xl mb-8 text-center">
-            {t('projects.clientSuccessStories')}
+        <div>
+          <h3 className="mb-6 border-t border-white/10 pt-5 text-[14px] uppercase tracking-[0.2em] text-white/40">
+            {t("projects.clientSuccessStories")}
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
             {clientSuccessStories.map((project, index) => (
-              <ProjectCard
-                key={project.title}
-                title={project.title}
-                description={project.description}
-                category={project.category}
-                image={project.image}
-                index={index + digitalAssets.length}
-                url={project.url}
-                alt={project.alt}
-              />
+              <ProjectCard key={project.title} {...project} index={index + digitalAssets.length} />
             ))}
           </div>
-        </motion.div>
-
-      </div>
-
-      {/* Floating elements */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {[...Array(8)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-primary/20 rounded-full"
-            style={{
-              left: `${10 + i * 12}%`,
-              top: `${20 + (i % 3) * 30}%`,
-            }}
-            animate={{
-              y: [0, -30, 0],
-              opacity: [0.2, 0.6, 0.2],
-              scale: [1, 1.5, 1],
-            }}
-            transition={{
-              duration: 4 + i * 0.3,
-              repeat: Number.POSITIVE_INFINITY,
-              delay: i * 0.4,
-              ease: "easeInOut",
-            }}
-          />
-        ))}
+        </div>
       </div>
     </section>
   )

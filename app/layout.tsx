@@ -1,8 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Space_Grotesk } from "next/font/google"
-import { DM_Sans } from "next/font/google"
-import { GeistMono } from "geist/font/mono"
+import { Anton_SC, Sofia_Sans, Space_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { Suspense } from "react"
@@ -10,18 +8,26 @@ import LanguageDetector from "../components/LanguageDetector"
 import { getBaseUrl, getAlternateUrls } from "../lib/utils/seo"
 import { headers } from "next/headers"
 
-const spaceGrotesk = Space_Grotesk({
+const spaceMono = Space_Mono({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-space-grotesk",
-  weight: ["400", "500", "600", "700"],
+  variable: "--font-space-mono",
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
 })
 
-const dmSans = DM_Sans({
+const antonSc = Anton_SC({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-dm-sans",
-  weight: ["400", "500", "600"],
+  variable: "--font-anton-sc",
+  weight: ["400"],
+})
+
+const bgSans = Sofia_Sans({
+  subsets: ["latin", "cyrillic"],
+  display: "swap",
+  variable: "--font-bg-sans",
+  weight: ["400", "500", "600", "700", "800"],
 })
 
 export const viewport = {
@@ -32,6 +38,7 @@ export const viewport = {
 
 const baseUrl = getBaseUrl()
 const alternateUrls = getAlternateUrls()
+const logoUrl = `${baseUrl}/favicon_io/prodigy-corp-logo.png`
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -86,9 +93,9 @@ export const metadata: Metadata = {
     description: "Premium digital products powered by AI. We build faster, smarter, and more cost-effectively. Mobile apps, web applications, websites, and digital services.",
     images: [
       {
-        url: `${baseUrl}/prodigy-corp-logo-nobg.png`,
+        url: logoUrl,
         width: 1200,
-        height: 630,
+        height: 1200,
         alt: "Prodigy Corp - Premium Digital Solutions",
       },
     ],
@@ -98,7 +105,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Prodigy Corp - Premium Digital Solutions | AI-Powered Development",
     description: "Premium digital products powered by AI. We build faster, smarter, and more cost-effectively.",
-    images: [`${baseUrl}/prodigy-corp-logo-nobg.png`],
+    images: [logoUrl],
     creator: "@prodigycorp", // Update with actual Twitter handle if available
   },
   alternates: {
@@ -154,7 +161,7 @@ export default async function RootLayout({
               "@type": "Organization",
               "name": "Prodigy Corp",
               "url": baseUrl,
-              "logo": `${baseUrl}/prodigy-corp-logo-nobg.png`,
+              "logo": logoUrl,
               "description": "Premium digital products powered by AI. We build faster, smarter, and more cost-effectively.",
               "address": {
                 "@type": "PostalAddress",
@@ -200,9 +207,8 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className={`font-sans antialiased ${spaceGrotesk.variable} ${dmSans.variable} ${GeistMono.variable}`}>
-        {/* Server-rendered static background fallback - zero JS, instant display */}
-        <div className="fixed inset-0 -z-10 bg-[linear-gradient(180deg,#0a0f1e_0%,#1a2a47_100%)]" />
+      <body className={`font-sans antialiased ${spaceMono.variable} ${antonSc.variable} ${bgSans.variable}`}>
+        <div className="fixed inset-0 -z-10 bg-black" />
         <LanguageDetector />
         <Suspense fallback={null}>{children}</Suspense>
         <Analytics />

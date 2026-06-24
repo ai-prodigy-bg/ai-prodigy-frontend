@@ -11,6 +11,7 @@ import { getBaseUrl, getAlternateUrls } from "../lib/utils/seo"
 
 const baseUrl = getBaseUrl()
 const alternateUrls = getAlternateUrls()
+const logoUrl = `${baseUrl}/favicon_io/prodigy-corp-logo.png`
 
 export const metadata: Metadata = {
   title: "Prodigy Corp - Premium Digital Solutions | AI-Powered Development",
@@ -22,9 +23,9 @@ export const metadata: Metadata = {
     siteName: "Prodigy Corp",
     images: [
       {
-        url: `${baseUrl}/prodigy-corp-logo-nobg.png`,
+        url: logoUrl,
         width: 1200,
-        height: 630,
+        height: 1200,
         alt: "Prodigy Corp - Premium Digital Solutions",
       },
     ],
@@ -45,7 +46,7 @@ export default async function HomePage() {
   const translations = await getServerTranslations()
   
   return (
-    <main className="min-h-screen relative overflow-hidden md:cursor-none cursor-auto">
+    <main className="min-h-screen relative overflow-hidden">
       <ClientOverlaysWrapper />
       <HeroSection />
       <ProjectsSection />

@@ -1,111 +1,67 @@
-import { buildImageKitUrl, getLogoTransformations } from "../lib/utils/imagekit"
-import { XIcon, InstagramIcon, FacebookIcon } from "./SocialIcons"
+import { XIcon, InstagramIcon, FacebookIcon, WhatsAppIcon } from "./SocialIcons"
 import type { TranslationFunction } from "../lib/translations/server"
 
 interface FooterProps {
   t: TranslationFunction
 }
 
-export default function Footer({ t }: FooterProps) {
-  return (
-    <footer className="mt-6 border-t border-border/20">
-      <div className="max-w-7xl mx-auto px-6 py-4 pb-8">
-        {/* Mobile Layout: Social icons above copyright */}
-        <div className="flex flex-col md:hidden items-center gap-3">
-          {/* Follow Us Text + Social Icons */}
-          <div className="flex flex-col items-center gap-2">
-            <p className="text-base text-muted-foreground">{t('contact.social.followUs')}</p>
-            <div className="flex gap-3 justify-center">
-              {[
-                { name: t('contact.social.platforms.x'), icon: <XIcon />, href: "https://x.com/prodigy_corp" },
-                { name: t('contact.social.platforms.instagram'), icon: <InstagramIcon />, href: "https://www.instagram.com/prodigy_corp/" },
-                { name: t('contact.social.platforms.facebook'), icon: <FacebookIcon />, href: "https://www.facebook.com/prodigycorp.io/" },
-              ].map((social) => (
-                <a
-                  key={social.name}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-12 h-12 bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl flex items-center justify-center text-foreground hover:border-primary/50 hover:bg-primary/10 transition-all duration-300"
-                  aria-label={social.name}
-                >
-                  {social.icon}
-                </a>
-              ))}
-            </div>
-          </div>
+const FOOTER_VIDEO = "/videos/prodigy-cat-back-metrics-loop-v1.mp4"
+const FOOTER_POSTER = "/images/prodigy/prodigy-cat-back-metrics-v1.webp"
 
-          {/* Logo + Copyright */}
-          <div className="flex items-center gap-3 justify-center">
-            <img
-              src={buildImageKitUrl("/prodigy%20corp/Logo/prodigy-corp-logo-nobg-cut.png", 
-                getLogoTransformations(40, 85)
-              )}
-              alt=""
-              aria-hidden="true"
-              width={40}
-              height={40}
-              className="w-10 h-10"
-              style={{
-                filter:
-                  "drop-shadow(0 0 2px rgba(255,255,255,0.5)) " +
-                  "drop-shadow(0 0 8px rgba(139,92,246,0.4)) " +
-                  "drop-shadow(0 0 16px rgba(139,92,246,0.22))",
-              }}
-              loading="lazy"
-            />
-            <p className="text-sm text-muted-foreground text-center">
-              © {new Date().getFullYear()} Prodigy Corp
-            </p>
-          </div>
+export default function Footer({ t }: FooterProps) {
+  const whatsappHref = `https://wa.me/${t("contact.info.phone").replace(/\D/g, "")}`
+  const socials = [
+    { name: t("contact.social.platforms.x"), icon: <XIcon />, href: "https://x.com/prodigy_corp" },
+    { name: t("contact.social.platforms.instagram"), icon: <InstagramIcon />, href: "https://www.instagram.com/prodigy_corp/" },
+    { name: t("contact.social.platforms.facebook"), icon: <FacebookIcon />, href: "https://www.facebook.com/prodigycorp.io/" },
+    { name: t("contact.social.platforms.whatsapp"), icon: <WhatsAppIcon />, href: whatsappHref },
+  ]
+
+  return (
+    <footer className="relative overflow-hidden bg-black">
+      <div className="flex min-h-[440px] flex-col border-t border-white/10 md:flex-row">
+        <div className="relative min-h-[280px] overflow-hidden bg-[#010103] md:min-h-[440px] md:w-1/2">
+          <video
+            src={FOOTER_VIDEO}
+            poster={FOOTER_POSTER}
+            className="absolute inset-0 h-full w-full object-cover opacity-75"
+            style={{ objectPosition: "62% center" }}
+            muted
+            loop
+            autoPlay
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+          />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.08),rgba(0,0,0,0.72))]" />
+          <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] bg-[length:24px_24px] opacity-[0.04]" />
         </div>
 
-        {/* Desktop Layout: Copyright left, Socials right */}
-        <div className="hidden md:flex items-center justify-between">
-          {/* Left: Logo + Copyright */}
-          <div className="flex items-center gap-4">
-            <img
-              src={buildImageKitUrl("/prodigy%20corp/Logo/prodigy-corp-logo-nobg-cut.png", 
-                getLogoTransformations(48, 85)
-              )}
-              alt=""
-              aria-hidden="true"
-              width={48}
-              height={48}
-              className="w-12 h-12"
-              style={{
-                filter:
-                  "drop-shadow(0 0 2px rgba(255,255,255,0.5)) " +
-                  "drop-shadow(0 0 8px rgba(139,92,246,0.4)) " +
-                  "drop-shadow(0 0 16px rgba(139,92,246,0.22))",
-              }}
-              loading="lazy"
-            />
-            <p className="text-base text-muted-foreground">
-              © {new Date().getFullYear()} Prodigy Corp
-            </p>
-          </div>
-
-          {/* Right: Follow Us + Social Icons */}
-          <div className="flex items-center gap-4">
-            <p className="text-base text-muted-foreground">{t('contact.social.followUs')}</p>
-            <div className="flex gap-3">
-              {[
-                { name: t('contact.social.platforms.x'), icon: <XIcon />, href: "https://x.com/prodigy_corp" },
-                { name: t('contact.social.platforms.instagram'), icon: <InstagramIcon />, href: "https://www.instagram.com/prodigy_corp/" },
-                { name: t('contact.social.platforms.facebook'), icon: <FacebookIcon />, href: "https://www.facebook.com/prodigycorp.io/" },
-              ].map((social) => (
-                <a
-                  key={social.name}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-11 h-11 bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl flex items-center justify-center text-foreground hover:border-primary/50 hover:bg-primary/10 transition-all duration-300"
-                  aria-label={social.name}
-                >
-                  {social.icon}
-                </a>
-              ))}
+        <div className="flex flex-1 items-center px-6 py-12 md:px-12 md:py-16 lg:px-16">
+          <div className="w-full max-w-xl">
+            <div className="flex flex-col items-start gap-7">
+              <div>
+                <p className="mb-5 text-[18px] font-semibold leading-none text-white/70 sm:text-[20px]">
+                  {t("contact.social.followUs")}
+                </p>
+                <div className="flex gap-3.5">
+                  {socials.map((social) => (
+                    <a
+                      key={social.name}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex h-[54px] w-[54px] items-center justify-center rounded-xl border border-white/12 bg-white/[0.055] text-white/75 transition-colors duration-200 hover:border-white/25 hover:bg-white/12 hover:text-white"
+                      aria-label={social.name}
+                    >
+                      {social.icon}
+                    </a>
+                  ))}
+                </div>
+              </div>
+              <p className="text-[15px] font-medium leading-none text-white/42 sm:text-[16px]">
+                © {new Date().getFullYear()} Prodigy Corp
+              </p>
             </div>
           </div>
         </div>
