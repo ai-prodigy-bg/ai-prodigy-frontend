@@ -12,33 +12,46 @@ export default function ProjectsSection() {
 
   const digitalAssets = [
     {
+      id: "mister-imot-website",
       title: t("projects.portfolio.mrimot.name"),
       description: t("projects.portfolio.mrimot.description"),
       category: t("projects.portfolio.mrimot.category"),
-      image: "/images/projects/mrimot-mobile-app.png",
-      status: t("projects.noLinkYet"),
-      alt: "Mister Imot mobile application preview",
+      image: "/prodigy%20corp/projects/mrimot.com-client.png",
+      url: "https://www.mrimot.com/",
+      alt: "mrimot.com showcase on prodigy corp website",
     },
     {
-      title: t("projects.portfolio.batvesko.name"),
-      description: t("projects.portfolio.batvesko.description"),
-      category: t("projects.portfolio.batvesko.category"),
+      id: "mister-imot-app",
+      title: t("projects.portfolio.mrimotApp.name"),
+      description: t("projects.portfolio.mrimotApp.description"),
+      category: t("projects.portfolio.mrimotApp.category"),
+      artwork: "mister-imot-app" as const,
+      status: t("projects.detailsSoon"),
+      alt: "Мобилното приложение Мистър Имот",
+    },
+    {
+      id: "bat-vesko-app",
+      title: t("projects.portfolio.batVesko.name"),
+      description: t("projects.portfolio.batVesko.description"),
+      category: t("projects.portfolio.batVesko.category"),
       image: "/images/projects/bat-vesko-mobile.png",
       status: t("projects.comingSoon"),
-      alt: "Bat Vesko mobile application preview",
+      alt: "Мобилното приложение Бат Веско",
     },
   ]
 
   const clientSuccessStories = [
     {
+      id: "born2dance-website",
       title: t("projects.portfolio.born2dance.name"),
       description: t("projects.portfolio.born2dance.description"),
       category: t("projects.portfolio.born2dance.category"),
       image: "/images/projects/born2dance-website.png",
-      status: t("projects.noLinkYet"),
-      alt: "Born2Dance Studio website preview",
+      status: t("projects.detailsSoon"),
+      alt: "Уебсайтът на Born2Dance Studio",
     },
     {
+      id: "teramedbio-website",
       title: t("projects.portfolio.teramedbio.name"),
       description: t("projects.portfolio.teramedbio.description"),
       category: t("projects.portfolio.teramedbio.category"),
@@ -47,6 +60,7 @@ export default function ProjectsSection() {
       alt: "teramedbio.com showcase on prodigy corp website",
     },
     {
+      id: "eli-chobanova-website",
       title: t("projects.portfolio.elichobanova.name"),
       description: t("projects.portfolio.elichobanova.description"),
       category: t("projects.portfolio.elichobanova.category"),
@@ -60,7 +74,7 @@ export default function ProjectsSection() {
     <section ref={sectionRef} id="projects" className="relative min-h-screen bg-black px-6 py-32">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] bg-[length:24px_24px] opacity-[0.035]" />
 
-      <div className="relative mx-auto max-w-7xl">
+      <div className="relative mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -79,9 +93,9 @@ export default function ProjectsSection() {
           <h3 className="mb-6 border-t border-white/10 pt-5 text-[14px] uppercase tracking-[0.2em] text-white/40">
             {t("projects.digitalAssets")}
           </h3>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
             {digitalAssets.map((project, index) => (
-              <ProjectCard key={project.title} {...project} index={index} />
+              <ProjectCard key={project.id} {...project} index={index} />
             ))}
           </div>
         </div>
@@ -90,9 +104,9 @@ export default function ProjectsSection() {
           <h3 className="mb-6 border-t border-white/10 pt-5 text-[14px] uppercase tracking-[0.2em] text-white/40">
             {t("projects.clientSuccessStories")}
           </h3>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
             {clientSuccessStories.map((project, index) => (
-              <ProjectCard key={project.title} {...project} index={index + digitalAssets.length} />
+              <ProjectCard key={project.id} {...project} index={index + digitalAssets.length} />
             ))}
           </div>
         </div>

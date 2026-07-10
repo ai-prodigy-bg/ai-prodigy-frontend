@@ -32,23 +32,28 @@
     "digitalAssets": "Our Digital Assets",
     "clientSuccessStories": "Client Success Stories",
     "visitLink": "Click to visit",
-    "noLinkYet": "Link coming soon",
+    "detailsSoon": "More information coming soon",
     "comingSoon": "Coming soon",
     "portfolio": {
       "mrimot": {
         "name": "Mister Imot",
-        "category": "Real estate mobile app",
-        "description": "The Mister Imot mobile experience brings new construction, verified developers and detailed project information into one convenient app with maps, galleries and direct contact."
+        "category": "Real Estate Platform",
+        "description": "Advanced real estate platform connecting buyers with verified developers. Interactive map search for off-plan and new construction projects."
       },
-      "batvesko": {
+      "mrimotApp": {
+        "name": "Mister Imot",
+        "category": "Real estate mobile app",
+        "description": "Every Mister Imot feature – directly on the phone. People can browse new construction, search on the map, view photos and project details, and contact developers comfortably from anywhere."
+      },
+      "batVesko": {
         "name": "Bat Vesko",
-        "category": "Mobile app · Our product",
-        "description": "An original mobile app with a memorable character, bold visual identity and a personality that is instantly recognizable. The product is currently in active development."
+        "category": "AI app for home renovation",
+        "description": "A personal AI craftsman for home renovation that remembers the project, rooms, photos, tools and progress. It analyzes plans and images and provides clear steps, material lists and risk warnings."
       },
       "born2dance": {
         "name": "Born2Dance Studio",
         "category": "Dance studio · Plovdiv",
-        "description": "A new digital home for a Plovdiv dance studio with classes for children and adults — from Zumba, Salsa and ballet to Hip Hop and K-Pop — shaped around energetic design, schedules and clear booking paths."
+        "description": "An energetic website for a Plovdiv dance studio with classes for children and adults – from Zumba, Salsa and ballet to Hip Hop and K-Pop – with a clear schedule, instructor profiles and easy booking."
       },
       "teramedbio": {
         "name": "Teramedbio",
