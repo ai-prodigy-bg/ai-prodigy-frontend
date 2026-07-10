@@ -32,11 +32,23 @@
     "digitalAssets": "Our Digital Assets",
     "clientSuccessStories": "Client Success Stories",
     "visitLink": "Click to visit",
+    "noLinkYet": "Link coming soon",
+    "comingSoon": "Coming soon",
     "portfolio": {
       "mrimot": {
         "name": "Mister Imot",
-        "category": "Real Estate Platform",
-        "description": "Advanced real estate platform connecting buyers with verified developers. Interactive map search for off-plan and new construction projects."
+        "category": "Real estate mobile app",
+        "description": "The Mister Imot mobile experience brings new construction, verified developers and detailed project information into one convenient app with maps, galleries and direct contact."
+      },
+      "batvesko": {
+        "name": "Bat Vesko",
+        "category": "Mobile app · Our product",
+        "description": "An original mobile app with a memorable character, bold visual identity and a personality that is instantly recognizable. The product is currently in active development."
+      },
+      "born2dance": {
+        "name": "Born2Dance Studio",
+        "category": "Dance studio · Plovdiv",
+        "description": "A new digital home for a Plovdiv dance studio with classes for children and adults — from Zumba, Salsa and ballet to Hip Hop and K-Pop — shaped around energetic design, schedules and clear booking paths."
       },
       "teramedbio": {
         "name": "Teramedbio",
