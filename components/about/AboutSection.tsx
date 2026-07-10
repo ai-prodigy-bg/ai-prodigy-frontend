@@ -15,9 +15,9 @@ export default function AboutSection() {
 
   const storyParagraphs = tArray("about.story.paragraphs")
   const stats = [
-    { value: 3, label: t("about.stats.projects"), suffix: "+" },
-    { value: 2, label: t("about.stats.clients"), suffix: "+" },
-    { value: 1, label: t("about.stats.experience"), suffix: "+" },
+    { value: 15, label: t("about.stats.projects"), suffix: "+" },
+    { value: 12, label: t("about.stats.clients"), suffix: "+" },
+    { value: 2, label: t("about.stats.experience"), suffix: "+" },
     { value: 100, label: t("about.stats.successRate"), suffix: "%" },
   ]
 
